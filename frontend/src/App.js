@@ -4,7 +4,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import theme from "./theme";
 import "./styles.css";
 import NavBar from "./components/NavBar";
-import Home from "./components/Home";
+import Home from "./components/Home/Main";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 
