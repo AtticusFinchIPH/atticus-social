@@ -9,14 +9,22 @@ const AVATAR_DIMENSION = 5;
 const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     avatar: {
       width: theme.spacing(AVATAR_DIMENSION),
-      height: theme.spacing(AVATAR_DIMENSION)
+      height: theme.spacing(AVATAR_DIMENSION),
+      margin: theme.spacing(1),
     },
     orange: {
       color: theme.palette.getContrastText(deepOrange[500]),
       backgroundColor: deepOrange[500],
+    },
+    textField: {
+      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
+      width: '90%'
     },
     blue: {
       color: theme.palette.getContrastText(lightBlue[500]),
@@ -34,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const statusLabel = "Let's say \"Hi\"!";
+const statusPlaceholder = "Let's say \"Hi\"!";
 
 const Status = (props) => {
     const classes = useStyles();
@@ -46,7 +54,15 @@ const Status = (props) => {
                         A
                     </Typography>
                 </Avatar>
-                <TextField id="status" label={statusLabel} />
+                <TextField
+                    placeholder={statusPlaceholder}
+                    multiline
+                    rows="3"
+                    // value={values.text}
+                    // onChange={handleChange('text')}
+                    className={classes.textField}
+                    margin="normal"
+                />
             </form>
         </Paper>
     )
