@@ -25,7 +25,8 @@ import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { Link, withRouter } from "react-router-dom";
 import {useSelector} from "react-redux";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { withStyles, makeStyles, useTheme } from "@material-ui/styles";
+import { Tooltip } from "@material-ui/core";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) return { color: "#ff4081" };
@@ -35,9 +36,6 @@ const isActive = (history, path) => {
 const drawerWidth = 240;
 
 const useStyle = makeStyles((theme) => ({
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   appBar: {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
@@ -86,10 +84,19 @@ const useStyle = makeStyles((theme) => ({
     }),
     marginLeft: 0,
   },
-grow:{
-  flexGrow: 1,
-}
+  grow:{
+    flexGrow: 1,
+  },
 }));
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 14,
+  },
+}))(Tooltip);
 
 const NavBar = withRouter(({history}) => {
   const classes = useStyle();
@@ -119,7 +126,6 @@ const NavBar = withRouter(({history}) => {
     <CssBaseline />
     <AppBar position="fixed" className={
       clsx(
-        classes.menuButton,
         classes.appBar,
         {
           [classes.appBarShift]: openDrawer,
@@ -135,21 +141,27 @@ const NavBar = withRouter(({history}) => {
         <Typography variant="h5" color="inherit">
           Atticus's Social
         </Typography>
-        <Link to='/status'>
-          <IconButton aria-label="Status" style={isActive(history, '/status')}>
-            <FilterDramaIcon />
-          </IconButton>
-        </Link>
-        <Link to='/blog'>
-          <IconButton aria-label="Blog" style={isActive(history, '/blog')}>
-            <FingerprintIcon />
-          </IconButton>
-        </Link>
         <div className={classes.grow}/>
         <Link to='/'>
-          <IconButton aria-label="Home" style={isActive(history, '/')}>
-            <HomeIcon />
-          </IconButton> 
+          <LightTooltip title="Home">
+            <IconButton aria-label="Home" style={isActive(history, '/')}>
+              <HomeIcon />
+            </IconButton> 
+          </LightTooltip>
+        </Link>
+        <Link to='/status'>
+          <LightTooltip title="Status">
+            <IconButton aria-label="Status" style={isActive(history, '/status')}>
+              <FilterDramaIcon />
+            </IconButton>
+          </LightTooltip>
+        </Link>
+        <Link to='/blog'>
+          <LightTooltip title="Blog">
+            <IconButton aria-label="Blog" style={isActive(history, '/blog')}>
+              <FingerprintIcon />
+            </IconButton>
+          </LightTooltip>
         </Link>
         {
           userLogin 
