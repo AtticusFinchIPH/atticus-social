@@ -2,15 +2,28 @@ import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
-import { Paper, Typography, Grid, TextField, Avatar} from "@material-ui/core";
+import { Paper, Typography, TextField, Avatar, Button} from "@material-ui/core";
 
 const AVATAR_DIMENSION = 5;
 
 const useStyles = makeStyles((theme) => ({
+    paper: {
+        backgroundColor: '#ffffff',
+        margin: theme.spacing(2),
+    },
     form: {
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        margin: theme.spacing(2),
+    },
+    row: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: '100%',
+        paddingBottom: theme.spacing(1),
     },
     avatar: {
       width: theme.spacing(AVATAR_DIMENSION),
@@ -34,12 +47,6 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.getContrastText(deepPurple[500]),
       backgroundColor: deepPurple[500],
     },
-    paper: {
-        backgroundColor: '#ffffff',
-        '& > *': {
-            margin: theme.spacing(3),
-        },
-    }
 }));
 
 const statusPlaceholder = "Let's say \"Hi\"!";
@@ -49,20 +56,28 @@ const Status = (props) => {
     return (
         <Paper className={classes.paper}>
             <form className={classes.form} noValidate autoComplete="off">
-                <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
-                    <Typography component="h7" variant="h7" color="inherit">
-                        A
-                    </Typography>
-                </Avatar>
-                <TextField
-                    placeholder={statusPlaceholder}
-                    multiline
-                    rows="3"
-                    // value={values.text}
-                    // onChange={handleChange('text')}
-                    className={classes.textField}
-                    margin="normal"
-                />
+                <div className={classes.row}>
+                    <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
+                        <Typography component="h7" variant="h7" color="inherit">
+                            A
+                        </Typography>
+                    </Avatar>
+                    <TextField
+                        placeholder={statusPlaceholder}
+                        multiline
+                        rows="3"
+                        // value={values.text}
+                        // onChange={handleChange('text')}
+                        className={classes.textField}
+                        margin="normal"
+                    />
+                </div>
+                <div className={classes.row}>
+                    {/* Image build */}
+                </div>
+                <div className={classes.row}>
+                    <Button variant="contained" color="primary">Post</Button>
+                </div>
             </form>
         </Paper>
     )
