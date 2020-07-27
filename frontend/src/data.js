@@ -2,7 +2,7 @@ export const favoriteStatus = [
     {
         id: 1,
         author: 'Jame Bond',
-        status: 'Sky Fall',
+        text: 'Sky Fall',
         image: 'https://source.unsplash.com/random',
         date: new Date(),
         likes: 6,
@@ -10,7 +10,7 @@ export const favoriteStatus = [
     {
         id: 2,
         author: 'Jack Sparrow',
-        status: 'The world is still the same, it\'s just less interesting.',
+        text: 'The world is still the same, it\'s just less interesting.',
         image: null,
         date: new Date(),
         likes: 15,
@@ -18,7 +18,7 @@ export const favoriteStatus = [
     {
         id: 3,
         author: 'Atticus Finch',
-        status: 'Hello, you\'re doing greate, keep going my friend!',
+        text: 'Hello, you\'re doing greate, keep going my friend!',
         image: 'https://source.unsplash.com/random',
         date: new Date(),
         likes: 100056,
@@ -26,7 +26,7 @@ export const favoriteStatus = [
     {
         id: 4,
         author: 'Walter White',
-        status: 'Do you really think that I\'m bad? I did everything for my family!!! And you, you did not know a single thing about that! And now you\'re judging me, me???',
+        text: 'Do you really think that I\'m bad? I did everything for my family!!! And you, you did not know a single thing about that! And now you\'re judging me, me???',
         image: 'https://source.unsplash.com/random',
         date: new Date(),
         likes: 0,

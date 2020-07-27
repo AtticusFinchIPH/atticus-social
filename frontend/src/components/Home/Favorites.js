@@ -37,12 +37,12 @@ const Favorites = () => {
                     </GridListTile>
                     {favoriteStatus.map((tile) => (
                         <GridListTile key={tile.id}>
-                            <img src={tile.image} alt={tile.status} />
+                            <img src={tile.image} alt={tile.text} />
                             <GridListTileBar
-                                title={tile.status}
+                                title={tile.text}
                                 subtitle={<span>by: {tile.author}</span>}
                                 actionIcon={
-                                    <IconButton aria-label={`info about ${tile.status}`} className={classes.icon}>
+                                    <IconButton aria-label={`info about ${tile.text}`} className={classes.icon}>
                                     </IconButton>
                                 }
                             />

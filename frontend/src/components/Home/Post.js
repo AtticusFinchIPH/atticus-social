@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
 import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider} from "@material-ui/core";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 const AVATAR_DIMENSION = 5;
 const AVATAR_S_DIMENSION = 4;
@@ -46,6 +47,13 @@ const useStyles = makeStyles((theme) => ({
     img: {
         width: '100%',
     },
+    photoInput: {
+        display: 'none',
+    },
+    photoButton: {
+        height: theme.spacing(5),
+        marginBottom: 5
+    },
     grow: {
         flexGrow: 1,
     },
@@ -77,7 +85,7 @@ const Post = (props) => {
             <NewPost avatarColor={color} userInfo={userInfo}/>
             {
                 favoriteStatus.map(status =>                   
-                    <FormerPost avatarColor={color} userInfo={userInfo} status={status}/>
+                    <FormerPost key={status.id} avatarColor={color} userInfo={userInfo} status={status}/>
                 )
             }
         </>
@@ -86,6 +94,19 @@ const Post = (props) => {
 
 const NewPost = (props) => {
     const classes = useStyles();
+    const [text, setText] = useState('');
+    const [photo, setPhoto] = useState(null);
+    const [photoReader, setPhotoReader] = useState(null);
+    useEffect(() => {
+        if(photo) {
+            const reader = new FileReader();
+            reader.addEventListener("load", function () {
+                // convert image file to base64 string
+                setPhotoReader(reader.result);
+            }, false);
+            reader.readAsDataURL(photo);
+        }
+    }, [photo])
     return (
         <Paper className={classes.paper}>
             <form className={classes.container} noValidate autoComplete="off">
@@ -99,16 +120,29 @@ const NewPost = (props) => {
                         placeholder={statusPlaceholder}
                         multiline
                         rows="3"
-                        // value={values.text}
-                        // onChange={handleChange('text')}
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
                         className={classes.textField}
                         margin="normal"
                     />
                 </div>
                 <div className={classes.row}>
-                    {/* Image build */}
+                    {photoReader && <img className={classes.img} src={photoReader} alt={photo.name} />}
                 </div>
                 <div className={classes.row}>
+                    <input accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} className={classes.photoInput} id="icon-button-file" type="file" />
+                    <label htmlFor="icon-button-file">
+                        <IconButton color="secondary" className={classes.photoButton} component="span">
+                            <PhotoCameraIcon />
+                        </IconButton>
+                    </label> 
+                    {/* <span className={classes.filename}>{photo ? photo.name : ''}</span> */}
+                    {/* { error && 
+                        (<Typography component="p" color="error">
+                            <Icon color="error" className={classes.error}>error</Icon>
+                            {error}
+                        </Typography>)
+                    } */}
                     <div className={classes.grow}/>
                     <Button variant="contained" color="primary">Post</Button>
                 </div>
@@ -139,7 +173,7 @@ const FormerPost = (props) => {
                 </div>
                 <div className={classes.row}>
                     <Typography component="p" variant="body1">
-                        {props.status.status}
+                        {props.status.text}
                     </Typography>
                 </div>
                 {
@@ -147,7 +181,7 @@ const FormerPost = (props) => {
                     <>
                     <Divider variant="middle" width="100%"/>
                     <div className={classes.row}>
-                        <img className={classes.img} src={props.status.image} alt={props.status.status} />
+                        <img className={classes.img} src={props.status.image} alt={props.status.text} />
                     </div>
                     </>
                 }
