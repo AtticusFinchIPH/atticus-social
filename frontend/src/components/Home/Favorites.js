@@ -36,7 +36,7 @@ const Favorites = () => {
                         <ListSubheader component="div">Favorite Status</ListSubheader>
                     </GridListTile>
                     {favoriteStatus.map((tile) => (
-                        <GridListTile key={tile.image}>
+                        <GridListTile key={tile.id}>
                             <img src={tile.image} alt={tile.status} />
                             <GridListTileBar
                                 title={tile.status}

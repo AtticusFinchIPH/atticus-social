@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from '@material-ui/core/Grid';
-import { Paper, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Box } from "@material-ui/core";
+import { Grid, Paper, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Box } from "@material-ui/core";
 import ToysIcon from '@material-ui/icons/Toys';
-import { Link } from "react-router-dom";
 import Copyright from "./Copyright";
+import { signin } from "../actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,28 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = props => {
   const classes = useStyles();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const userSignin = useSelector(state => state.userSignin);
+  const { loading, userInfo, error } = userSignin;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  useEffect(() => {
+    console.log(userSignin)
+    if (userInfo) {
+      history.replace("/");
+    }
+    return () => {
+      //
+    };
+  }, [userInfo]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(signin(email, password));
+  }
+
   return (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -49,8 +72,10 @@ const SignIn = props => {
           </Avatar>
           <Typography component="h1" variant="h5">
             Welcome to Atticus's Social
-          </Typography>
-          <form className={classes.form} noValidate>
+          </Typography>        
+          {loading && <Typography component="p" variant="p">Loading...</Typography>}
+          {error && <Typography component="p" variant="p" color="error">{error}</Typography>}
+          <form className={classes.form} noValidate={false} onSubmit={submitHandler}>
             <TextField
               variant="outlined"
               margin="normal"
@@ -59,8 +84,10 @@ const SignIn = props => {
               id="email"
               label="Email Address"
               name="email"
+              type="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -72,6 +99,7 @@ const SignIn = props => {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -88,7 +116,7 @@ const SignIn = props => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link>
+                <Link to="/">
                   Forgot password?
                 </Link>
               </Grid>

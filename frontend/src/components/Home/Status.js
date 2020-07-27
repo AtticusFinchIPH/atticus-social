@@ -58,7 +58,7 @@ const Status = (props) => {
             <form className={classes.form} noValidate autoComplete="off">
                 <div className={classes.row}>
                     <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
-                        <Typography component="h7" variant="h7" color="inherit">
+                        <Typography component="h6" variant="h6" color="inherit">
                             A
                         </Typography>
                     </Avatar>

@@ -104,7 +104,8 @@ const NavBar = withRouter(({history}) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [anchorAcc, setAnchorAcc] = useState(null);
   const openAcc = Boolean(anchorAcc);
-  const userLogin = useSelector(state => state.userLogin);
+  const userSignin = useSelector(state => state.userSignin);
+  const { loading, userInfo, error } = userSignin;
 
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -164,7 +165,7 @@ const NavBar = withRouter(({history}) => {
           </LightTooltip>
         </Link>
         {
-          userLogin 
+          userInfo 
           ? 
           <>
           <IconButton

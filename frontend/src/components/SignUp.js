@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid';
 import { Paper, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Box } from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { Link } from "react-router-dom";
 import Copyright from "./Copyright";
+import { register } from "../actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,32 @@ const useStyles = makeStyles((theme) => ({
 
 const SignUp = props => {
   const classes = useStyles();
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
+  const userSignin = useSelector(state => state.userSignin);
+  const { loading, userInfo, error } = userSignin;
+  const dispatch = useDispatch();
+  const history = useHistory();
+  useEffect(() => {
+      if (userInfo) {
+        props.history.push("/");
+      }
+      return () => {
+        //
+      };
+  }, [userInfo]);
+  const submitHandler = (e) => {
+      e.preventDefault();
+      if(isValidate()) dispatch(register(firstName, lastName, email, password));
+  }
+  const isValidate = () => {
+      if(password !== rePassword) return false;
+      return true;
+  }
   return (
     <Grid container component="main" className={classes.root}>
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
@@ -49,8 +77,10 @@ const SignUp = props => {
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
-          </Typography>
-          <form className={classes.form} noValidate>
+          </Typography>     
+          {loading && <Typography component="p" variant="p">Loading...</Typography>}
+          {error && <Typography component="p" variant="p" color="error">{error}</Typography>}
+          <form className={classes.form} noValidate={false} onSubmit={submitHandler}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -62,6 +92,7 @@ const SignUp = props => {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -73,6 +104,7 @@ const SignUp = props => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
+                  onChange={(e) => setLastName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -83,7 +115,9 @@ const SignUp = props => {
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
+                  type="email"
+                  autoComplete="email"              
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -96,6 +130,22 @@ const SignUp = props => {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="rePassword"
+                  label="Re-Enter Password"
+                  type="password"
+                  id="rePassword"
+                  autoComplete="re-password"
+                  onChange={(e) => setRePassword(e.target.value)}
+                  error={ password !== rePassword }
+                  helperText={ password === rePassword ? "" : "Password not match!" }
                 />
               </Grid>
               <Grid item xs={12}>
