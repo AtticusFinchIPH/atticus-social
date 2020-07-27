@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Box } from "@material-ui/core";
 import ToysIcon from '@material-ui/icons/Toys';
-import Copyright from "./Copyright";
-import { signin } from "../actions/userActions";
+import Copyright from "../Copyright";
+import { signin } from "../../actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,8 +73,8 @@ const SignIn = props => {
           <Typography component="h1" variant="h5">
             Welcome to Atticus's Social
           </Typography>        
-          {loading && <Typography component="p" variant="p">Loading...</Typography>}
-          {error && <Typography component="p" variant="p" color="error">{error}</Typography>}
+          {loading && <Typography component="p" variant="body1">Loading...</Typography>}
+          {error && <Typography component="p" variant="body1" color="error">{error}</Typography>}
           <form className={classes.form} noValidate={false} onSubmit={submitHandler}>
             <TextField
               variant="outlined"

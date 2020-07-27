@@ -5,8 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Grid from '@material-ui/core/Grid';
 import { Paper, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Box } from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Copyright from "./Copyright";
-import { register } from "../actions/userActions";
+import Copyright from "../Copyright";
+import { register } from "../../actions/userActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,8 +78,8 @@ const SignUp = props => {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>     
-          {loading && <Typography component="p" variant="p">Loading...</Typography>}
-          {error && <Typography component="p" variant="p" color="error">{error}</Typography>}
+          {loading && <Typography component="p" variant="body1">Loading...</Typography>}
+          {error && <Typography component="p" variant="body1" color="error">{error}</Typography>}
           <form className={classes.form} noValidate={false} onSubmit={submitHandler}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
