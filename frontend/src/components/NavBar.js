@@ -1,19 +1,10 @@
 import React, { useState } from "react";
+import { Link, withRouter } from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
 import clsx from "clsx";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import AppBar from "@material-ui/core/AppBar";
-import Drawer from "@material-ui/core/Drawer";
-import ToolBar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from "@material-ui/core/Typography";
-import IconButton from '@material-ui/core/IconButton';
-import Menu from "@material-ui/core/Menu";
-import MenuItem from '@material-ui/core/MenuItem';
+import { CssBaseline, AppBar, Drawer, Toolbar, Button, IconButton, Divider, Tooltip, Typography,
+        List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from "@material-ui/core";
+import { withStyles, makeStyles, useTheme } from "@material-ui/styles";
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -23,10 +14,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import { Link, withRouter } from "react-router-dom";
-import {useSelector} from "react-redux";
-import { withStyles, makeStyles, useTheme } from "@material-ui/styles";
-import { Tooltip } from "@material-ui/core";
+import { signout } from "../actions/userActions";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) return { color: "#ff4081" };
@@ -65,7 +53,7 @@ const useStyle = makeStyles((theme) => ({
     alignItems: 'center',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+    ...theme.mixins.Toolbar,
     justifyContent: 'flex-end',
   },
   content: {
@@ -105,7 +93,8 @@ const NavBar = withRouter(({history}) => {
   const [anchorAcc, setAnchorAcc] = useState(null);
   const openAcc = Boolean(anchorAcc);
   const userSignin = useSelector(state => state.userSignin);
-  const { loading, userInfo, error } = userSignin;
+  const { userInfo } = userSignin;
+  const dispatch = useDispatch();
 
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -122,6 +111,12 @@ const NavBar = withRouter(({history}) => {
     setAnchorAcc(null);
   };
 
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    dispatch(signout());
+    setAnchorAcc(null);
+  }
+
   return (
     <>
     <CssBaseline />
@@ -133,7 +128,7 @@ const NavBar = withRouter(({history}) => {
         }
       )
     }>
-      <ToolBar>
+      <Toolbar>
           <IconButton aria-label="open drawer" style={{color: "#ffffff"}}
           onClick={handleDrawerOpen}
           className={clsx(openDrawer && classes.hide)}>
@@ -194,6 +189,7 @@ const NavBar = withRouter(({history}) => {
           >
             <MenuItem onClick={handleClose}>Profile</MenuItem>
             <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
           </Menu>
           </>
           :
@@ -203,7 +199,7 @@ const NavBar = withRouter(({history}) => {
             </Button>
           </Link>
         }
-      </ToolBar>
+      </Toolbar>
     </AppBar>
     <Drawer
       className={classes.drawer}
