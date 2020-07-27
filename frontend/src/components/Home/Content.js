@@ -1,12 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
-import Status from "./Status";
+import Post from "./Post";
 import Favorites from "./Favorites";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        height: '100vh',
+        height: 'fit-content',
         marginTop: theme.spacing(5),
         backgroundColor: '#565c6229',
         flexGrow: 1,
@@ -19,7 +19,7 @@ const Content = (props) => {
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={7}>
-                    <Status avatarColor={props.avatarColor}/>
+                    <Post avatarColor={props.avatarColor}/>
                 </Grid>
                 <Grid item xs={12} md={5}>
                     <Favorites/>

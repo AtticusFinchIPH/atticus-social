@@ -13,12 +13,12 @@ export default function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <NavBar />
+        <Switch>
+          <PrivateRoute exact path="/" component={Home} />
+          <PublicRoute path="/signin" component={SignIn} restricted={true}/>
+          <PublicRoute path="/signup" component={SignUp} restricted={true}/>
+        </Switch>
       </ThemeProvider>
-      <Switch>
-        <PrivateRoute exact path="/" component={Home} />
-        <PublicRoute path="/signin" component={SignIn} restricted={true}/>
-        <PublicRoute path="/signup" component={SignUp} restricted={true}/>
-      </Switch>
     </BrowserRouter>
   );
 }

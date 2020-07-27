@@ -47,12 +47,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Cover = (props) => {
   const classes = useStyles();
+  const avatarColor = useSelector(state => state.avatarColor);
+  const { color } = avatarColor;
   const userSignin = useSelector(state => state.userSignin);
   const {userInfo} = userSignin;
   return (
     <Paper className={classes.mainCover}>
         <div className={classes.mainCoverContent}>
-            <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
+            <Avatar className={clsx( classes.avatar, classes[color])}>
                 <Typography component="h1" variant="h3" color="inherit">
                   {userInfo.firstName.charAt(0).toUpperCase()}
                 </Typography>
