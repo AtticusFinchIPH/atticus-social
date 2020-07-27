@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Avatar, Typography} from "@material-ui/core";
@@ -46,16 +47,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Cover = (props) => {
   const classes = useStyles();
+  const userSignin = useSelector(state => state.userSignin);
+  const {userInfo} = userSignin;
   return (
     <Paper className={classes.mainCover}>
         <div className={classes.mainCoverContent}>
             <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
                 <Typography component="h1" variant="h3" color="inherit">
-                    A
+                  {userInfo.firstName.charAt(0).toUpperCase()}
                 </Typography>
             </Avatar>
             <Typography className={classes.text} component="h1" variant="h3" color="inherit">
-                Atticus Finch
+              {`${userInfo.firstName} ${userInfo.lastName}`}
             </Typography>
             <Typography className={classes.text} variant="h5" color="inherit" paragraph>
                 Description

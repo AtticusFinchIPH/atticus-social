@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
@@ -53,13 +54,15 @@ const statusPlaceholder = "Let's say \"Hi\"!";
 
 const Status = (props) => {
     const classes = useStyles();
+    const userSignin = useSelector(state => state.userSignin);
+    const {userInfo} = userSignin;
     return (
         <Paper className={classes.paper}>
             <form className={classes.form} noValidate autoComplete="off">
                 <div className={classes.row}>
                     <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
                         <Typography component="h6" variant="h6" color="inherit">
-                            A
+                            {userInfo.firstName.charAt(0).toUpperCase()}
                         </Typography>
                     </Avatar>
                     <TextField
