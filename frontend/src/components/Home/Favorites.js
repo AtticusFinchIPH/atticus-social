@@ -27,15 +27,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Favorites = () => {
     const classes = useStyles();
-    const favoriteStatus = useSelector(state => state.favoriteStatus);
+    const favoritePost = useSelector(state => state.favoritePost);
     return (
         <Paper className={classes.paper}>
             <div className={classes.root}>
                 <GridList cellHeight={180} className={classes.gridList}>
                     <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                        <ListSubheader component="div">Favorite Status</ListSubheader>
+                        <ListSubheader component="div">Favorite Post</ListSubheader>
                     </GridListTile>
-                    {favoriteStatus.map((tile) => (
+                    {favoritePost.map((tile) => (
                         <GridListTile key={tile.id}>
                             <img src={tile.image} alt={tile.text} />
                             <GridListTileBar

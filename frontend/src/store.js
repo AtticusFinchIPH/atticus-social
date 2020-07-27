@@ -2,8 +2,8 @@ import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 import { userSigninReducer } from "./reducers/userReducer";
-import { favoriteStatusReducer } from "./reducers/statusReducer";
-import { favoriteStatus } from "./data";
+import { favoritePostReducer } from "./reducers/postReducer";
+import { favoritePost } from "./data";
 
 const userInfo = Cookie.getJSON('userInfo') || null;
 const randomColor = () => {
@@ -16,11 +16,11 @@ function avatarReducer(state = {color}, action) {
   return state;
 }
 
-const initialState = { userSignin: {userInfo}, favoriteStatus };
+const initialState = { userSignin: {userInfo}, favoritePost };
 
 const reducer = combineReducers({
   userSignin: userSigninReducer,
-  favoriteStatus: favoriteStatusReducer,
+  favoritePost: favoritePostReducer,
   avatarColor: avatarReducer
 });
 

@@ -1,4 +1,4 @@
-export const favoriteStatus = [
+export const favoritePost = [
     {
         id: 1,
         author: 'Jame Bond',
