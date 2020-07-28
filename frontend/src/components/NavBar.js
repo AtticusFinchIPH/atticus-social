@@ -12,6 +12,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { signout } from "../actions/userActions";
@@ -145,10 +146,10 @@ const NavBar = withRouter(({history}) => {
             </IconButton> 
           </LightTooltip>
         </Link>
-        <Link to='/status'>
-          <LightTooltip title="Status">
-            <IconButton aria-label="Status" style={isActive(history, '/status')}>
-              <FilterDramaIcon />
+        <Link to='/newsfeed'>
+          <LightTooltip title="Newsfeed">
+            <IconButton aria-label="Newsfeed" style={isActive(history, '/newsfeed')}>
+              <DynamicFeedIcon />
             </IconButton>
           </LightTooltip>
         </Link>
@@ -187,8 +188,7 @@ const NavBar = withRouter(({history}) => {
             open={openAcc}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Setting</MenuItem>
             <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
           </Menu>
           </>
