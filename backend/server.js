@@ -6,6 +6,7 @@ import path from "path";
 import cors from 'cors';
 import User from "./models/userModel";
 import userRoute from "./routes/userRoute";
+import postRoute from "./routes/postRoute";
 
 const mongodbUrl = config.MONGODB_URL;
 mongoose.connect(mongodbUrl, {
@@ -15,8 +16,9 @@ mongoose.connect(mongodbUrl, {
 }).catch(error => console.log(error.reason));
 
 const app = express();
+app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
-var corsOption = {
+const corsOption = {
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
@@ -24,6 +26,7 @@ var corsOption = {
 };
 app.use(cors(corsOption));
 app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
 app.get("/api", (req, res) => {
     res.send("Test api successful");
 });
