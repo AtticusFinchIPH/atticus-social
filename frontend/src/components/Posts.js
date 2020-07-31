@@ -4,11 +4,14 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
 import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider} from "@material-ui/core";
+import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import CommentIcon from '@material-ui/icons/Comment';
+import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { newPost } from "../actions/postActions";
+import { newPost, reactPost, favoritePost } from "../actions/postActions";
+import { REACT_TYPE_LIKE, REACT_TYPE_FAVORITE } from "../constants/postConstants";
 
 const AVATAR_DIMENSION = 5;
 const AVATAR_S_DIMENSION = 4;
@@ -155,6 +158,24 @@ const NewPost = (props) => {
 
 const FormerPost = (props) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const checkLike = (likes) => {
+        return likes.indexOf(props.userInfo._id) !== -1;
+    };
+    const [values, setValues] = useState({
+        like: checkLike(props.post.likes),
+        favorite: checkLike(props.userInfo.favoritePosts),
+        likes: props.post.likes,
+        comments: props.post.comments,
+    });
+    const clickLike = (e) => {
+        dispatch(reactPost(REACT_TYPE_LIKE, !values.like));
+        setValues({...values, like: !values.like, likes: [...values.likes, props.userInfo._id]});
+    };
+    const clickFavorite = (e) => {
+        dispatch(favoritePost(values.favorite));
+        setValues({...values, favorite: !values.favorite});
+    };
     return (
         <Paper className={classes.paper}>
             <div className={classes.container}>
@@ -188,14 +209,14 @@ const FormerPost = (props) => {
                     </>
                 }
                 <Divider variant="middle" width="100%"/>
-                    <div className={classes.row}>
+                    <div className={classes.row}>                      
                         <Tooltip title="Likes">
-                            <IconButton aria-label="Likes">
-                                <ThumbUpIcon />
+                            <IconButton onClick={clickLike} aria-label="Likes">
+                                { values.like ? <ThumbUpIcon /> : <ThumbUpAltOutlinedIcon /> }
                             </IconButton>
                         </Tooltip>
                         <Typography component="p" variant="subtitle1">
-                            {`${props.post.likes.length} likes`}
+                            {`${values.likes.length} likes`}
                         </Typography>
                         <Tooltip title="Comments">
                             <IconButton aria-label="Comments">
@@ -203,12 +224,12 @@ const FormerPost = (props) => {
                             </IconButton>
                         </Tooltip>
                         <Typography component="p" variant="subtitle1">
-                            {`${props.post.comments.length} comments`}
+                            {`${values.comments.length} comments`}
                         </Typography>
                         <div className={classes.grow}/>
                         <Tooltip title="Only you can know your favorite">
-                            <IconButton aria-label="Favarite">
-                                <FavoriteIcon />
+                            <IconButton onClick={clickFavorite} aria-label="Favorite">
+                                { values.favorite ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon /> }
                             </IconButton>
                         </Tooltip>
                     </div>

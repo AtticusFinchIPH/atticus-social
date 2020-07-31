@@ -2,7 +2,10 @@ import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL,
         NEW_POST_REQUEST, NEW_POST_SUCCESS, NEW_POST_FAIL,
         GET_OWN_POSTS_REQUEST, 
         GET_OWN_POSTS_SUCCESS,
-        GET_OWN_POSTS_FAIL } from "../constants/postConstants";
+        GET_OWN_POSTS_FAIL, 
+        REACT_POST_REQUEST,
+        REACT_POST_SUCCESS,
+        REACT_POST_FAIL} from "../constants/postConstants";
 
 function favoritePostReducer(state = {}, action) {
     switch (action.type) {
@@ -37,6 +40,14 @@ function personalPostsReducer(state = { listPost: []}, action) {
     case NEW_POST_FAIL:
       state.listPost.shift();
       return {...state, loading: false, error: action.payload };
+
+    case REACT_POST_REQUEST:
+      return {...state, loading: true};
+    case REACT_POST_SUCCESS:
+      return {...state, loading: false};
+    case REACT_POST_FAIL:
+      return {...state, loading: false, error: action.payload};
+
     default:
       return state;
   }

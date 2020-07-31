@@ -6,6 +6,12 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true},
     password: { type: String, required: true},
     isAdmin: { type: Boolean, required: true, default: false},
+
+    about: { type: String},
+    photo: { type: Buffer}, 
+    followings: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+    followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+    favoritePosts: [{type: mongoose.Schema.ObjectId, ref: 'Post'}],
 })
 
 const userModel = mongoose.model("User", userSchema);
