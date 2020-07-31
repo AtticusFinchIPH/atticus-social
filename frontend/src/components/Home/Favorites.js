@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, GridList, GridListTile, GridListTileBar, ListSubheader, IconButton} from "@material-ui/core";
+import { Paper, Typography, GridList, GridListTile, GridListTileBar, ListSubheader, IconButton} from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,8 +32,12 @@ const Favorites = () => {
         <Paper className={classes.paper}>
             <div className={classes.root}>
                 <GridList cellHeight={180} className={classes.gridList}>
-                    <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                        <ListSubheader component="div">Favorite Post</ListSubheader>
+                    <GridListTile key="Subheader" cols={2} style={{ height: 'auto', marginTop: '8px' }}>
+                        <ListSubheader component="div">
+                            <Typography component="p" variant="h6" color="secondary">
+                                Your Favorites
+                            </Typography>
+                        </ListSubheader>
                     </GridListTile>
                     {favoritePost.map((tile) => (
                         <GridListTile key={tile.id}>

@@ -6,6 +6,7 @@ import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
 import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider} from "@material-ui/core";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import CommentIcon from '@material-ui/icons/Comment';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { newPost } from "../actions/postActions";
 
@@ -204,6 +205,12 @@ const FormerPost = (props) => {
                         <Typography component="p" variant="subtitle1">
                             {`${props.post.comments.length} comments`}
                         </Typography>
+                        <div className={classes.grow}/>
+                        <Tooltip title="Only you can know your favorite">
+                            <IconButton aria-label="Favarite">
+                                <FavoriteIcon />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 <Divider variant="middle" width="100%"/>
                 <div className={classes.row}>
