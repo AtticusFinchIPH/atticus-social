@@ -46,7 +46,6 @@ const register = (firstName, lastName, email, password, isAdmin) => async (dispa
 }
 
 const signout = () => (dispatch) => {
-  Cookie.remove("userInfo");
   dispatch({ type: USER_SIGNOUT })
 }
 

@@ -1,3 +1,4 @@
+import Cookie from 'js-cookie';
 import {
   USER_SIGNIN_REQUEST,
   USER_SIGNIN_SUCCESS,
@@ -19,6 +20,7 @@ function userSigninReducer(state = {}, action) {
     case USER_SIGNIN_FAIL:
       return { loading: false, error: action.payload };
     case USER_SIGNOUT:
+      Cookie.remove("userInfo");
       return {};
     default:
       return state;
