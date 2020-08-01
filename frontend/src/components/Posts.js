@@ -110,7 +110,7 @@ const NewPost = (props) => {
     }, [loading]);
     const handleNewPost = (e) => {
         e.preventDefault();
-        if(text || photoReader) dispatch(newPost(text, photoReader));
+        if(text || photo) dispatch(newPost(text, photo));
     }
     return (
         <Paper className={classes.paper}>
