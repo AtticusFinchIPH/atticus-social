@@ -212,7 +212,7 @@ const FormerPost = (props) => {
                     <div className={classes.row}>                      
                         <Tooltip title="Likes">
                             <IconButton onClick={clickLike} aria-label="Likes">
-                                { values.like ? <ThumbUpIcon /> : <ThumbUpAltOutlinedIcon /> }
+                                { values.like ? <ThumbUpIcon color="primary"/> : <ThumbUpAltOutlinedIcon color="primary"/> }
                             </IconButton>
                         </Tooltip>
                         <Typography component="p" variant="subtitle1">
@@ -220,7 +220,7 @@ const FormerPost = (props) => {
                         </Typography>
                         <Tooltip title="Comments">
                             <IconButton aria-label="Comments">
-                                <CommentIcon />
+                                <CommentIcon color="primary" />
                             </IconButton>
                         </Tooltip>
                         <Typography component="p" variant="subtitle1">
@@ -229,7 +229,7 @@ const FormerPost = (props) => {
                         <div className={classes.grow}/>
                         <Tooltip title="Only you can know your favorite">
                             <IconButton onClick={clickFavorite} aria-label="Favorite">
-                                { values.favorite ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon /> }
+                                { values.favorite ? <FavoriteIcon color="secondary" /> : <FavoriteBorderOutlinedIcon color="secondary" /> }
                             </IconButton>
                         </Tooltip>
                     </div>
