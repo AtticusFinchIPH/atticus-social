@@ -16,11 +16,11 @@ function avatarReducer(state = {color}, action) {
   return state;
 }
 
-const initialState = { userSignin: {userInfo}, favoritePost, personalPosts: { listPost: []} };
+const initialState = { userSignin: {userInfo}, favoritePosts: { favorites: []}, personalPosts: { listPost: []} };
 
 const reducer = combineReducers({
   userSignin: userSigninReducer,
-  favoritePost: favoritePostReducer,
+  favoritePosts: favoritePostReducer,
   avatarColor: avatarReducer,
   personalPosts: personalPostsReducer,
 });

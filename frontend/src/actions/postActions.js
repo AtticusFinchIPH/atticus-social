@@ -78,13 +78,13 @@ const getNewsFeed = () => async (dispatch, getState) => {
     }
 }
 
-const favoritePost = (favoriteValue) => async (dispatch, getState) => {
+const favoritePost = (favoriteValue, postId) => async (dispatch, getState) => {
     try {
         const { userSignin: { userInfo } } = getState();
         dispatch({ type: FAVORITE_POST_REQUEST, payload: []});
         const { data } = await axios.put(
             '/api/posts/favorite',
-            {favoriteValue},
+            {favoriteValue, postId},
             authConfig(userInfo)
         );
         dispatch({ type: FAVORITE_POST_SUCCESS, payload: data });
@@ -94,20 +94,20 @@ const favoritePost = (favoriteValue) => async (dispatch, getState) => {
     }
 }
 
-const reactPost = (actionType, actionValue) => async(dispatch, getState) => {
+const reactPost = (actionType, actionValue, postId) => async(dispatch, getState) => {
     try {
         const { userSignin: { userInfo } } = getState();
         const body = {};
         switch(actionType){
             case REACT_TYPE_LIKE:
             case REACT_TYPE_COMMENT:
-                body = {actionType, actionValue};
+                body = {actionType, actionValue, postId};
                 break;
             default: throw 'Action Undefined';
         }
         dispatch({ type: REACT_POST_REQUEST, payload: []});
         const { data } = await axios.put(
-            '/api/posts/like',
+            '/api/posts/react',
             body,
             authConfig(userInfo)
         );

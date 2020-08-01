@@ -169,11 +169,11 @@ const FormerPost = (props) => {
         comments: props.post.comments,
     });
     const clickLike = (e) => {
-        dispatch(reactPost(REACT_TYPE_LIKE, !values.like));
-        setValues({...values, like: !values.like, likes: [...values.likes, props.userInfo._id]});
+        dispatch(reactPost(REACT_TYPE_LIKE, !values.like, props.post._id));
+        setValues({...values, like: !values.like, likes: !values.like ? [...values.likes, props.userInfo._id] : values.likes.filter((id) => {return id !== props.userInfo._id})});
     };
     const clickFavorite = (e) => {
-        dispatch(favoritePost(values.favorite));
+        dispatch(favoritePost(values.favorite, props.post._id));
         setValues({...values, favorite: !values.favorite});
     };
     return (

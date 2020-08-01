@@ -7,22 +7,21 @@ import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL,
         REACT_POST_SUCCESS,
         REACT_POST_FAIL} from "../constants/postConstants";
 
-function favoritePostReducer(state = {}, action) {
+function favoritePostReducer(state = { favorites: []}, action) {
     switch (action.type) {
       case FAVORITE_POST_REQUEST:
-        return { loading: true };
+        return {...state, loading: true };
       case FAVORITE_POST_SUCCESS:
-        return { loading: false, userInfo: action.payload };
+        return { loading: false, favorites: action.payload };
       case FAVORITE_POST_FAIL:
-        return { loading: false, error: action.payload };
+        return {...state, loading: false, error: action.payload };
       default:
         return state;
     }
   }
 
 function personalPostsReducer(state = { listPost: []}, action) {
-  switch (action.type) {
-    
+  switch (action.type) {    
     case GET_OWN_POSTS_REQUEST:
       return {...state, loading: true};
     case GET_OWN_POSTS_SUCCESS:
