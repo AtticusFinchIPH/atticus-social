@@ -49,7 +49,8 @@ router.post("/", isAuth, async (req, res) => {
     const user = req.user;
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
-    form.uploadDir = path.join(__dirname + '/../uploads');
+    // Frontend can only get images directly from 'public' folder
+    form.uploadDir = path.join(__dirname + '/../../frontend/public/userImages');
     try {
         form.parse(req, async (err, fields, files) => {
             if (err) throw ERR_IMAGE_UPLOAD;
@@ -67,7 +68,10 @@ router.post("/", isAuth, async (req, res) => {
                     fs.readFileSync(files.photo.path, (err) => {
                         if (err) throw ERR_HANDLE_IMAGE;
                     });
-                    post.photo = files.photo.path;
+                    // post.photo = files.photo.path;
+                    const pathArr = files.photo.path.split('\\');
+                    const fileName = pathArr[pathArr.length-1];
+                    post.photo = `/userImages/${fileName}`;
                     break;
                 default:
                     throw ERR_IMAGE_TYPE;
