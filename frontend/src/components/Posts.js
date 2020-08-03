@@ -91,6 +91,7 @@ const NewPost = (props) => {
     const dispatch = useDispatch();
     useEffect(() => {
         if(photo) {
+            console.log(photo)
             const reader = new FileReader();
             reader.addEventListener("load", function () {
                 // convert image file to base64 string
@@ -204,7 +205,7 @@ const FormerPost = (props) => {
                     <>
                     <Divider variant="middle" width="100%"/>
                     <div className={classes.row}>
-                        <img className={classes.img} src={props.post.photo} alt={props.post.text} />
+                        <img className={classes.img} src={props.post.photo.data.data} alt={props.post.text} />
                     </div>
                     </>
                 }

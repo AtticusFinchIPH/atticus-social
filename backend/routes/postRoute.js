@@ -8,6 +8,24 @@ import User from "../models/userModel";
 
 const router = express.Router();
 
+router.get("/photo", (req, res) => {
+    try {
+        const data = fs.readFileSync(req.post.photo.path, (err) => {
+            if (err) throw ERR_HANDLE_IMAGE;
+        });
+        console.log(req.post.photo.data);
+        res.set("Content-Type", req.post.photo.contentType)
+        return res.send(data)
+    } catch (error) {
+        switch(error){
+            case ERR_HANDLE_IMAGE:
+                return res.status(400).json({ msg: ERR_HANDLE_IMAGE});
+            default:
+                return res.status(500).json({ msg: "Error in Getting Post"});
+        }
+    }   
+});
+
 router.get("/favorite", isAuth, async (req, res) => {
     const user = req.user;
     const posts = await User.findById( user._id)
@@ -15,13 +33,13 @@ router.get("/favorite", isAuth, async (req, res) => {
     res.status(200).send(posts);
 });
 
-router.get("/own", isAuth, async (req, res) => {
+router.get("/own", isAuth, async (req, res) => { 
     const user = req.user;
     const posts = await Post.find({postedBy: user._id})
                             .populate('favoritePosts')
                             .sort('-created')
-                            .exec();
-    res.status(200).send(posts);
+                            .exec();                       
+    return res.status(200).send(posts);
 });
 
 router.get("/newsfeed", isAuth, async (req, res) => {
@@ -64,10 +82,11 @@ router.post("/", isAuth, async (req, res) => {
                 switch (files.photo.type) {
                 case "image/jpeg":
                 case "image/png":
-                    fs.readFileSync(files.photo.path, (err) => {
+                    const data = fs.readFileSync(files.photo.path, (err) => {
                         if (err) throw ERR_HANDLE_IMAGE;
                     });
-                    post.photo = files.photo.path;
+                    post.photo.data = data;
+                    post.photo.contentType = files.photo.type;
                     break;
                 default:
                     throw ERR_IMAGE_TYPE;

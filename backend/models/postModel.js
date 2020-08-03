@@ -2,7 +2,10 @@ import mongoose, { Schema } from 'mongoose';
 
 const postSchema = new mongoose.Schema({
     text: { type: String },
-    photo: { type: String,  default: null },
+    photo: {
+        data: { type: Buffer,  default: null },
+        contentType: { type: String,  default: null },
+    },
     likes: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
     comments: [{
         text: String,
