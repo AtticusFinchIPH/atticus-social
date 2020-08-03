@@ -204,7 +204,7 @@ const FormerPost = (props) => {
                     <>
                     <Divider variant="middle" width="100%"/>
                     <div className={classes.row}>
-                        <img className={classes.img} src={props.post.photo} alt={props.post.text} />
+                        <img className={classes.img} src={props.post.photo} alt={props.post.text || "Image Error"} />
                     </div>
                     </>
                 }

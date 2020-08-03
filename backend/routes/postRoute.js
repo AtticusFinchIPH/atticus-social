@@ -3,6 +3,7 @@ import formidable from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import { isAuth } from "../auth/authHelper";
+import config from '../config';
 import Post from "../models/postModel";
 import User from "../models/userModel";
 
@@ -50,7 +51,7 @@ router.post("/", isAuth, async (req, res) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
     // Frontend can only get images directly from 'public' folder
-    form.uploadDir = path.join(__dirname + '/../../frontend/public/userImages');
+    form.uploadDir = path.join(__dirname + config.USER_IMAGES_PATH);
     try {
         form.parse(req, async (err, fields, files) => {
             if (err) throw ERR_IMAGE_UPLOAD;
