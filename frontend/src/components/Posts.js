@@ -173,7 +173,7 @@ const FormerPost = (props) => {
         setValues({...values, like: !values.like, likes: !values.like ? [...values.likes, props.userInfo._id] : values.likes.filter((id) => {return id !== props.userInfo._id})});
     };
     const clickFavorite = (e) => {
-        dispatch(favoritePost(values.favorite, props.post._id));
+        dispatch(favoritePost(!values.favorite, props.post._id));
         setValues({...values, favorite: !values.favorite});
     };
     return (
