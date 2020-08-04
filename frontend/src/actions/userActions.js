@@ -3,23 +3,29 @@ import Cookie from 'js-cookie';
 import {
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
-  USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL,
+  USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, GET_ALL_USERS_REQUEST, GET_ALL_USERS_FAIL, GET_ALL_USERS_SUCCESS,
 } from "../constants/userConstants";
+
+const authConfig = (userInfo) => {
+  return {
+      headers: {
+          'Authorization': 'Bearer ' + userInfo.token,
+      }
+  }
+}
 
 const update = ({ userId, firstName, lastName, email, password }) => async (dispatch, getState) => {
   const { userSignin: { userInfo } } = getState();
   dispatch({ type: USER_UPDATE_REQUEST, payload: { userId, firstName, lastName, email, password } });
   try {
     const { data } = await axios.put("/api/users/" + userId,
-      { firstName, lastName, email, password }, {
-      headers: {
-        Authorization: 'Bearer ' + userInfo.token
-      }
-    });
+      { firstName, lastName, email, password },
+      authConfig(userInfo),
+    );
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
     Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
-    dispatch({ type: USER_UPDATE_FAIL, payload: error.message });
+    dispatch({ type: USER_UPDATE_FAIL, payload: error.response?.data?.msg || error.message });
   }
 }
 
@@ -30,7 +36,7 @@ const signin = (email, password) => async (dispatch) => {
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
     Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
-    dispatch({ type: USER_SIGNIN_FAIL, payload: error.response.data.msg || error.message });
+    dispatch({ type: USER_SIGNIN_FAIL, payload: error.response?.data?.msg || error.message });
   }
 }
 
@@ -41,7 +47,7 @@ const register = (firstName, lastName, email, password, isAdmin) => async (dispa
     dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
     Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
-    dispatch({ type: USER_SIGNIN_FAIL, payload: error.message });
+    dispatch({ type: USER_SIGNIN_FAIL, payload: error.response?.data?.msg || error.message });
   }
 }
 
@@ -53,4 +59,17 @@ const googleSignin = (data) => async (dispatch) => {
   dispatch({ type: USER_SIGNIN_SUCCESS, payload: data});
   Cookie.set('userInfo', JSON.stringify(data));
 }
-export { signin, register, signout, update, googleSignin };
+
+const getAllUsers = () => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  dispatch({ type: GET_ALL_USERS_REQUEST});
+  try {
+    const { data } = await axios.get("/api/users/",
+      authConfig(userInfo),
+    );
+    dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_ALL_USERS_FAIL, payload: error.response?.data?.msg || error.message });
+  }
+}
+export { signin, register, signout, update, googleSignin, getAllUsers };

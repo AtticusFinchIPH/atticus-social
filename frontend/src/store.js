@@ -1,7 +1,7 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
-import { userSigninReducer } from "./reducers/userReducer";
+import { userSigninReducer, allUsersReducer } from "./reducers/userReducer";
 import { favoritePostReducer, personalPostsReducer } from "./reducers/postReducer";
 import { favoritePost } from "./data";
 
@@ -16,13 +16,17 @@ function avatarReducer(state = {color}, action) {
   return state;
 }
 
-const initialState = { userSignin: {userInfo}, favoritePosts: { favorites: []}, personalPosts: { listPost: []} };
+const initialState = { userSignin: {userInfo}, 
+                      favoritePosts: { favorites: []}, 
+                      personalPosts: { listPost: []},
+                      allUsers: { listUser: []}, };
 
 const reducer = combineReducers({
   userSignin: userSigninReducer,
   favoritePosts: favoritePostReducer,
   avatarColor: avatarReducer,
   personalPosts: personalPostsReducer,
+  allUsers: allUsersReducer,
 });
 
 const composeEnhancer = window._REDUX_DEVTOOLS_EXTENSION_COMPOSE_ || compose;

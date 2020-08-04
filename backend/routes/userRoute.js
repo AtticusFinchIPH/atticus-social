@@ -1,5 +1,5 @@
 import express from "express";
-import {getToken} from "../auth/authHelper";
+import {getToken, isAuth} from "../auth/authHelper";
 import User from "../models/userModel";
 
 const router = express.Router();
@@ -55,5 +55,9 @@ router.post("/register", async (req, res) => {
     }
 })
 
+router.get("/", isAuth, async (req, res) => {
+    const users = await User.find({});
+    return res.status(200).send(users);
+})
 
 export default router;

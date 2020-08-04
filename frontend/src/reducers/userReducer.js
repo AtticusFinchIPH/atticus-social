@@ -6,7 +6,10 @@ import {
   USER_SIGNOUT,
   USER_UPDATE_REQUEST,
   USER_UPDATE_SUCCESS,
-  USER_UPDATE_FAIL
+  USER_UPDATE_FAIL,
+  GET_ALL_USERS_SUCCESS,
+  GET_ALL_USERS_FAIL,
+  GET_ALL_USERS_REQUEST
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -40,4 +43,17 @@ function userUpdateReducer(state = {}, action) {
   }
 }
 
-export { userSigninReducer, userUpdateReducer };
+function allUsersReducer(state = {listUser: []}, action) {
+  switch (action.type) {
+    case GET_ALL_USERS_REQUEST:
+      return {...state, loading: true };
+    case GET_ALL_USERS_SUCCESS:
+      return { loading: false, listUser: action.payload };
+    case GET_ALL_USERS_FAIL:
+      return {...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export { userSigninReducer, userUpdateReducer, allUsersReducer };
