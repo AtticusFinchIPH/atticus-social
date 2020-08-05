@@ -1,8 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Paper, Typography, Divider, GridListTile, GridList, ListSubheader, ListItem, ListItemText, List, ListItemAvatar, Avatar } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import { FixedSizeList } from "react-window";
+import { deepOrange, lightBlue, deepPurple, yellow } from '@material-ui/core/colors'
+import { Grid, Paper, Typography, Divider, GridListTile, GridList, ListSubheader, ListItem, ListItemText, List, ListItemAvatar, Avatar, ListItemSecondaryAction, IconButton, Tooltip, GridListTileBar } from "@material-ui/core";
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import CommentIcon from "@material-ui/icons/Comment";
+import InfoIcon from '@material-ui/icons/Info';
+import StarBorderIcon  from '@material-ui/icons/StarBorder';
+import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
+import { withStyles, useTheme } from "@material-ui/styles";
 
 const AVATAR_DIMENSION = 5;
 
@@ -25,11 +32,41 @@ const useStyles = makeStyles((theme) => ({
   followingUsers: {
     height: "50%",
   },
+  header: {
+    padding: "16px 16px 0 16px",
+  },
+  list: {
+    overflow: "auto",
+    maxHeight: "85%",
+  },
   avatar: {
     width: theme.spacing(AVATAR_DIMENSION),
     height: theme.spacing(AVATAR_DIMENSION)
   },
+  wrapGridList:{
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    margin: theme.spacing(2),
+  },
+  gridList: {
+    flexWrap: 'nowrap',
+    transform: 'translateZ(0)',
+  },
+  starBorderIcon: {
+    color: yellow[500],
+  },
 }));
+
+const LightTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 14,
+  },
+}))(Tooltip);
 
 const NotFollowingUser = props => {
   const classes = useStyles();
@@ -60,6 +97,7 @@ const RowRender = ({ index, style }) => {
 
 const Right = props => {
   const classes = useStyles();
+  const theme = useTheme();
   const notFollowingUsers = useSelector(state => state.allUsers);
   const { listUser } = notFollowingUsers;
   console.log(notFollowingUsers)
@@ -67,27 +105,43 @@ const Right = props => {
     <Paper elevation={5} className={classes.paper}>
       <Grid container className={classes.container}>
         <Grid item className={classes.notFollowingUsers}>
-          <GridList className={classes.gridList}>
-            <GridListTile key="Subheader" cols={2} style={{ height: 'auto', marginTop: '8px' }}>
-                <ListSubheader component="div">
-                    <Typography component="p" variant="h6" color="primary">
-                      People to follow
-                    </Typography>
-                </ListSubheader>
-            </GridListTile>
-            {/* {listUser.map((tile) => (
-                <NotFollowingUser key={}/>
-            ))} */}
+          <Typography component="p" variant="h6" color="primary" className={classes.header}>
+            People to Follow
+          </Typography>
+          <div className={classes.wrapGridList} >
+          <GridList className={classes.gridList} cols={1} >
+            {listUser.map((tile) => (
+              <GridListTile key={tile._id}>
+                <img src="https://source.unsplash.com/random" alt={tile.text} />
+                <GridListTileBar
+                    title={tile.firstName +" "+ tile.lastName}
+                    subtitle={<span>Description</span>}
+                    actionIcon={
+                      <>
+                      <LightTooltip title="See Profile">
+                        <IconButton aria-label={`See profile ${tile._id}`}>
+                          <InfoIcon className={classes.starBorderIcon} />
+                        </IconButton>
+                      </LightTooltip>
+                      <LightTooltip title="Follow">
+                        <IconButton aria-label={`Follow ${tile._id}`}>
+                          <StarBorderIcon fontSize="large" className={classes.starBorderIcon} />
+                        </IconButton>
+                      </LightTooltip>
+                      </>
+                    }
+                />
+              </GridListTile>
+            ))}
           </GridList>
+          </div>
         </Grid>
         <Divider variant="middle" />
         <Grid item className={classes.followingUsers}>
-          <List className={classes.gridList}>
-              <ListSubheader component="div">
-                  <Typography component="p" variant="h6" color="primary">
-                    Following
-                  </Typography>
-              </ListSubheader>
+          <Typography component="p" variant="h6" color="primary" className={classes.header}>
+            Following
+          </Typography>
+          <List className={classes.list}>
               {listUser.map((tile) => (
                 <ListItem key={`item-${tile._id}`} button>
                   <ListItemAvatar>
@@ -102,6 +156,18 @@ const Right = props => {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary={tile.firstName +" "+ tile.lastName} />
+                  <ListItemSecondaryAction>  
+                    <LightTooltip title="Unfollow">
+                      <IconButton edge="end" aria-label="unfollow">
+                        <PersonAddDisabledIcon color="primary" />
+                      </IconButton>   
+                    </LightTooltip> 
+                    <LightTooltip title="Message">
+                      <IconButton edge="end" aria-label="message">
+                        <CommentIcon color="primary"/>
+                      </IconButton>
+                    </LightTooltip>
+                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
           </List>
