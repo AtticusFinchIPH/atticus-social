@@ -60,4 +60,18 @@ router.get("/", isAuth, async (req, res) => {
     return res.status(200).send(users);
 })
 
+router.get("/following", isAuth, async (req, res) => {
+    const user = req.user;
+    const userInfo = await User.findById(user._id)
+                            .populate('followings', '_id firstName lastName');
+    const { followings } = userInfo;
+    return res.status(200).send(followings);
+})
+
+router.get("/notfollowing", isAuth, async (req, res) => {
+    const user = req.user;
+    const users = await User.find({ $and: [{_id: {$ne: user._id}}, {followers: {$ne: user._id}}] });
+    return res.status(200).send(users);
+})
+
 export default router;

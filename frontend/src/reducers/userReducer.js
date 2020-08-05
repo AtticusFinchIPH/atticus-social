@@ -9,7 +9,13 @@ import {
   USER_UPDATE_FAIL,
   GET_ALL_USERS_SUCCESS,
   GET_ALL_USERS_FAIL,
-  GET_ALL_USERS_REQUEST
+  GET_ALL_USERS_REQUEST,
+  GET_NOTFOLLOWING_REQUEST,
+  GET_NOTFOLLOWING_FAIL,
+  GET_NOTFOLLOWING_SUCCESS,
+  GET_FOLLOWING_REQUEST,
+  GET_FOLLOWING_SUCCESS,
+  GET_FOLLOWING_FAIL
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -56,4 +62,29 @@ function allUsersReducer(state = {listUser: []}, action) {
   }
 }
 
-export { userSigninReducer, userUpdateReducer, allUsersReducer };
+function notfollowingReducer(state = {notfollowings: []}, action) {
+  switch (action.type) {
+    case GET_NOTFOLLOWING_REQUEST:
+      return {...state, loading: true };
+    case GET_NOTFOLLOWING_SUCCESS:
+      return { loading: false, notfollowings: action.payload };
+    case GET_NOTFOLLOWING_FAIL:
+      return {...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+function followingReducer(state = {followings: []}, action) {
+  switch (action.type) {
+    case GET_FOLLOWING_REQUEST:
+      return {...state, loading: true };
+    case GET_FOLLOWING_SUCCESS:
+      return { loading: false, followings: action.payload };
+    case GET_FOLLOWING_FAIL:
+      return {...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer };

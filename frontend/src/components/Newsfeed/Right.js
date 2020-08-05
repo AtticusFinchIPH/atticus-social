@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { FixedSizeList } from "react-window";
 import { deepOrange, lightBlue, deepPurple, yellow } from '@material-ui/core/colors'
@@ -10,6 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles, useTheme } from "@material-ui/styles";
+import { getNotfollowings, getFollowings } from "../../actions/userActions";
 
 const AVATAR_DIMENSION = 5;
 
@@ -98,9 +99,15 @@ const RowRender = ({ index, style }) => {
 const Right = props => {
   const classes = useStyles();
   const theme = useTheme();
-  const notFollowingUsers = useSelector(state => state.allUsers);
-  const { listUser } = notFollowingUsers;
-  console.log(notFollowingUsers)
+  const notfollowingUsers = useSelector(state => state.notfollowingUsers);
+  const { notfollowings } = notfollowingUsers;
+  const followingUsers = useSelector(state => state.followingUsers);
+  const { followings } = followingUsers;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getNotfollowings());
+    dispatch(getFollowings());
+  }, [])
   return (
     <Paper elevation={5} className={classes.paper}>
       <Grid container className={classes.container}>
@@ -110,7 +117,7 @@ const Right = props => {
           </Typography>
           <div className={classes.wrapGridList} >
           <GridList className={classes.gridList} cols={1} >
-            {listUser.map((tile) => (
+            {notfollowings.map((tile) => (
               <GridListTile key={tile._id}>
                 <img src="https://source.unsplash.com/random" alt={tile.text} />
                 <GridListTileBar
@@ -142,7 +149,7 @@ const Right = props => {
             Following
           </Typography>
           <List className={classes.list}>
-              {listUser.map((tile) => (
+              {followings.map((tile) => (
                 <ListItem key={`item-${tile._id}`} button>
                   <ListItemAvatar>
                     {/* <Avatar

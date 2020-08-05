@@ -3,7 +3,7 @@ import Cookie from 'js-cookie';
 import {
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
-  USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, GET_ALL_USERS_REQUEST, GET_ALL_USERS_FAIL, GET_ALL_USERS_SUCCESS,
+  USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, GET_ALL_USERS_REQUEST, GET_ALL_USERS_FAIL, GET_ALL_USERS_SUCCESS, GET_NOTFOLLOWING_FAIL, GET_NOTFOLLOWING_SUCCESS, GET_FOLLOWING_REQUEST, GET_FOLLOWING_SUCCESS, GET_FOLLOWING_FAIL, GET_NOTFOLLOWING_REQUEST,
 } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -72,4 +72,30 @@ const getAllUsers = () => async (dispatch, getState) => {
     dispatch({ type: GET_ALL_USERS_FAIL, payload: error.response?.data?.msg || error.message });
   }
 }
-export { signin, register, signout, update, googleSignin, getAllUsers };
+
+const getNotfollowings = () => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  dispatch({ type: GET_NOTFOLLOWING_REQUEST});
+  try {
+    const { data } = await axios.get("/api/users/notfollowing",
+      authConfig(userInfo),
+    );
+    dispatch({ type: GET_NOTFOLLOWING_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_NOTFOLLOWING_FAIL, payload: error.response?.data?.msg || error.message });
+  }
+}
+
+const getFollowings = () => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  dispatch({ type: GET_FOLLOWING_REQUEST});
+  try {
+    const { data } = await axios.get("/api/users/following",
+      authConfig(userInfo),
+    );
+    dispatch({ type: GET_FOLLOWING_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_FOLLOWING_FAIL, payload: error.response?.data?.msg || error.message });
+  }
+}
+export { signin, register, signout, update, googleSignin, getAllUsers, getNotfollowings, getFollowings };
