@@ -11,7 +11,10 @@ import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL,
     REACT_POST_SUCCESS,
     REACT_POST_FAIL,
     REACT_TYPE_LIKE,
-    REACT_TYPE_COMMENT,} from "../constants/postConstants";
+    REACT_TYPE_COMMENT,
+    GET_FAVORITE_POSTS_REQUEST,
+    GET_FAVORITE_POSTS_FAIL,
+    GET_FAVORITE_POSTS_SUCCESS,} from "../constants/postConstants";
 import { USER_SIGNOUT } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -44,6 +47,21 @@ const newPost = (text, photo) => async(dispatch, getState) => {
         dispatch({ type: NEW_POST_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ type: NEW_POST_FAIL, payload:  error.response?.data?.msg || error.message });
+        if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
+    }
+}
+
+const getFavoritePosts = () => async (dispatch, getState) => {
+    try {
+        const { userSignin: { userInfo } } = getState();
+        dispatch({ type: GET_FAVORITE_POSTS_REQUEST, payload: []});
+        const { data } = await axios.get(
+            '/api/posts/favorites',
+            authConfig(userInfo)
+        );
+        dispatch({ type: GET_FAVORITE_POSTS_SUCCESS, payload: data });
+    } catch (error) {
+        dispatch({ type: GET_FAVORITE_POSTS_FAIL, payload:  error.response?.data?.msg || error.message });
         if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
     }
 }
@@ -118,4 +136,4 @@ const reactPost = (actionType, actionValue, postId) => async(dispatch, getState)
     }
 }
 
-export { newPost, getOwnPosts, getNewsFeed, favoritePost, reactPost }
+export { newPost, getFavoritePosts, getOwnPosts, getNewsFeed, favoritePost, reactPost }

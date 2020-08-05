@@ -9,11 +9,18 @@ import User from "../models/userModel";
 
 const router = express.Router();
 
-router.get("/favorite", isAuth, async (req, res) => {
+router.get("/favorites", isAuth, async(req, res) => {
     const user = req.user;
-    const posts = await User.findById( user._id)
-                            .sort('-created');
-    res.status(200).send(posts);
+    try {
+        let userInfo = await User.findById(user._id)
+                                .populate('favoritePosts')
+                                .sort('-created')
+                                .exec();
+        const {favoritePosts} = userInfo;
+        return res.status(200).json(favoritePosts);
+    } catch (error) {
+        return res.status(500).json({ msg: "Error in making favorite post"});
+    }
 });
 
 router.get("/own", isAuth, async (req, res) => {

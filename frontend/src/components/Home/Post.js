@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getOwnPosts } from "../../actions/postActions";
+import { getOwnPosts, getFavoritePosts } from "../../actions/postActions";
 import { NewPost, FormerPost } from "../Posts";
 
 const Post = (props) => {
@@ -13,6 +13,7 @@ const Post = (props) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getOwnPosts());
+        dispatch(getFavoritePosts());
     }, []);
     useEffect(() => {
         if(personalPosts.error) {
