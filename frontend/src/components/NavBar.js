@@ -164,15 +164,17 @@ const NavBar = withRouter(({history}) => {
           userInfo 
           ? 
           <>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleAccount}
-            color="inherit"
-          >
-            <AccountCircleIcon />
-          </IconButton>
+          <LightTooltip title="Personal">
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleAccount}
+              color="inherit"
+            >
+              <AccountCircleIcon />
+            </IconButton>
+          </LightTooltip>
           <Menu
             id="menu-appbar"
             anchorEl={anchorAcc}
