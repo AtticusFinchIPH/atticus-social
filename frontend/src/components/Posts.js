@@ -159,12 +159,12 @@ const NewPost = (props) => {
 const FormerPost = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const checkLike = (likes) => {
-        return likes.indexOf(props.userInfo._id) !== -1;
+    const checkLike = (likes, id) => {
+        return likes.indexOf(id) !== -1;
     };
     const [values, setValues] = useState({
-        like: checkLike(props.post.likes),
-        favorite: checkLike(props.userInfo.favoritePosts),
+        like: checkLike(props.post.likes, props.userInfo._id),
+        favorite: checkLike(props.userInfo.favoritePosts, props.post._id),
         likes: props.post.likes,
         comments: props.post.comments,
     });
