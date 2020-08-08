@@ -7,6 +7,8 @@ import {
   PUT_FOLLOW_REQUEST,
   PUT_FOLLOW_SUCCESS,
   PUT_FOLLOW_FAIL,
+  PUT_UNFOLLOW_SUCCESS,
+  PUT_UNFOLLOW_FAIL,
 } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -111,12 +113,25 @@ const followRequest = (followingId) => async (dispatch, getState) => {
       { followingId },
       authConfig(userInfo),
     );
-    console.log(data)
     dispatch({ type: PUT_FOLLOW_SUCCESS, payload: data });
 
   } catch (error) {
     dispatch({ type: PUT_FOLLOW_FAIL, payload: error.response?.data?.msg || error.message });
-    dispatch({ type: GET_NOTFOLLOWING_FAIL, payload: error.response?.data?.msg || error.message });
   }
 }
-export { signin, register, signout, update, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest };
+
+const unfollowRequest = (unfollowingId) => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  try {
+    const { data } = await axios.put(
+      "/api/users/unfollow",
+      { unfollowingId },
+      authConfig(userInfo),
+    );
+    dispatch({ type: PUT_UNFOLLOW_SUCCESS, payload: data });
+
+  } catch (error) {
+    dispatch({ type: PUT_UNFOLLOW_FAIL, payload: error.response?.data?.msg || error.message });
+  }
+}
+export { signin, register, signout, update, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };

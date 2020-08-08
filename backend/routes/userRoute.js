@@ -88,4 +88,19 @@ router.put("/follow", isAuth, async (req, res) => {
         return res.status(500).json({ msg: "Error in Following action"});
     }
 })
+
+router.put("/unfollow", isAuth, async (req, res) => {
+    const user = req.user;
+    const { unfollowingId } = req.body;
+    try {
+        if(!unfollowingId || !unfollowingId.match(/^[0-9a-fA-F]{24}$/)) throw "UnFollowing ID not defined";
+        const userInfo = await User.findByIdAndUpdate(user._id, {$pull: {followings: unfollowingId}}, {new: true})
+                                    .populate('followings', '_id firstName lastName');
+        const unfollowing = await User.findByIdAndUpdate(unfollowingId, {$pull: {followers: user._id}});
+        const { followings } = userInfo;
+        return res.status(200).send(followings);
+    } catch (error) {
+        return res.status(500).json({ msg: "Error in UnFollowing action"});
+    }
+})
 export default router;

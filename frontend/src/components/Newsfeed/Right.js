@@ -10,7 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles, useTheme } from "@material-ui/styles";
-import { getNotfollowings, getFollowings, followRequest } from "../../actions/userActions";
+import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
 
 const AVATAR_DIMENSION = 5;
 
@@ -112,6 +112,10 @@ const Right = props => {
     await dispatch(followRequest(followingId));
     dispatch(getNotfollowings());
   }
+  const unfollow = async (unfollowingId) => {
+    await dispatch(unfollowRequest(unfollowingId));
+    dispatch(getNotfollowings());
+  }
   return (
     <Paper elevation={5} className={classes.paper}>
       <Grid container className={classes.container}>
@@ -169,7 +173,7 @@ const Right = props => {
                   <ListItemText primary={tile.firstName +" "+ tile.lastName} />
                   <ListItemSecondaryAction>  
                     <LightTooltip title="Unfollow">
-                      <IconButton edge="end" aria-label="unfollow">
+                      <IconButton onClick={(e) => unfollow(tile._id)} edge="end" aria-label="unfollow">
                         <PersonAddDisabledIcon color="primary" />
                       </IconButton>   
                     </LightTooltip> 

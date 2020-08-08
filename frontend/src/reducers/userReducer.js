@@ -18,7 +18,9 @@ import {
   GET_FOLLOWING_FAIL,
   PUT_FOLLOW_REQUEST,
   PUT_FOLLOW_SUCCESS,
-  PUT_FOLLOW_FAIL
+  PUT_FOLLOW_FAIL,
+  PUT_UNFOLLOW_SUCCESS,
+  PUT_UNFOLLOW_FAIL
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -85,9 +87,11 @@ function followingReducer(state = {followings: []}, action) {
       return {...state, loading: true };
     case GET_FOLLOWING_SUCCESS:
     case PUT_FOLLOW_SUCCESS:
+    case PUT_UNFOLLOW_SUCCESS:
       return { loading: false, followings: action.payload };
     case GET_FOLLOWING_FAIL:
     case PUT_FOLLOW_FAIL:
+    case PUT_UNFOLLOW_FAIL:
       return {...state, loading: false, error: action.payload };
     default:
       return state;
