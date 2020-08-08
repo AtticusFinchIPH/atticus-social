@@ -10,7 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles, useTheme } from "@material-ui/styles";
-import { getNotfollowings, getFollowings } from "../../actions/userActions";
+import { getNotfollowings, getFollowings, followRequest } from "../../actions/userActions";
 
 const AVATAR_DIMENSION = 5;
 
@@ -108,6 +108,10 @@ const Right = props => {
     dispatch(getNotfollowings());
     dispatch(getFollowings());
   }, [])
+  const follow = async (followingId) => {
+    await dispatch(followRequest(followingId));
+    dispatch(getNotfollowings());
+  }
   return (
     <Paper elevation={5} className={classes.paper}>
       <Grid container className={classes.container}>
@@ -119,7 +123,7 @@ const Right = props => {
           <GridList className={classes.gridList} cols={1} >
             {notfollowings.map((tile) => (
               <GridListTile key={tile._id}>
-                <img src="https://source.unsplash.com/random" alt={tile.text} />
+                <img src="https://source.unsplash.com/random" alt={tile._id} />
                 <GridListTileBar
                     title={tile.firstName +" "+ tile.lastName}
                     subtitle={<span>Description</span>}
@@ -131,7 +135,7 @@ const Right = props => {
                         </IconButton>
                       </LightTooltip>
                       <LightTooltip title="Follow">
-                        <IconButton aria-label={`Follow ${tile._id}`}>
+                        <IconButton onClick={(e) => follow(tile._id)} aria-label={`Follow ${tile._id}`}>
                           <StarBorderIcon fontSize="large" className={classes.starBorderIcon} />
                         </IconButton>
                       </LightTooltip>

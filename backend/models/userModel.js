@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     isAdmin: { type: Boolean, required: true, default: false},
 
     about: { type: String},
-    photo: { type: Buffer}, 
+    photo: { type: String}, 
     followings: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
     followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
     favoritePosts: [{type: mongoose.Schema.ObjectId, ref: 'Post'}],

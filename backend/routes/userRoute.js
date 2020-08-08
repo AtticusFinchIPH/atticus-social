@@ -47,7 +47,7 @@ router.post("/register", async (req, res) => {
                 email: newUser.email,
                 isAdmin: newUser.isAdmin,
                 token: getToken(newUser),
-                favoritePosts: signinUser.favoritePosts,
+                favoritePosts: newUser.favoritePosts,
             });
         } else {
             res.status(401).send({ message: 'Invalid User Data' });
@@ -74,4 +74,18 @@ router.get("/notfollowing", isAuth, async (req, res) => {
     return res.status(200).send(users);
 })
 
+router.put("/follow", isAuth, async (req, res) => {
+    const user = req.user;
+    const { followingId } = req.body;
+    try {
+        if(!followingId || !followingId.match(/^[0-9a-fA-F]{24}$/)) throw "Following ID not defined";
+        const userInfo = await User.findByIdAndUpdate(user._id, {$push: {followings: followingId}}, {new: true})
+                                    .populate('followings', '_id firstName lastName');
+        const following = await User.findByIdAndUpdate(followingId, {$push: {followers: user._id}});
+        const { followings } = userInfo;
+        return res.status(200).send(followings);
+    } catch (error) {
+        return res.status(500).json({ msg: "Error in Following action"});
+    }
+})
 export default router;
