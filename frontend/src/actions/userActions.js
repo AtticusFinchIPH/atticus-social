@@ -31,6 +31,7 @@ const update = ({ userId, firstName, lastName, email, password }) => async (disp
     Cookie.set('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({ type: USER_UPDATE_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
 
@@ -75,6 +76,7 @@ const getAllUsers = () => async (dispatch, getState) => {
     dispatch({ type: GET_ALL_USERS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_ALL_USERS_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
 
@@ -88,6 +90,7 @@ const getNotfollowings = () => async (dispatch, getState) => {
     dispatch({ type: GET_NOTFOLLOWING_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_NOTFOLLOWING_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
 
@@ -101,6 +104,7 @@ const getFollowings = () => async (dispatch, getState) => {
     dispatch({ type: GET_FOLLOWING_SUCCESS, payload: data });
   } catch (error) {
     dispatch({ type: GET_FOLLOWING_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
 
@@ -117,6 +121,7 @@ const followRequest = (followingId) => async (dispatch, getState) => {
 
   } catch (error) {
     dispatch({ type: PUT_FOLLOW_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
 
@@ -132,6 +137,7 @@ const unfollowRequest = (unfollowingId) => async (dispatch, getState) => {
 
   } catch (error) {
     dispatch({ type: PUT_UNFOLLOW_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
 export { signin, register, signout, update, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };
