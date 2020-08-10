@@ -32,8 +32,8 @@ const Center = props => {
         </Grid>
         <Grid item xs={12}>
           {
-            newsfeed.map(post =>                   
-              <FormerPost key={post.id} userInfo={userInfo} post={post}/>
+            newsfeed.map((post, i) =>                   
+              <FormerPost key={i} userInfo={userInfo} post={post}/>
             )
           }
         </Grid>
