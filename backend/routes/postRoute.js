@@ -27,6 +27,8 @@ router.get("/own", isAuth, async (req, res) => {
     const user = req.user;
     const posts = await Post.find({postedBy: user._id})
                             .populate('favoritePosts')
+                            .populate('comments.postedBy', '_id firstName lastName')
+                            .populate('postedBy', '_id firstName lastName')
                             .sort('-created')
                             .exec();
     res.status(200).send(posts);
@@ -34,9 +36,13 @@ router.get("/own", isAuth, async (req, res) => {
 
 router.get("/newsfeed", isAuth, async (req, res) => {
     const user = req.user;
-    let followings = await User.findById(user._id).followings;
+    const currentUser = await User.findById(user._id);
+    const { followings } = currentUser;
+    console.log(followings);
+    const followingIDs = followings.map(person => person._id);
+    console.log(followingIDs);
     try{
-      let posts = await Post.find({postedBy: { $in : followings } })
+      let posts = await Post.find({postedBy: { $in : followingIDs } })
                             .populate('comments.postedBy', '_id firstName lastName')
                             .populate('postedBy', '_id firstName lastName')
                             .sort('-created')
@@ -88,7 +94,6 @@ router.post("/", isAuth, async (req, res) => {
                 post.photo = null;
             }       
             let result = await post.save();
-            console.log(result);
             if(result) return res.status(200).send(result);
         });   
     }catch (err){

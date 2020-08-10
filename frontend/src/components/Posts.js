@@ -11,7 +11,7 @@ import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutline
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { newPost, reactPost, favoritePost } from "../actions/postActions";
-import { REACT_TYPE_LIKE, REACT_TYPE_FAVORITE } from "../constants/postConstants";
+import { REACT_TYPE_LIKE } from "../constants/postConstants";
 
 const AVATAR_DIMENSION = 5;
 const AVATAR_S_DIMENSION = 4;
@@ -182,12 +182,12 @@ const FormerPost = (props) => {
                 <div className={classes.row}>
                     <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
                         <Typography component="h6" variant="h6" color="inherit">
-                            {props.userInfo.firstName.charAt(0).toUpperCase()}
+                            {props.post.postedBy.firstName.charAt(0).toUpperCase()}
                         </Typography>
                     </Avatar>
                     <div>
                         <Typography component="p" variant="h6">
-                            {`${props.userInfo.firstName} ${props.userInfo.lastName}`}
+                            {`${props.post.postedBy.firstName} ${props.post.postedBy.lastName}`}
                         </Typography>
                         <Typography component="p" variant="body2">
                             {props.post.created}

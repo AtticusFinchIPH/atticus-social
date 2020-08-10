@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnPosts, getFavoritePosts } from "../../actions/postActions";
 import { NewPost, FormerPost } from "../Posts";
@@ -10,6 +10,7 @@ const Post = (props) => {
     const {userInfo} = userSignin;
     const personalPosts = useSelector(state => state.personalPosts);
     let { loading, listPost, error } = personalPosts;
+    console.log(listPost)
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getOwnPosts());

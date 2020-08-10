@@ -8,23 +8,26 @@ import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL,
         REACT_POST_FAIL,
         GET_FAVORITE_POSTS_SUCCESS,
         GET_FAVORITE_POSTS_REQUEST,
-        GET_FAVORITE_POSTS_FAIL} from "../constants/postConstants";
+        GET_FAVORITE_POSTS_FAIL,
+        GET_NEWSFEED_REQUEST,
+        GET_NEWSFEED_SUCCESS,
+        GET_NEWSFEED_FAIL} from "../constants/postConstants";
 
 function favoritePostReducer(state = { favorites: []}, action) {
-    switch (action.type) {
-      case FAVORITE_POST_REQUEST:
-      case GET_FAVORITE_POSTS_REQUEST:
-        return {...state, loading: true };
-      case FAVORITE_POST_SUCCESS:
-      case GET_FAVORITE_POSTS_SUCCESS:
-        return { loading: false, favorites: action.payload };
-      case FAVORITE_POST_FAIL:
-      case GET_FAVORITE_POSTS_FAIL:
-        return {...state, loading: false, error: action.payload };
-      default:
-        return state;
-    }
+  switch (action.type) {
+    case FAVORITE_POST_REQUEST:
+    case GET_FAVORITE_POSTS_REQUEST:
+      return {...state, loading: true };
+    case FAVORITE_POST_SUCCESS:
+    case GET_FAVORITE_POSTS_SUCCESS:
+      return { loading: false, favorites: action.payload };
+    case FAVORITE_POST_FAIL:
+    case GET_FAVORITE_POSTS_FAIL:
+      return {...state, loading: false, error: action.payload };
+    default:
+      return state;
   }
+}
 
 function personalPostsReducer(state = { listPost: []}, action) {
   switch (action.type) {    
@@ -58,4 +61,18 @@ function personalPostsReducer(state = { listPost: []}, action) {
   }
 }
 
-export { favoritePostReducer, personalPostsReducer };
+function newsfeedReducer(state = { favorites: []}, action) {
+  switch (action.type) {
+    case GET_NEWSFEED_REQUEST:
+      return {...state, loading: true };
+    case GET_NEWSFEED_SUCCESS:
+      return { loading: false, newsfeed: action.payload };
+    case GET_NEWSFEED_FAIL:
+      return {...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+
+export { favoritePostReducer, personalPostsReducer, newsfeedReducer };
