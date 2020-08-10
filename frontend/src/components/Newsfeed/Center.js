@@ -16,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Center = props => {
   const classes = useStyles();
-  const avatarColor = useSelector(state => state.avatarColor);
-  const { color } = avatarColor;
   const userSignin = useSelector(state => state.userSignin);
   const {userInfo} = userSignin;
   const newsfeedPosts = useSelector(state => state.newsfeedPosts);
@@ -30,12 +28,12 @@ const Center = props => {
     <Container maxWidth='sm'>
       <Grid container spacing={3} className={classes.root}>
         <Grid item xs={12}>
-          <NewPost avatarColor={color} userInfo={userInfo}/>
+          <NewPost userInfo={userInfo}/>
         </Grid>
         <Grid item xs={12}>
           {
             newsfeed.map(post =>                   
-              <FormerPost key={post.id} avatarColor={color} userInfo={userInfo} post={post}/>
+              <FormerPost key={post.id} userInfo={userInfo} post={post}/>
             )
           }
         </Grid>

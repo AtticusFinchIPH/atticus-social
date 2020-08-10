@@ -4,8 +4,6 @@ import { getOwnPosts, getFavoritePosts } from "../../actions/postActions";
 import { NewPost, FormerPost } from "../Posts";
 
 const Post = (props) => {
-    const avatarColor = useSelector(state => state.avatarColor);
-    const { color } = avatarColor;
     const userSignin = useSelector(state => state.userSignin);
     const {userInfo} = userSignin;
     const personalPosts = useSelector(state => state.personalPosts);
@@ -24,10 +22,10 @@ const Post = (props) => {
     }, [personalPosts]);
     return (
         <>
-            <NewPost avatarColor={color} userInfo={userInfo}/>
+            <NewPost userInfo={userInfo}/>
             {
                 listPost.map(post =>                   
-                    <FormerPost key={post.id} avatarColor={color} userInfo={userInfo} post={post}/>
+                    <FormerPost key={post.id} userInfo={userInfo} post={post}/>
                 )
             }
         </>

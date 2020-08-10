@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { FixedSizeList } from "react-window";
 import { deepOrange, lightBlue, deepPurple, yellow } from '@material-ui/core/colors'
@@ -11,6 +12,7 @@ import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles, useTheme } from "@material-ui/styles";
 import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
+import { getCharacterColor } from "../../util";
 
 const AVATAR_DIMENSION = 5;
 
@@ -57,6 +59,18 @@ const useStyles = makeStyles((theme) => ({
   },
   starBorderIcon: {
     color: yellow[500],
+  },
+  orange: {
+    color: theme.palette.getContrastText(deepOrange[500]),
+    backgroundColor: deepOrange[500],
+  },
+  blue: {
+    color: theme.palette.getContrastText(lightBlue[500]),
+    backgroundColor: lightBlue[500],
+  },
+  purple: {
+    color: theme.palette.getContrastText(deepPurple[500]),
+    backgroundColor: deepPurple[500],
   },
 }));
 
@@ -164,7 +178,7 @@ const Right = props => {
                       alt={`Avatar n°${value + 1}`}
                       src={`/static/images/avatar/${value + 1}.jpg`}
                     /> */}
-                    <Avatar className={classes.avatar}>
+                    <Avatar className={clsx(classes.avatar,  classes[getCharacterColor(tile.firstName.charAt(0))])}>
                       <Typography component="h6" variant="h6" color="inherit">
                         {tile.firstName.charAt(0).toUpperCase()}
                       </Typography>

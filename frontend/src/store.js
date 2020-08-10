@@ -5,15 +5,6 @@ import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReduc
 import { favoritePostReducer, personalPostsReducer, newsfeedReducer } from "./reducers/postReducer";
 
 const userInfo = Cookie.getJSON('userInfo') || null;
-const randomColor = () => {
-  let picker = Math.floor(Math.random() * 3);
-  return picker === 0 ? "orange" : picker === 1 ? "blue" : "purple";
-}
-const color = randomColor();
-
-function avatarReducer(state = {color}, action) {
-  return state;
-}
 
 const initialState = { userSignin: {userInfo}, 
                       favoritePosts: { favorites: []}, 
@@ -27,7 +18,6 @@ const initialState = { userSignin: {userInfo},
 const reducer = combineReducers({
   userSignin: userSigninReducer,
   favoritePosts: favoritePostReducer,
-  avatarColor: avatarReducer,
   personalPosts: personalPostsReducer,
   newsfeedPosts: newsfeedReducer,
   allUsers: allUsersReducer,

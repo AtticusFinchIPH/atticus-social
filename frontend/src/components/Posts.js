@@ -12,6 +12,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { newPost, reactPost, favoritePost } from "../actions/postActions";
 import { REACT_TYPE_LIKE } from "../constants/postConstants";
+import { getCharacterColor } from "../util";
 
 const AVATAR_DIMENSION = 5;
 const AVATAR_S_DIMENSION = 4;
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         margin: theme.spacing(2),
+        paddingTop: theme.spacing(2),
     },
     row: {
         display: 'flex',
@@ -116,7 +118,7 @@ const NewPost = (props) => {
         <Paper className={classes.paper}>
             <form className={classes.container} noValidate autoComplete="off" onSubmit={handleNewPost}>
                 <div className={classes.row}>
-                    <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
+                    <Avatar className={clsx( classes.avatar, classes[getCharacterColor(props.userInfo.firstName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
                             {props.userInfo.firstName.charAt(0).toUpperCase()}
                         </Typography>
@@ -180,7 +182,7 @@ const FormerPost = (props) => {
         <Paper className={classes.paper}>
             <div className={classes.container}>
                 <div className={classes.row}>
-                    <Avatar className={clsx( classes.avatar, classes[props.avatarColor])}>
+                    <Avatar className={clsx( classes.avatar, classes[getCharacterColor(props.post.postedBy.firstName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
                             {props.post.postedBy.firstName.charAt(0).toUpperCase()}
                         </Typography>
@@ -235,7 +237,7 @@ const FormerPost = (props) => {
                     </div>
                 <Divider variant="middle" width="100%"/>
                 <div className={classes.row}>
-                    <Avatar className={clsx( classes.avatarSmall, classes[props.avatarColor])}>
+                    <Avatar className={clsx( classes.avatarSmall, classes[getCharacterColor(props.userInfo.firstName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
                             {props.userInfo.firstName.charAt(0).toUpperCase()}
                         </Typography>

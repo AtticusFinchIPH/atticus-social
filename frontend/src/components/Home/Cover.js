@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Avatar, Typography} from "@material-ui/core";
-import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
+import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors';
+import { getCharacterColor } from "../../util";
 
 const AVATAR_DIMENSION = 20;
 
@@ -47,14 +48,12 @@ const useStyles = makeStyles((theme) => ({
 
 const Cover = (props) => {
   const classes = useStyles();
-  const avatarColor = useSelector(state => state.avatarColor);
-  const { color } = avatarColor;
   const userSignin = useSelector(state => state.userSignin);
   const {userInfo} = userSignin;
   return (
     <Paper className={classes.mainCover}>
         <div className={classes.mainCoverContent}>
-            <Avatar className={clsx( classes.avatar, classes[color])}>
+            <Avatar className={clsx( classes.avatar, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
                 <Typography component="h1" variant="h3" color="inherit">
                   {userInfo.firstName.charAt(0).toUpperCase()}
                 </Typography>
