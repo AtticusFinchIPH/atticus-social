@@ -126,7 +126,6 @@ const NewPost = (props) => {
                     <TextField
                         placeholder={POST_PLACEHOLDER}
                         multiline
-                        rows="3"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         className={classes.textField}
@@ -245,7 +244,6 @@ const FormerPost = (props) => {
                     <TextField
                         placeholder={COMMENT_PLACEHOLDER}
                         multiline
-                        rows="1"
                         variant="outlined"
                         // value={values.text}
                         // onChange={handleChange('text')}
