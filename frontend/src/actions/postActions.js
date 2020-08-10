@@ -28,7 +28,7 @@ const authConfig = (userInfo) => {
 const newPost = (text, photo) => async(dispatch, getState) => {
     try {
         const { userSignin: { userInfo } } = getState();
-        const newPost = {text, photo, likes: [], comments: [], created: 'Just Now'};
+        const newPost = {text, photo, likes: [], comments: [], postedBy: {firstName: userInfo.firstName, lastName: userInfo.lastName}, created: 'Just Now'};
         dispatch({ type: NEW_POST_REQUEST, payload: newPost })
         const formData = new FormData();
         formData.append('text', text);

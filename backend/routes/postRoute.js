@@ -38,9 +38,7 @@ router.get("/newsfeed", isAuth, async (req, res) => {
     const user = req.user;
     const currentUser = await User.findById(user._id);
     const { followings } = currentUser;
-    console.log(followings);
     const followingIDs = followings.map(person => person._id);
-    console.log(followingIDs);
     try{
       let posts = await Post.find({postedBy: { $in : followingIDs } })
                             .populate('comments.postedBy', '_id firstName lastName')
@@ -93,7 +91,7 @@ router.post("/", isAuth, async (req, res) => {
             } else {
                 post.photo = null;
             }       
-            let result = await post.save();
+            let result = await (await post.save()).populate('postedBy', '_id firstName lastName').execPopulate();
             if(result) return res.status(200).send(result);
         });   
     }catch (err){
@@ -126,8 +124,8 @@ router.put("/react", isAuth, async (req, res) => {
                 break;
             case REACT_TYPE_COMMENT:
                 post = await Post.findByIdAndUpdate(postId, {$push: {comments: actionValue}}, {new: true})
-                                    .populate('comments.postedBy', '_id name')
-                                    .populate('postedBy', '_id name')
+                                    .populate('comments.postedBy', '_id firstName lastName')
+                                    .populate('postedBy', '_id firstName lastName')
                                     .exec();
                 break;
             default: throw ERR_REACT_TYPE_UNKNOWN;
