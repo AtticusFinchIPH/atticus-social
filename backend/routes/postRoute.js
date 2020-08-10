@@ -123,7 +123,11 @@ router.put("/react", isAuth, async (req, res) => {
                 : post = await Post.findByIdAndUpdate(postId, {$pull: {likes: user._id}}, {new: true});
                 break;
             case REACT_TYPE_COMMENT:
-                post = await Post.findByIdAndUpdate(postId, {$push: {comments: actionValue}}, {new: true})
+                const newComment = {
+                    text: actionValue,
+                    postedBy: user._id,
+                }
+                post = await Post.findByIdAndUpdate(postId, {$push: {comments: newComment}}, {new: true})
                                     .populate('comments.postedBy', '_id firstName lastName')
                                     .populate('postedBy', '_id firstName lastName')
                                     .exec();

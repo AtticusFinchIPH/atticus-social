@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
-import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider} from "@material-ui/core";
+import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider, CardHeader } from "@material-ui/core";
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import CommentIcon from '@material-ui/icons/Comment';
@@ -11,7 +13,7 @@ import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutline
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import { newPost, reactPost, favoritePost } from "../actions/postActions";
-import { REACT_TYPE_LIKE } from "../constants/postConstants";
+import { REACT_TYPE_LIKE, REACT_TYPE_COMMENT } from "../constants/postConstants";
 import { getCharacterColor } from "../util";
 
 const AVATAR_DIMENSION = 5;
@@ -61,6 +63,14 @@ const useStyles = makeStyles((theme) => ({
     photoButton: {
         height: theme.spacing(5),
         marginBottom: 5
+    },
+    cardHeader: {
+        width: "100%",
+        paddingTop: 0,
+        paddingLeft: 0,
+    },
+    commentPaper: {
+        padding: theme.spacing(1),
     },
     grow: {
         flexGrow: 1,
@@ -169,6 +179,7 @@ const FormerPost = (props) => {
         likes: props.post.likes,
         comments: props.post.comments,
     });
+    const [curComment, setCurComment] = useState('');
     const clickLike = (e) => {
         dispatch(reactPost(REACT_TYPE_LIKE, !values.like, props.post._id));
         setValues({...values, like: !values.like, likes: !values.like ? [...values.likes, props.userInfo._id] : values.likes.filter((id) => {return id !== props.userInfo._id})});
@@ -177,6 +188,34 @@ const FormerPost = (props) => {
         dispatch(favoritePost(!values.favorite, props.post._id));
         setValues({...values, favorite: !values.favorite});
     };
+    const submitComment = (e) => {
+        if(e.keyCode == 13 && e.target.value) {
+            e.preventDefault()
+            dispatch(reactPost(REACT_TYPE_COMMENT, curComment, props.post._id));
+            setValues({...values, comments: [...values.comments, 
+                {
+                    text: curComment,
+                    created: "Just Now",
+                    postedBy: {
+                        _id: props.userInfo._id,
+                        firstName: props.userInfo.firstName,
+                        lastName: props.userInfo.lastName,
+                    }
+                }]
+            });
+            setCurComment("");
+        }
+    }
+    const commentBody = (item) => {
+        return (
+          <Paper elevation={1} className={classes.commentPaper}>
+            <Link to={"/user/" + item.postedBy._id}>{`${item.postedBy.firstName} ${item.postedBy.lastName}`}</Link>
+            <Typography component="p" variant="body1" color="inherit">
+                {item.text}
+            </Typography>
+          </Paper>
+        )
+    }
     return (
         <Paper className={classes.paper}>
             <div className={classes.container}>
@@ -191,9 +230,13 @@ const FormerPost = (props) => {
                             {`${props.post.postedBy.firstName} ${props.post.postedBy.lastName}`}
                         </Typography>
                         <Typography component="p" variant="body2">
-                            {props.post.created}
+                            { (new Date(props.post.created)).toDateString()}
                         </Typography>
                     </div>
+                    <div className={classes.grow}/>
+                    <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                    </IconButton>
                 </div>
                 <div className={classes.row}>
                     <Typography component="p" variant="body1">
@@ -245,12 +288,31 @@ const FormerPost = (props) => {
                         placeholder={COMMENT_PLACEHOLDER}
                         multiline
                         variant="outlined"
-                        // value={values.text}
-                        // onChange={handleChange('text')}
+                        value={curComment}
+                        onChange={(e) => setCurComment(e.target.value)}
+                        onKeyDown={submitComment}
                         className={classes.textField}
                         margin="normal"
                     />
                 </div>
+                { values.comments.map((comment, i) => {
+                    return (
+                            <CardHeader
+                                avatar={
+                                    <Avatar 
+                                    className={clsx( classes.avatarSmall, classes[getCharacterColor(comment.postedBy.firstName.charAt(0))])}>
+                                        <Typography component="h6" variant="h6" color="inherit">
+                                            {comment.postedBy.firstName.charAt(0).toUpperCase()}
+                                        </Typography>
+                                    </Avatar>
+                                }
+                                title={commentBody(comment)}
+                                className={classes.cardHeader}
+                                key={i}
+                            />
+                        )
+                    })
+                }
             </div>
         </Paper>
     )
