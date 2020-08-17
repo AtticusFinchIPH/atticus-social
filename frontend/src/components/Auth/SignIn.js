@@ -48,7 +48,6 @@ const SignIn = props => {
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
-    console.log(userSignin)
     if (userInfo) {
       history.replace("/");
     }

@@ -7,8 +7,7 @@ const Post = (props) => {
     const userSignin = useSelector(state => state.userSignin);
     const {userInfo} = userSignin;
     const personalPosts = useSelector(state => state.personalPosts);
-    let { loading, listPost, error } = personalPosts;
-    console.log(listPost)
+    let { listPost } = personalPosts;
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getOwnPosts());

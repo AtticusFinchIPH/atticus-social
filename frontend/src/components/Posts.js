@@ -99,7 +99,7 @@ const NewPost = (props) => {
     const [photo, setPhoto] = useState(null);
     const [photoReader, setPhotoReader] = useState(null);
     const personalPosts = useSelector(state => state.personalPosts);
-    let { loading, listPost, error } = personalPosts;
+    let { loading } = personalPosts;
     const dispatch = useDispatch();
     useEffect(() => {
         if(photo) {
@@ -189,7 +189,7 @@ const FormerPost = (props) => {
         setValues({...values, favorite: !values.favorite});
     };
     const submitComment = (e) => {
-        if(e.keyCode == 13 && e.target.value) {
+        if(e.keyCode === 13 && e.target.value) {
             e.preventDefault()
             dispatch(reactPost(REACT_TYPE_COMMENT, curComment, props.post._id));
             setValues({...values, comments: [...values.comments, 

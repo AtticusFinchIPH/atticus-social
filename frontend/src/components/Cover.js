@@ -1,10 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Avatar, Typography} from "@material-ui/core";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors';
-import { getCharacterColor } from "../../util";
+import { getCharacterColor } from "../util";
 
 const AVATAR_DIMENSION = 20;
 
@@ -48,8 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Cover = (props) => {
   const classes = useStyles();
-  const userSignin = useSelector(state => state.userSignin);
-  const {userInfo} = userSignin;
+  const userInfo = props.userInfo;
   return (
     <Paper className={classes.mainCover}>
         <div className={classes.mainCoverContent}>

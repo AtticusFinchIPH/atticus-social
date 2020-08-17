@@ -4,7 +4,6 @@ import {
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
   USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, GET_ALL_USERS_REQUEST, GET_ALL_USERS_FAIL, GET_ALL_USERS_SUCCESS, GET_NOTFOLLOWING_FAIL, GET_NOTFOLLOWING_SUCCESS, GET_FOLLOWING_REQUEST, GET_FOLLOWING_SUCCESS, GET_FOLLOWING_FAIL, GET_NOTFOLLOWING_REQUEST,
-  PUT_FOLLOW_REQUEST,
   PUT_FOLLOW_SUCCESS,
   PUT_FOLLOW_FAIL,
   PUT_UNFOLLOW_SUCCESS,
@@ -110,7 +109,6 @@ const getFollowings = () => async (dispatch, getState) => {
 
 const followRequest = (followingId) => async (dispatch, getState) => {
   const { userSignin: { userInfo } } = getState();
-  // dispatch({ type: PUT_FOLLOW_REQUEST});
   try {
     const { data } = await axios.put(
       "/api/users/follow",

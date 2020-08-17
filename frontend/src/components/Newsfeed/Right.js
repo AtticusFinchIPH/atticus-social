@@ -4,13 +4,12 @@ import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { FixedSizeList } from "react-window";
 import { deepOrange, lightBlue, deepPurple, yellow } from '@material-ui/core/colors'
-import { Grid, Paper, Typography, Divider, GridListTile, GridList, ListSubheader, ListItem, ListItemText, List, ListItemAvatar, Avatar, ListItemSecondaryAction, IconButton, Tooltip, GridListTileBar } from "@material-ui/core";
-import VisibilityIcon from '@material-ui/icons/Visibility';
+import { Grid, Paper, Typography, Divider, GridListTile, GridList, ListItem, ListItemText, List, ListItemAvatar, Avatar, ListItemSecondaryAction, IconButton, Tooltip, GridListTileBar } from "@material-ui/core";
 import CommentIcon from "@material-ui/icons/Comment";
 import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
-import { withStyles, useTheme } from "@material-ui/styles";
+import { withStyles } from "@material-ui/styles";
 import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
 import { getCharacterColor } from "../../util";
 
@@ -83,25 +82,6 @@ const LightTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const NotFollowingUser = props => {
-  const classes = useStyles();
-  return (
-    <Paper>
-
-    </Paper>
-  )
-}
-
-const FollowingUser = props => {
-  const classes = useStyles();
-
-  return (
-    <Paper>
-
-    </Paper>
-  )
-}
-
 const RowRender = ({ index, style }) => {
   return (
     <ListItem button style={style} key={index}>
@@ -112,7 +92,6 @@ const RowRender = ({ index, style }) => {
 
 const Right = props => {
   const classes = useStyles();
-  const theme = useTheme();
   const notfollowingUsers = useSelector(state => state.notfollowingUsers);
   const { notfollowings } = notfollowingUsers;
   const followingUsers = useSelector(state => state.followingUsers);

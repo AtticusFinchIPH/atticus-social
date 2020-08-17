@@ -19,7 +19,7 @@ const Content = (props) => {
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={7}>
-                    <Post avatarColor={props.avatarColor}/>
+                    <Post />
                 </Grid>
                 <Grid item xs={12} md={5}>
                     <Favorites/>

@@ -1,18 +1,15 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
-import Cover from "./Cover";
+import Cover from "../Cover";
 import Content from "./Content";
-
-const useStyles = makeStyles((theme) => ({
-
-}));
+import { useSelector } from "react-redux";
 
 const HomeMain = props => {
-  const classes = useStyles();
+  const userSignin = useSelector(state => state.userSignin);
+  const {userInfo} = userSignin;
   return (
     <Container maxWidth='lg'>
-      <Cover />
+      <Cover userInfo={userInfo} />
       <Content /> 
     </Container>
   )
