@@ -19,11 +19,17 @@ const Center = props => {
   const userSignin = useSelector(state => state.userSignin);
   const {userInfo} = userSignin;
   const newsfeedPosts = useSelector(state => state.newsfeedPosts);
-  const {newsfeed} = newsfeedPosts;
+  const { loading, newsfeed, error } = newsfeedPosts;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getNewsFeed());
   }, [])
+  useEffect(() => {
+    if(newsfeedPosts.error) {
+        alert(newsfeedPosts.error);
+        newsfeedPosts.error = null;
+    }
+  }, [newsfeedPosts]);
   return (
     <Container maxWidth='sm'>
       <Grid container spacing={3} className={classes.root}>
