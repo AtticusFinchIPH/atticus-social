@@ -112,6 +112,11 @@ const NavBar = withRouter(({history}) => {
     setAnchorAcc(null);
   };
 
+  const handleEditProfile = (e) => {
+    e.preventDefault();
+    setAnchorAcc(null);
+  }
+
   const handleSignOut = (e) => {
     e.preventDefault();
     dispatch(signout());
@@ -164,7 +169,7 @@ const NavBar = withRouter(({history}) => {
           userInfo 
           ? 
           <>
-          <LightTooltip title="Personal">
+          <LightTooltip title={`${userInfo.firstName} ${userInfo.lastName}`}>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -191,6 +196,7 @@ const NavBar = withRouter(({history}) => {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>Setting</MenuItem>
+            <MenuItem onClick={handleEditProfile}>Edit Profile</MenuItem>
             <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
           </Menu>
           </>
