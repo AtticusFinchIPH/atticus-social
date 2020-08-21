@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 const HomeMain = props => {
   const userSignin = useSelector(state => state.userSignin);
   const {userInfo} = userSignin;
+  const userUpdate = useSelector(state => state.userUpdate);
+  const {editable} = userUpdate;
   return (
     <Container maxWidth='lg'>
-      <Cover userInfo={userInfo} />
+      <Cover userInfo={userInfo} editable={editable} />
       <Content /> 
     </Container>
   )

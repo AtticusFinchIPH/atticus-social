@@ -20,7 +20,9 @@ import {
   PUT_FOLLOW_SUCCESS,
   PUT_FOLLOW_FAIL,
   PUT_UNFOLLOW_SUCCESS,
-  PUT_UNFOLLOW_FAIL
+  PUT_UNFOLLOW_FAIL,
+  USER_UPDATE_ENABLE,
+  USER_UPDATE_DISABLE
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -29,6 +31,7 @@ function userSigninReducer(state = {}, action) {
       return { loading: true };
     case USER_UPDATE_REQUEST:
       return { loading: true };
+    case USER_UPDATE_SUCCESS:
     case USER_SIGNIN_SUCCESS:
       return { loading: false, userInfo: action.payload };
     case USER_SIGNIN_FAIL:
@@ -43,12 +46,16 @@ function userSigninReducer(state = {}, action) {
 
 function userUpdateReducer(state = {}, action) {
   switch (action.type) {
+    case USER_UPDATE_ENABLE:
+      return { loading: false, editable: true }
+    case USER_UPDATE_DISABLE:
+      return { loading: false, editable: false }
     case USER_UPDATE_REQUEST:
-      return { loading: true };
+      return { loading: true, editable: false };
     case USER_UPDATE_SUCCESS:
-      return { loading: false, userInfo: action.payload };
+      return { loading: false, userInfo: action.payload, editable: false };
     case USER_UPDATE_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, editable: false };
     default:
       return state;
   }

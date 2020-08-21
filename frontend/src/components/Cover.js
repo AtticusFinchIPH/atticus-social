@@ -6,8 +6,11 @@ import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import PanToolIcon from '@material-ui/icons/PanTool';
 import { getCharacterColor } from "../util";
 import { useTheme, withStyles } from "@material-ui/styles";
+import { enableUpdate } from "../actions/userActions";
+import { useDispatch } from "react-redux";
 
 const AVATAR_DIMENSION = 20;
 
@@ -97,6 +100,11 @@ const EditAvatar = (props) => {
 const Cover = (props) => {
   const classes = useStyles();
   const { userInfo, editable } = props;
+  const dispatch = useDispatch();
+  const handleUndoChanges = (e) => {
+    e.preventDefault();
+    dispatch(enableUpdate(false));
+  }
   return (
     <Paper className={classes.mainCover}>
         <div className={classes.mainCoverContent}>
@@ -146,11 +154,18 @@ const Cover = (props) => {
                       <PhotoCameraIcon fontSize="large" />
                     </IconButton>
                   </LightTooltip>
-                  <LightTooltip title="Save changes">
-                    <IconButton aria-label="SaveChanges" style={{color: "#ffffff"}} >
-                      <SaveIcon fontSize="large" />
-                    </IconButton>
-                  </LightTooltip>
+                  <div>
+                    <LightTooltip title="Undo changes">
+                      <IconButton onClick={handleUndoChanges} aria-label="UndoChanges" style={{color: "#ffffff"}} >
+                        <PanToolIcon />
+                      </IconButton>
+                    </LightTooltip>
+                    <LightTooltip title="Save changes">
+                      <IconButton aria-label="SaveChanges" style={{color: "#ffffff"}} >
+                        <SaveIcon fontSize="large" />
+                      </IconButton>
+                    </LightTooltip>
+                  </div>
                 </div>
                 </>
               :

@@ -3,7 +3,10 @@ import Cookie from 'js-cookie';
 import {
   USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,
   USER_SIGNIN_FAIL, USER_REGISTER_REQUEST,
-  USER_SIGNOUT, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, GET_ALL_USERS_REQUEST, GET_ALL_USERS_FAIL, GET_ALL_USERS_SUCCESS, GET_NOTFOLLOWING_FAIL, GET_NOTFOLLOWING_SUCCESS, GET_FOLLOWING_REQUEST, GET_FOLLOWING_SUCCESS, GET_FOLLOWING_FAIL, GET_NOTFOLLOWING_REQUEST,
+  USER_SIGNOUT, 
+  USER_UPDATE_ENABLE, USER_UPDATE_DISABLE, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, 
+  GET_ALL_USERS_REQUEST, GET_ALL_USERS_FAIL, GET_ALL_USERS_SUCCESS, 
+  GET_NOTFOLLOWING_FAIL, GET_NOTFOLLOWING_SUCCESS, GET_FOLLOWING_REQUEST, GET_FOLLOWING_SUCCESS, GET_FOLLOWING_FAIL, GET_NOTFOLLOWING_REQUEST,
   PUT_FOLLOW_SUCCESS,
   PUT_FOLLOW_FAIL,
   PUT_UNFOLLOW_SUCCESS,
@@ -16,6 +19,11 @@ const authConfig = (userInfo) => {
           'Authorization': 'Bearer ' + userInfo.token,
       }
   }
+}
+
+const enableUpdate = (isEnable) => (dispatch) => {
+  if(isEnable) dispatch({ type: USER_UPDATE_ENABLE });
+  else dispatch({ type: USER_UPDATE_DISABLE });
 }
 
 const update = ({ userId, firstName, lastName, email, password }) => async (dispatch, getState) => {
@@ -138,4 +146,4 @@ const unfollowRequest = (unfollowingId) => async (dispatch, getState) => {
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
-export { signin, register, signout, update, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };
+export { signin, register, signout, enableUpdate, update, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };

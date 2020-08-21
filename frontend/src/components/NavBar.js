@@ -15,7 +15,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
-import { signout } from "../actions/userActions";
+import { signout, enableUpdate } from "../actions/userActions";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) return { color: "#ff4081" };
@@ -114,6 +114,7 @@ const NavBar = withRouter(({history}) => {
 
   const handleEditProfile = (e) => {
     e.preventDefault();
+    dispatch(enableUpdate(true));
     setAnchorAcc(null);
   }
 
