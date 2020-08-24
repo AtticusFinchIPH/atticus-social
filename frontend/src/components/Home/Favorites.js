@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     },
     gridList: {
         width: 500,
-        height: 450,
     },
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',
@@ -32,16 +31,15 @@ const Favorites = () => {
     return (
         <Paper className={classes.paper}>
             <div className={classes.root}>
+                
+                <Typography component="p" variant="h6" color="secondary">
+                    Your Favorites
+                </Typography>
+                {favorites.length > 0
+                ?
                 <GridList cellHeight={180} className={classes.gridList}>
-                    <GridListTile key="Subheader" cols={2} style={{ height: 'auto', marginTop: '8px' }}>
-                        <ListSubheader component="div">
-                            <Typography component="p" variant="h6" color="secondary">
-                                Your Favorites
-                            </Typography>
-                        </ListSubheader>
-                    </GridListTile>
                     {favorites.map((tile) => (
-                        <GridListTile key={tile.id}>
+                        <GridListTile key={tile._id}>
                             <img src="https://source.unsplash.com/random" alt={tile.text} />
                             <GridListTileBar
                                 title={tile.text}
@@ -52,8 +50,14 @@ const Favorites = () => {
                                 }
                             />
                         </GridListTile>
-                    ))}
+                    ))
+                    }
                 </GridList>
+                :
+                <Typography component="p" variant="body1" style={{paddingBottom: '18px'}} >
+                    You haven't had any favorite posts
+                </Typography>
+                }
             </div>
         </Paper>
     )
