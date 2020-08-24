@@ -10,6 +10,7 @@ router.post("/signin", async (req, res) => {
         email: req.body.email,
         password: req.body.password
     }).populate('favoritePosts');
+    console.log(signinUser)
     if(signinUser){
         res.send({
             _id: signinUser._id,
@@ -61,7 +62,7 @@ router.post("/register", async (req, res) => {
 })
 
 router.get("/", isAuth, async (req, res) => {
-    const users = await User.find({});
+    const users = await User.find({}).populate('favoritePosts');
     return res.status(200).send(users);
 })
 
