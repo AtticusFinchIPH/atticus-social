@@ -26,12 +26,12 @@ const enableUpdate = (isEnable) => (dispatch) => {
   else dispatch({ type: USER_UPDATE_DISABLE });
 }
 
-const update = ({ userId, firstName, lastName, email, password }) => async (dispatch, getState) => {
+const updateCover = (nickName, description) => async (dispatch, getState) => {
   const { userSignin: { userInfo } } = getState();
-  dispatch({ type: USER_UPDATE_REQUEST, payload: { userId, firstName, lastName, email, password } });
+  dispatch({ type: USER_UPDATE_REQUEST, payload: { nickName, description } });
   try {
-    const { data } = await axios.put("/api/users/" + userId,
-      { firstName, lastName, email, password },
+    const { data } = await axios.put("/api/users/",
+      { nickName, description },
       authConfig(userInfo),
     );
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
@@ -146,4 +146,4 @@ const unfollowRequest = (unfollowingId) => async (dispatch, getState) => {
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
-export { signin, register, signout, enableUpdate, update, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };
+export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };

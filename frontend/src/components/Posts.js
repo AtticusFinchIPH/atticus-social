@@ -220,9 +220,9 @@ const FormerPost = (props) => {
         <Paper className={classes.paper}>
             <div className={classes.container}>
                 <div className={classes.row}>
-                    <Avatar className={clsx( classes.avatar, classes[getCharacterColor(props.post.postedBy.firstName.charAt(0))])}>
+                    <Avatar className={clsx( classes.avatar, classes[getCharacterColor(props.post.postedBy.nickName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
-                            {props.post.postedBy.firstName.charAt(0).toUpperCase()}
+                            {props.post.postedBy.nickName.charAt(0).toUpperCase()}
                         </Typography>
                     </Avatar>
                     <div>

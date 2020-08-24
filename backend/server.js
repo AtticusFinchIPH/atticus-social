@@ -54,6 +54,7 @@ const main = () => {
             const user = new User({
                 firstName: 'atticus',
                 lastName: 'finch',
+                nickName: 'atticus finch',
                 email: 'tranvanduc@gmail.com',
                 password: 'admin',
                 isAdmin: true

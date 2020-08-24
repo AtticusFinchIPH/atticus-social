@@ -27,8 +27,8 @@ router.get("/own", isAuth, async (req, res) => {
     const user = req.user;
     const posts = await Post.find({postedBy: user._id})
                             .populate('favoritePosts')
-                            .populate('comments.postedBy', '_id firstName lastName')
-                            .populate('postedBy', '_id firstName lastName')
+                            .populate('comments.postedBy', '_id firstName lastName nickName')
+                            .populate('postedBy', '_id firstName lastName nickName')
                             .sort('-created')
                             .exec();
     res.status(200).send(posts);
@@ -41,8 +41,8 @@ router.get("/newsfeed", isAuth, async (req, res) => {
     const followingIDs = followings.map(person => person._id);
     try{
       let posts = await Post.find({postedBy: { $in : followingIDs } })
-                            .populate('comments.postedBy', '_id firstName lastName')
-                            .populate('postedBy', '_id firstName lastName')
+                            .populate('comments.postedBy', '_id firstName lastName nickName')
+                            .populate('postedBy', '_id firstName lastName nickName')
                             .sort('-created')
                             .exec();
       res.status(200).json(posts);
@@ -91,7 +91,7 @@ router.post("/", isAuth, async (req, res) => {
             } else {
                 post.photo = null;
             }       
-            let result = await (await post.save()).populate('postedBy', '_id firstName lastName').execPopulate();
+            let result = await (await post.save()).populate('postedBy', '_id firstName lastName nickName').execPopulate();
             if(result) return res.status(200).send(result);
         });   
     }catch (err){
@@ -128,8 +128,8 @@ router.put("/react", isAuth, async (req, res) => {
                     postedBy: user._id,
                 }
                 post = await Post.findByIdAndUpdate(postId, {$push: {comments: newComment}}, {new: true})
-                                    .populate('comments.postedBy', '_id firstName lastName')
-                                    .populate('postedBy', '_id firstName lastName')
+                                    .populate('comments.postedBy', '_id firstName lastName nickName')
+                                    .populate('postedBy', '_id firstName lastName nickName')
                                     .exec();
                 break;
             default: throw ERR_REACT_TYPE_UNKNOWN;

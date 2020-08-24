@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Avatar, Typography, Badge, Tooltip, IconButton} from "@material-ui/core";
+import { Paper, Avatar, Typography, Badge, Tooltip, IconButton, TextField} from "@material-ui/core";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import EditIcon from '@material-ui/icons/Edit';
@@ -9,7 +9,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import { getCharacterColor } from "../util";
 import { useTheme, withStyles } from "@material-ui/styles";
-import { enableUpdate } from "../actions/userActions";
+import { enableUpdate, updateCover } from "../actions/userActions";
 import { useDispatch } from "react-redux";
 
 const AVATAR_DIMENSION = 20;
@@ -41,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
   text: {
     paddingTop: theme.spacing(2),
     paddingRight: theme.spacing(1),
+  },
+  nicknameTextField: {
+    color: "#ffffff", 
+    fontSize: '3rem',
+  },
+  descTextField: {
+    color: "#ffffff", 
+    fontSize: '1.5rem',
   },
   editAvatar: {
     width: theme.spacing(4),
@@ -100,10 +108,18 @@ const EditAvatar = (props) => {
 const Cover = (props) => {
   const classes = useStyles();
   const { userInfo, editable } = props;
+  const [nickName, setNickName] = useState(userInfo.nickName);
+  const [description, setDescription] = useState(userInfo.description);
   const dispatch = useDispatch();
   const handleUndoChanges = (e) => {
     e.preventDefault();
+    setNickName(userInfo.nickName);
+    setDescription(userInfo.description);
     dispatch(enableUpdate(false));
+  }
+  const submitCoverInfo = (e) => {
+    e.preventDefault();
+    dispatch(updateCover(nickName, description));
   }
   return (
     <Paper className={classes.mainCover}>
@@ -111,76 +127,114 @@ const Cover = (props) => {
             {
               editable 
               ?
-                <>
-                <div>
-                  <Badge
-                    overlap="circle"
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    badgeContent={<EditAvatar userInfo={userInfo}/>}
-                  >
-                    <Avatar className={clsx( classes.avatar, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
-                        <Typography component="h1" variant="h3" color="inherit">
-                          {userInfo.firstName.charAt(0).toUpperCase()}
-                        </Typography>
-                    </Avatar>
-                  </Badge>
-                  <div className={classes.flexRow}>
-                    <Typography className={classes.text} component="h1" variant="h3" color="inherit">
-                      {`${userInfo.firstName} ${userInfo.lastName}`}
-                    </Typography>
-                    <LightTooltip title="Change nickname">
-                      <IconButton aria-label="ChangeNickname" style={{color: "#ffffff"}} >
-                        <EditIcon />
-                      </IconButton>
-                    </LightTooltip>
-                  </div>
-                  <div className={classes.flexRow}>
-                    <Typography className={classes.text} variant="h5" color="inherit" paragraph>
-                        Description
-                    </Typography>
-                    <LightTooltip title="Change description">
-                      <IconButton aria-label="ChangeDescription" style={{color: "#ffffff"}} >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </LightTooltip>
-                  </div>
-                </div>
-                <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>                 
-                  <LightTooltip title="Change photo cover">
-                    <IconButton aria-label="ChangeCover" style={{color: "#ffffff"}} >
-                      <PhotoCameraIcon fontSize="large" />
-                    </IconButton>
-                  </LightTooltip>
+                <form onSubmit={submitCoverInfo}>
                   <div>
-                    <LightTooltip title="Undo changes">
-                      <IconButton onClick={handleUndoChanges} aria-label="UndoChanges" style={{color: "#ffffff"}} >
-                        <PanToolIcon />
-                      </IconButton>
-                    </LightTooltip>
-                    <LightTooltip title="Save changes">
-                      <IconButton aria-label="SaveChanges" style={{color: "#ffffff"}} >
-                        <SaveIcon fontSize="large" />
-                      </IconButton>
-                    </LightTooltip>
+                    <Badge
+                      overlap="circle"
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      badgeContent={<EditAvatar userInfo={userInfo}/>}
+                    >
+                      <Avatar className={clsx( classes.avatar, classes[getCharacterColor(nickName.charAt(0))])}>
+                          <Typography component="h1" variant="h3" color="inherit">
+                            {nickName.charAt(0).toUpperCase()}
+                          </Typography>
+                      </Avatar>
+                    </Badge>
+                    <div className={classes.flexRow}>
+                      <TextField 
+                        required={true}
+                        defaultValue={nickName}
+                        InputProps={{classes: {
+                            input: classes.nicknameTextField,
+                          },
+                        }}
+                        inputProps={{
+                          maxLength: 20,
+                        }}
+                        onChange={(e) => setNickName(e.target.value)}
+                      />
+                      <LightTooltip title="Change nickname">
+                        <IconButton aria-label="ChangeNickname" style={{color: "#ffffff"}} >
+                          <EditIcon />
+                        </IconButton>
+                      </LightTooltip>
+                    </div>
+                    <div className={classes.flexRow}>                   
+                      {description 
+                      ? 
+                      <TextField 
+                        required={true}
+                        defaultValue={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        InputProps={{classes: {
+                            input: classes.descTextField,
+                          },
+                        }}
+                        inputProps={{
+                          maxLength: 100,
+                        }}
+                      /> 
+                      : 
+                      <TextField 
+                        required={true}
+                        placeholder='Description'
+                        onChange={(e) => setDescription(e.target.value)}
+                        InputProps={{classes: {
+                            input: classes.descTextField,
+                          },
+                        }}
+                        inputProps={{
+                          maxLength: 100,
+                        }}
+                      />}                  
+                      <LightTooltip title="Change description">
+                        <IconButton aria-label="ChangeDescription" style={{color: "#ffffff"}} >
+                          <EditIcon fontSize="small" />
+                        </IconButton>
+                      </LightTooltip>
+                    </div>
                   </div>
-                </div>
-                </>
+                  <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>                 
+                    <LightTooltip title="Change photo cover">
+                      <IconButton aria-label="ChangeCover" style={{color: "#ffffff"}} >
+                        <PhotoCameraIcon fontSize="large" />
+                      </IconButton>
+                    </LightTooltip>
+                    <div>
+                      <LightTooltip title="Undo changes">
+                        <IconButton onClick={handleUndoChanges} aria-label="UndoChanges" style={{color: "#ffffff"}} >
+                          <PanToolIcon />
+                        </IconButton>
+                      </LightTooltip>
+                      <LightTooltip title="Save changes">
+                        <IconButton onClick={submitCoverInfo} aria-label="SaveChanges" style={{color: "#ffffff"}} >
+                          <SaveIcon fontSize="large" />
+                        </IconButton>
+                      </LightTooltip>
+                    </div>
+                  </div>
+                </form>
               :
               <div>
-                <Avatar className={clsx( classes.avatar, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
+                <Avatar className={clsx( classes.avatar, classes[getCharacterColor(nickName.charAt(0))])}>
                   <Typography component="h1" variant="h3" color="inherit">
-                    {userInfo.firstName.charAt(0).toUpperCase()}
+                    {nickName.charAt(0).toUpperCase()}
                   </Typography>
                 </Avatar>
                 <Typography className={classes.text} component="h1" variant="h3" color="inherit">
-                  {`${userInfo.firstName} ${userInfo.lastName}`}
+                  {nickName}
                 </Typography>
+                {description
+                ?
                 <Typography className={classes.text} variant="h5" color="inherit" paragraph>
-                    Description
+                  {description}
                 </Typography>
+                :
+                <></>
+                }
               </div>
             }            
         </div>

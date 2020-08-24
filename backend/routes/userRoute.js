@@ -15,6 +15,8 @@ router.post("/signin", async (req, res) => {
             _id: signinUser._id,
             firstName: signinUser.firstName,
             lastName: signinUser.lastName,
+            nickName: signinUser.nickName,
+            description: signinUser.description,
             email: signinUser.email,
             isAdmin: signinUser.isAdmin,
             token: getToken(signinUser),
@@ -34,6 +36,7 @@ router.post("/register", async (req, res) => {
         const user = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
+            nickName: `${req.body.firstName} ${req.body.lastName}`,
             email: req.body.email,
             password: req.body.password,
             isAdmin: false,
@@ -44,6 +47,8 @@ router.post("/register", async (req, res) => {
                 _id: newUser.id,
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
+                nickName: newUser.nickName,
+                description: newUser.description,
                 email: newUser.email,
                 isAdmin: newUser.isAdmin,
                 token: getToken(newUser),
@@ -72,6 +77,29 @@ router.get("/notfollowing", isAuth, async (req, res) => {
     const user = req.user;
     const users = await User.find({ $and: [{_id: {$ne: user._id}}, {followers: {$ne: user._id}}] });
     return res.status(200).send(users);
+})
+
+router.put("", isAuth, async (req, res) => {
+    const user = req.user;
+    const { nickName, description } = req.body;
+    try {
+        const userInfo = await User.findByIdAndUpdate(user._id, {nickName, description}, {new: true});
+        if(userInfo){
+            res.send({
+                _id: userInfo._id,
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
+                nickName: userInfo.nickName,
+                description: userInfo.description,
+                email: userInfo.email,
+                isAdmin: userInfo.isAdmin,
+                token: getToken(userInfo),
+                favoritePosts: userInfo.favoritePosts,
+            })
+        }
+    } catch (error) {
+        return res.status(500).json({ msg: "Error in Updating cover profile"});       
+    }
 })
 
 router.put("/follow", isAuth, async (req, res) => {

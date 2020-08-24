@@ -92,7 +92,10 @@ const SignUp = props => {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => setFirstName(e.target.value)}                
+                  inputProps={{
+                    maxLength: 15,
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -105,6 +108,9 @@ const SignUp = props => {
                   name="lastName"
                   autoComplete="lname"
                   onChange={(e) => setLastName(e.target.value)}
+                  inputProps={{
+                    maxLength: 15,
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>

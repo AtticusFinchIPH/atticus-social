@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 const HomeMain = props => {
   const userSignin = useSelector(state => state.userSignin);
   const {userInfo} = userSignin;
+  console.log(userInfo)
   const userUpdate = useSelector(state => state.userUpdate);
   const {editable} = userUpdate;
   return (
