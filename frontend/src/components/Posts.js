@@ -175,7 +175,7 @@ const FormerPost = (props) => {
     };
     const [values, setValues] = useState({
         like: checkLike(props.post.likes, props.userInfo._id),
-        favorite: checkLike(props.userInfo.favoritePosts, props.post._id),
+        favorite: checkLike(props.userInfo.favoritePosts.map(post => post._id), props.post._id),
         likes: props.post.likes,
         comments: props.post.comments,
     });
