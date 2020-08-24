@@ -10,14 +10,15 @@ const useStyles = makeStyles((theme) => ({
     },
     root: {
         display: 'flex',
+        flexDirection: 'column',
         flexWrap: 'wrap',
         justifyContent: 'space-around',
         overflow: 'hidden',
         backgroundColor: theme.palette.background.paper,
         margin: theme.spacing(2),
+        padding: theme.spacing(2),
     },
     gridList: {
-        width: 500,
     },
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',
@@ -31,7 +32,6 @@ const Favorites = () => {
     return (
         <Paper className={classes.paper}>
             <div className={classes.root}>
-                
                 <Typography component="p" variant="h6" color="secondary">
                     Your Favorites
                 </Typography>
@@ -55,7 +55,7 @@ const Favorites = () => {
                 </GridList>
                 :
                 <Typography component="p" variant="body1" style={{paddingBottom: '18px'}} >
-                    You haven't had any favorite posts
+                    You haven't had any favorite posts yet
                 </Typography>
                 }
             </div>
