@@ -13,7 +13,18 @@ router.get("/favorites", isAuth, async(req, res) => {
     const user = req.user;
     try {
         let userInfo = await User.findById(user._id)
-                                .populate('favoritePosts')
+                                .populate([
+                                    {
+                                        path: 'favoritePosts',
+                                        model: 'Post',
+                                        select: 'text photo likes created',
+                                        populate: {
+                                            path: 'postedBy',
+                                            model: 'User',
+                                            select: 'nickName photo',
+                                        }
+                                    }
+                                ])
                                 .sort('-created')
                                 .exec();
         const {favoritePosts} = userInfo;

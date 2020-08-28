@@ -29,6 +29,7 @@ const Favorites = () => {
     const classes = useStyles();
     const favoritePosts = useSelector(state => state.favoritePosts);
     const {favorites} = favoritePosts;
+    console.log(favorites)
     return (
         <Paper className={classes.paper}>
             <div className={classes.root}>
@@ -42,8 +43,8 @@ const Favorites = () => {
                         <GridListTile key={tile._id}>
                             <img src="https://source.unsplash.com/random" alt={tile.text} />
                             <GridListTileBar
-                                title={tile.text}
-                                subtitle={<span>by: {tile.author}</span>}
+                                title={tile.postedBy.nickName}
+                                subtitle={tile.text}
                                 actionIcon={
                                     <IconButton aria-label={`info about ${tile.text}`} className={classes.icon}>
                                     </IconButton>

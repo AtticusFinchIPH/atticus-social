@@ -171,7 +171,7 @@ const FormerPost = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const checkLike = (likes, id) => {
-        console.log(likes, id);
+        // console.log(likes, id);
         return likes.indexOf(id) !== -1;
     };
     const [values, setValues] = useState({
