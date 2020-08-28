@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useHistory } from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import clsx from "clsx";
 import { CssBaseline, AppBar, Drawer, Toolbar, Button, IconButton, Divider, Tooltip, Typography,
@@ -95,6 +95,7 @@ const NavBar = withRouter(({history}) => {
   const openAcc = Boolean(anchorAcc);
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
+  const historyLink = useHistory();
   const dispatch = useDispatch();
 
   const handleDrawerOpen = () => {
@@ -114,6 +115,7 @@ const NavBar = withRouter(({history}) => {
 
   const handleEditProfile = (e) => {
     e.preventDefault();
+    historyLink.replace("/");
     dispatch(enableUpdate(true));
     setAnchorAcc(null);
   }
