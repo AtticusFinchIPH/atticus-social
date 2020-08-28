@@ -9,7 +9,18 @@ router.post("/signin", async (req, res) => {
     const signinUser = await User.findOne({
         email: req.body.email,
         password: req.body.password
-    }).populate('favoritePosts');
+    }).populate([
+        {
+            path: 'favoritePosts',
+            model: 'Post',
+            select: 'text photo likes created',
+            populate: {
+                path: 'postedBy',
+                model: 'User',
+                select: 'nickName photo',
+            }
+        }
+    ]);
     console.log(signinUser)
     if(signinUser){
         res.send({
@@ -31,7 +42,7 @@ router.post("/signin", async (req, res) => {
 router.post("/register", async (req, res) => {
     const registerUser = await User.findOne({
         email: req.body.email,
-    }).populate('favoritePosts');
+    });
     if(registerUser) res.status(401).send({ msg: 'Email has been used by another user'});
     else {
         const user = new User({
@@ -85,7 +96,18 @@ router.put("", isAuth, async (req, res) => {
     const { nickName, description } = req.body;
     try {
         const userInfo = await User.findByIdAndUpdate(user._id, {nickName, description}, {new: true})
-                                    .populate('favoritePosts');
+                                    .populate([
+                                        {
+                                            path: 'favoritePosts',
+                                            model: 'Post',
+                                            select: 'text photo likes created',
+                                            populate: {
+                                                path: 'postedBy',
+                                                model: 'User',
+                                                select: 'nickName photo',
+                                            }
+                                        }
+                                    ]);
         if(userInfo){
             res.send({
                 _id: userInfo._id,
