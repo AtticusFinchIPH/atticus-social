@@ -29,7 +29,7 @@ const Favorites = () => {
     const classes = useStyles();
     const favoritePosts = useSelector(state => state.favoritePosts);
     const {favorites} = favoritePosts;
-    console.log(favorites)
+    // console.log(favorites)
     return (
         <Paper className={classes.paper}>
             <div className={classes.root}>
