@@ -1,13 +1,14 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
-import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer } from "./reducers/userReducer";
+import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer, userCheckingReducer } from "./reducers/userReducer";
 import { favoritePostReducer, personalPostsReducer, newsfeedReducer } from "./reducers/postReducer";
 
 const userInfo = Cookie.getJSON('userInfo') || null;
 
 const initialState = { userSignin: {userInfo}, 
                       userUpdate: { editable: false},
+                      userChecking: {},
                       favoritePosts: { favorites: []}, 
                       personalPosts: { listPost: []},
                       newsfeedPosts: { newsfeed: []},
@@ -19,6 +20,7 @@ const initialState = { userSignin: {userInfo},
 const reducer = combineReducers({
   userSignin: userSigninReducer,
   userUpdate: userUpdateReducer,
+  userChecking: userCheckingReducer,
   favoritePosts: favoritePostReducer,
   personalPosts: personalPostsReducer,
   newsfeedPosts: newsfeedReducer,

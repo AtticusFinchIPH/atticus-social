@@ -22,7 +22,10 @@ import {
   PUT_UNFOLLOW_SUCCESS,
   PUT_UNFOLLOW_FAIL,
   USER_UPDATE_ENABLE,
-  USER_UPDATE_DISABLE
+  USER_UPDATE_DISABLE,
+  CHECK_PROFILE_REQUEST,
+  CHECK_PROFILE_FAIL,
+  CHECK_PROFILE_SUCCESS
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -103,4 +106,17 @@ function followingReducer(state = {followings: []}, action) {
       return state;
   }
 }
-export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer };
+
+function userCheckingReducer(state = {}, action) {
+  switch (action.type) {
+    case CHECK_PROFILE_REQUEST:
+      return {...state, loading: true };
+    case CHECK_PROFILE_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case CHECK_PROFILE_FAIL:
+      return {...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }  
+}
+export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer, userCheckingReducer };

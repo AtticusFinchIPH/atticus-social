@@ -10,7 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles } from "@material-ui/styles";
-import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
+import { getNotfollowings, getFollowings, followRequest, unfollowRequest, checkProfileRequest } from "../../actions/userActions";
 import { getCharacterColor } from "../../util";
 
 const AVATAR_DIMENSION = 5;
@@ -109,6 +109,9 @@ const Right = props => {
     await dispatch(unfollowRequest(unfollowingId));
     dispatch(getNotfollowings());
   }
+  const checkProfile = async (followingId) => {
+    await dispatch(checkProfileRequest(followingId));
+  }
   return (
     <Paper elevation={5} className={classes.paper}>
       <Grid container className={classes.container}>
@@ -151,7 +154,7 @@ const Right = props => {
           </Typography>
           <List className={classes.list}>
               {followings.map((tile) => (
-                <ListItem key={`item-${tile._id}`} button>
+                <ListItem key={`item-${tile._id}`} button onClick={(e) => checkProfile(tile._id)}>
                   <ListItemAvatar>
                     {/* <Avatar
                       alt={`Avatar n°${value + 1}`}

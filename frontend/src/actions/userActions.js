@@ -11,6 +11,9 @@ import {
   PUT_FOLLOW_FAIL,
   PUT_UNFOLLOW_SUCCESS,
   PUT_UNFOLLOW_FAIL,
+  CHECK_PROFILE_FAIL,
+  CHECK_PROFILE_SUCCESS,
+  CHECK_PROFILE_REQUEST,
 } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -146,4 +149,20 @@ const unfollowRequest = (unfollowingId) => async (dispatch, getState) => {
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
-export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest };
+
+const checkProfileRequest = (followingId) => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  dispatch({ type: CHECK_PROFILE_REQUEST});
+  try {
+    const { data } = await axios.get(
+      `/api/user/${followingId}`,
+      authConfig(userInfo),
+    );
+    dispatch({ type: CHECK_PROFILE_SUCCESS, payload: data });
+
+  } catch (error) {
+    dispatch({ type: CHECK_PROFILE_FAIL, payload: error.response?.data?.msg || error.message });
+    if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
+  }
+}
+export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest, checkProfileRequest };
