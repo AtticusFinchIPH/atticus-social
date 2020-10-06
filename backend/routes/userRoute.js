@@ -91,6 +91,14 @@ router.get("/notfollowing", isAuth, async (req, res) => {
     return res.status(200).send(users);
 })
 
+router.get("/profile/:userId", isAuth, async (req, res) => {
+    const userId = req.params.userId;
+    console.log(true, userId);
+    const user = await User.findById(userId);
+    console.log(user);
+    return res.status(200).send(user);
+})
+
 router.put("", isAuth, async (req, res) => {
     const user = req.user;
     const { nickName, description } = req.body;
@@ -142,6 +150,7 @@ router.put("/follow", isAuth, async (req, res) => {
 })
 
 router.put("/unfollow", isAuth, async (req, res) => {
+    console.log(true)
     const user = req.user;
     const { unfollowingId } = req.body;
     try {

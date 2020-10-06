@@ -155,7 +155,7 @@ const checkProfileRequest = (followingId) => async (dispatch, getState) => {
   dispatch({ type: CHECK_PROFILE_REQUEST});
   try {
     const { data } = await axios.get(
-      `/api/user/${followingId}`,
+      `/api/users/profile/${followingId}`,
       authConfig(userInfo),
     );
     dispatch({ type: CHECK_PROFILE_SUCCESS, payload: data });
