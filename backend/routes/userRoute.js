@@ -1,6 +1,7 @@
 import express from "express";
 import {getToken, isAuth} from "../auth/authHelper";
 import User from "../models/userModel";
+import Post from "../models/postModel";
 
 const router = express.Router();
 
@@ -93,10 +94,27 @@ router.get("/notfollowing", isAuth, async (req, res) => {
 
 router.get("/profile/:userId", isAuth, async (req, res) => {
     const userId = req.params.userId;
-    console.log(true, userId);
+    console.log(`GET /users/profile/${userId}`);
     const user = await User.findById(userId);
-    console.log(user);
-    return res.status(200).send(user);
+    const posts = await Post.find({postedBy: user._id})
+                            .populate([
+                                {
+                                    path: 'favoritePosts',
+                                    model: 'Post',
+                                    select: 'text photo likes created',
+                                    populate: {
+                                        path: 'postedBy',
+                                        model: 'User',
+                                        select: 'nickName photo',
+                                    }
+                                }
+                            ])
+                            .populate('comments.postedBy', '_id firstName lastName nickName')
+                            .populate('postedBy', '_id firstName lastName nickName')
+                            .sort('-created')
+                            .exec();
+    const profile = {user, posts};
+    return res.status(200).send(profile);
 })
 
 router.put("", isAuth, async (req, res) => {
