@@ -169,21 +169,23 @@ const NewPost = (props) => {
 
 const FormerPost = (props) => {
     const classes = useStyles();
+    const userSignin = useSelector(state => state.userSignin);
+    const {userInfo} = userSignin;
     const dispatch = useDispatch();
     const checkLike = (likes, id) => {
         // console.log(likes, id);
         return likes.indexOf(id) !== -1;
     };
     const [values, setValues] = useState({
-        like: checkLike(props.post.likes, props.userInfo._id),
-        favorite: checkLike(props.userInfo.favoritePosts.map(post => post._id), props.post._id),
+        like: checkLike(props.post.likes, userInfo._id),
+        favorite: checkLike(userInfo.favoritePosts.map(post => post._id), props.post._id),
         likes: props.post.likes,
         comments: props.post.comments,
     });
     const [curComment, setCurComment] = useState('');
     const clickLike = (e) => {
         dispatch(reactPost(REACT_TYPE_LIKE, !values.like, props.post._id));
-        setValues({...values, like: !values.like, likes: !values.like ? [...values.likes, props.userInfo._id] : values.likes.filter((id) => {return id !== props.userInfo._id})});
+        setValues({...values, like: !values.like, likes: !values.like ? [...values.likes, props.userInfo._id] : values.likes.filter((id) => {return id !== userInfo._id})});
     };
     const clickFavorite = (e) => {
         dispatch(favoritePost(!values.favorite, props.post._id));
@@ -198,9 +200,9 @@ const FormerPost = (props) => {
                     text: curComment,
                     created: "Just Now",
                     postedBy: {
-                        _id: props.userInfo._id,
-                        firstName: props.userInfo.firstName,
-                        lastName: props.userInfo.lastName,
+                        _id: userInfo._id,
+                        firstName: userInfo.firstName,
+                        lastName: userInfo.lastName,
                     }
                 }]
             });
@@ -280,9 +282,9 @@ const FormerPost = (props) => {
                     </div>
                 <Divider variant="middle" width="100%"/>
                 <div className={classes.row}>
-                    <Avatar className={clsx( classes.avatarSmall, classes[getCharacterColor(props.userInfo.firstName.charAt(0))])}>
+                    <Avatar className={clsx( classes.avatarSmall, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
-                            {props.userInfo.firstName.charAt(0).toUpperCase()}
+                            {userInfo.firstName.charAt(0).toUpperCase()}
                         </Typography>
                     </Avatar>
                     <TextField
