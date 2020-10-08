@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Avatar, Typography, Badge, Tooltip, IconButton, TextField} from "@material-ui/core";
@@ -108,8 +108,12 @@ const EditAvatar = (props) => {
 const Cover = (props) => {
   const classes = useStyles();
   const { userInfo, editable } = props;
-  const [nickName, setNickName] = useState(userInfo.nickName);
+  const [nickName, setNickName] = useState(userInfo.nickName || 'Loading...');
   const [description, setDescription] = useState(userInfo.description);
+  useEffect(() => {
+    setNickName(userInfo.nickName || 'Loading...');
+    setDescription(userInfo.description);
+  }, [props]);
   const dispatch = useDispatch();
   const handleUndoChanges = (e) => {
     e.preventDefault();

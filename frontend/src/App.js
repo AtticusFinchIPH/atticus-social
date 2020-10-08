@@ -8,6 +8,7 @@ import Home from "./components/Home/Main";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
 import Newsfeed from "./components/Newsfeed/Main";
+import Profile from "./components/Profile/Main";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <PublicRoute path="/signin" component={SignIn} restricted={true}/>
           <PublicRoute path="/signup" component={SignUp} restricted={true}/>
           <PrivateRoute path="/newsfeed" component={Newsfeed} />
+          <PrivateRoute path="/profile/:userId" component={Profile} />
         </Switch>
       </ThemeProvider>
     </BrowserRouter>
