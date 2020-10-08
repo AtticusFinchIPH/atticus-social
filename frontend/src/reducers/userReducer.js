@@ -107,16 +107,16 @@ function followingReducer(state = {followings: []}, action) {
   }
 }
 
-function userCheckingReducer(state = {}, action) {
+function profileCheckingReducer(state = {userInfo: {}, listPost: []}, action) {
   switch (action.type) {
     case CHECK_PROFILE_REQUEST:
       return {...state, loading: true };
     case CHECK_PROFILE_SUCCESS:
-      return { loading: false, userInfo: action.payload };
+      return { loading: false, userInfo: action.profile, listPost: action.listPost };
     case CHECK_PROFILE_FAIL:
       return {...state, loading: false, error: action.payload };
     default:
       return state;
   }  
 }
-export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer, userCheckingReducer };
+export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer, profileCheckingReducer };

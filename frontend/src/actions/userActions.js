@@ -127,7 +127,6 @@ const followRequest = (followingId) => async (dispatch, getState) => {
       authConfig(userInfo),
     );
     dispatch({ type: PUT_FOLLOW_SUCCESS, payload: data });
-
   } catch (error) {
     dispatch({ type: PUT_FOLLOW_FAIL, payload: error.response?.data?.msg || error.message });
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
@@ -143,7 +142,6 @@ const unfollowRequest = (unfollowingId) => async (dispatch, getState) => {
       authConfig(userInfo),
     );
     dispatch({ type: PUT_UNFOLLOW_SUCCESS, payload: data });
-
   } catch (error) {
     dispatch({ type: PUT_UNFOLLOW_FAIL, payload: error.response?.data?.msg || error.message });
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
@@ -158,8 +156,8 @@ const checkProfileRequest = (followingId) => async (dispatch, getState) => {
       `/api/users/profile/${followingId}`,
       authConfig(userInfo),
     );
-    dispatch({ type: CHECK_PROFILE_SUCCESS, payload: data });
-
+    console.log(data);
+    dispatch({ type: CHECK_PROFILE_SUCCESS, profile: data.user, listPost: data.posts});
   } catch (error) {
     dispatch({ type: CHECK_PROFILE_FAIL, payload: error.response?.data?.msg || error.message });
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
