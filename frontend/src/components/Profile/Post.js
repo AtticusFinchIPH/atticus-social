@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { FormerPost } from "../Posts";
@@ -8,9 +9,13 @@ const Post = (props) => {
     return (
         <>
             {
+                listPost && listPost.length > 0
+                ?
                 listPost.map((post, i) =>                   
-                    <FormerPost key={i} userInfo={userInfo} post={post}/>
+                    <FormerPost key={i} post={post}/>
                 )
+                :
+                <Typography variant="h5" component="h2" align='center'>{`${userInfo.nickName} haven't had any post yet.`}</Typography>
             }
         </>
     )
