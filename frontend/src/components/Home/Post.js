@@ -24,7 +24,7 @@ const Post = (props) => {
             <NewPost userInfo={userInfo}/>
             {
                 listPost.map((post, i) =>                   
-                    <FormerPost key={i} userInfo={userInfo} post={post}/>
+                    <FormerPost key={i} post={post}/>
                 )
             }
         </>

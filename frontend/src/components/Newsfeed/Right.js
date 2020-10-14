@@ -128,9 +128,11 @@ const Right = props => {
                     actionIcon={
                       <>
                       <LightTooltip title="See Profile">
-                        <IconButton aria-label={`See profile ${tile._id}`}>
-                          <InfoIcon className={classes.starBorderIcon} />
-                        </IconButton>
+                        <Link to={`/profile/${tile._id}`}>
+                          <IconButton aria-label={`See profile ${tile._id}`}>
+                            <InfoIcon className={classes.starBorderIcon} />
+                          </IconButton>
+                        </Link>
                       </LightTooltip>
                       <LightTooltip title="Follow">
                         <IconButton onClick={(e) => follow(tile._id)} aria-label={`Follow ${tile._id}`}>

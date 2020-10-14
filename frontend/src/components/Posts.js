@@ -204,6 +204,7 @@ const FormerPost = (props) => {
                         _id: userInfo._id,
                         firstName: userInfo.firstName,
                         lastName: userInfo.lastName,
+                        nickName: userInfo.nickName,
                     }
                 }]
             });
