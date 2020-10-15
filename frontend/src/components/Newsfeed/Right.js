@@ -10,7 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles } from "@material-ui/styles";
-import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
+import { getNotfollowings, getFollowings, followRequest, unfollowRequest, chattingRequest } from "../../actions/userActions";
 import { getCharacterColor } from "../../util";
 import { Link } from "react-router-dom";
 
@@ -110,6 +110,9 @@ const Right = props => {
     await dispatch(unfollowRequest(unfollowingId));
     dispatch(getNotfollowings());
   }
+  const openChatbox = (chattingUser) => {
+    dispatch(chattingRequest(chattingUser));
+  }
   return (
     <Paper elevation={5} className={classes.paper}>
       <Grid container className={classes.container}>
@@ -176,7 +179,7 @@ const Right = props => {
                       </IconButton>   
                     </LightTooltip> 
                     <LightTooltip title="Message">
-                      <IconButton edge="end" aria-label="message">
+                      <IconButton onClick={(e) => openChatbox(tile)} edge="end" aria-label="message">
                         <CommentIcon color="primary"/>
                       </IconButton>
                     </LightTooltip>

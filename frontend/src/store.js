@@ -1,7 +1,7 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
-import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer, profileCheckingReducer } from "./reducers/userReducer";
+import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer, profileCheckingReducer, chatReducer } from "./reducers/userReducer";
 import { favoritePostReducer, personalPostsReducer, newsfeedReducer } from "./reducers/postReducer";
 
 const userInfo = Cookie.getJSON('userInfo') || null;
@@ -15,6 +15,7 @@ const initialState = { userSignin: {userInfo},
                       allUsers: { listUser: []},
                       notfollowingUsers: { notfollowings: []},
                       followingUsers: { followings: []},
+                      chattingUserInfo: null,
                       };
 
 const reducer = combineReducers({
@@ -27,6 +28,7 @@ const reducer = combineReducers({
   allUsers: allUsersReducer,
   notfollowingUsers: notfollowingReducer,
   followingUsers: followingReducer,
+  chattingUser: chatReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

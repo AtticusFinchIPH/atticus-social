@@ -25,7 +25,7 @@ import {
   USER_UPDATE_DISABLE,
   CHECK_PROFILE_REQUEST,
   CHECK_PROFILE_FAIL,
-  CHECK_PROFILE_SUCCESS
+  CHECK_PROFILE_SUCCESS, CHATTING_OPEN, CHATTING_CLOSE
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -119,4 +119,15 @@ function profileCheckingReducer(state = {userInfo: {}, listPost: []}, action) {
       return state;
   }  
 }
-export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer, profileCheckingReducer };
+
+function chatReducer(state = {chattingUserInfo: null}, action) {
+  switch (action.type) {
+    case CHATTING_OPEN:
+      return {...state, loading: false, chattingUserInfo: action.chattingUserInfo };
+    case CHATTING_CLOSE:
+      return {loading: false, chattingUserInfo: null};
+    default:
+      return state;
+  }  
+}
+export { userSigninReducer, userUpdateReducer, allUsersReducer, notfollowingReducer, followingReducer, profileCheckingReducer, chatReducer };

@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import clsx from "clsx";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
 import { withStyles, makeStyles } from "@material-ui/styles";
 import { AppBar, Paper, Toolbar, IconButton, Tooltip, Avatar, TextField, Divider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import MinimizeIcon from '@material-ui/icons/Minimize';
+import MaximizeIcon from '@material-ui/icons/Maximize';
 import CloseIcon from '@material-ui/icons/Close';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCharacterColor } from "../util";
+import { closeChat } from "../actions/userActions";
 
 const AVATAR_S_DIMENSION = 4;
 
@@ -82,50 +84,84 @@ const LightTooltip = withStyles((theme) => ({
 
 const Chatbox = () => {
     const classes = useStyles();
+    const [minimize, setMinimize] = useState(false);
     const userSignin = useSelector(state => state.userSignin);
     const {userInfo} = userSignin;
+    const chattingUser = useSelector(state => state.chattingUser);
+    const {chattingUserInfo} = chattingUser;
+    const dispatch = useDispatch();
+    const closeChatbox = () => {
+        setMinimize(false);
+        dispatch(closeChat());
+    }
     return (
         <>
-        <Paper className={classes.root} elevation={3} >
-            <AppBar position="static" className={classes.appbar}>
-                <Toolbar className={classes.toolbar}>
-                    <div className={classes.chatboxName}>
-                        <Typography>Chatbox</Typography>
-                    </div>
-                    <div className={classes.grow}/>
-                    <Tooltip title="Minimize">
-                        <IconButton aria-label="Minimize" className={classes.iconButton}>
-                            <MinimizeIcon />
-                        </IconButton> 
-                    </Tooltip>
-                    <LightTooltip title="Close">
-                        <IconButton aria-label="Close" className={classes.iconButton}>
-                            <CloseIcon />
-                        </IconButton> 
-                    </LightTooltip>
-                </Toolbar>
-            </AppBar>
-            <div className={classes.chatSection}>
+        {
+            chattingUserInfo 
+            ?
+            <Paper className={classes.root} elevation={3} >
+                <AppBar position="static" className={classes.appbar}>
+                    <Toolbar className={classes.toolbar}>
+                        <div className={classes.chatboxName}>
+                            <Typography>Chatbox</Typography>
+                        </div>
+                        <div className={classes.grow}/>
+                        {
+                            minimize 
+                            ?
+                            <Tooltip title="Maximize">
+                                <IconButton onClick={(e) => setMinimize(false)} aria-label="Maximize" className={classes.iconButton}>
+                                    <MaximizeIcon />
+                                </IconButton> 
+                            </Tooltip>
+                            :
+                            <Tooltip title="Minimize">
+                                <IconButton onClick={(e) => setMinimize(true)} aria-label="Minimize" className={classes.iconButton}>
+                                    <MinimizeIcon />
+                                </IconButton> 
+                            </Tooltip>
 
-            </div>
-            <Divider width="100%"/>
-            <div className={classes.chatMaker}>
-                <Avatar className={clsx( classes.avatarSmall, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
-                    <Typography component="h6" variant="h6" color="inherit">H
-                        {/* {userInfo.firstName.charAt(0).toUpperCase()} */}
-                    </Typography>
-                </Avatar>
-                <TextField
-                    size="samll"
-                    // variant="outlined"
-                    // value={curComment}
-                    // onChange={(e) => setCurComment(e.target.value)}
-                    // onKeyDown={submitComment}
-                    className={classes.textField}
-                    margin="normal"
-                />
-            </div>
-        </Paper>
+                        }
+                        <LightTooltip title="Close">
+                            <IconButton onClick={closeChatbox} aria-label="Close" className={classes.iconButton}>
+                                <CloseIcon />
+                            </IconButton> 
+                        </LightTooltip>
+                    </Toolbar>
+                </AppBar>
+                {
+                    minimize
+                    ?
+                    <></>
+                    :
+                    <>
+                    <div className={classes.chatSection}>
+    
+                    </div>
+                    <Divider width="100%"/>
+                    <div className={classes.chatMaker}>
+                        <Avatar className={clsx( classes.avatarSmall, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
+                            <Typography component="h6" variant="h6" color="inherit">H
+                                {/* {userInfo.firstName.charAt(0).toUpperCase()} */}
+                            </Typography>
+                        </Avatar>
+                        <TextField
+                            size="samll"
+                            // variant="outlined"
+                            // value={curComment}
+                            // onChange={(e) => setCurComment(e.target.value)}
+                            // onKeyDown={submitComment}
+                            className={classes.textField}
+                            margin="normal"
+                        />
+                    </div>
+                    </>
+                }
+                
+            </Paper>
+            :
+            <></>
+        }
         </>
     );
 }

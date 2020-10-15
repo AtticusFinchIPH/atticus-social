@@ -14,6 +14,8 @@ import {
   CHECK_PROFILE_FAIL,
   CHECK_PROFILE_SUCCESS,
   CHECK_PROFILE_REQUEST,
+  CHATTING_OPEN,
+  CHATTING_CLOSE
 } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -163,4 +165,15 @@ const checkProfileRequest = (followingId) => async (dispatch, getState) => {
     if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
   }
 }
-export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest, checkProfileRequest };
+
+const chattingRequest = (chattingUserInfo) => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  dispatch({ type: CHATTING_OPEN, chattingUserInfo});
+}
+
+const closeChat = () => async (dispatch, getState) => {
+  const { userSignin: { userInfo } } = getState();
+  dispatch({ type: CHATTING_CLOSE});
+}
+
+export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest, checkProfileRequest, chattingRequest, closeChat };
