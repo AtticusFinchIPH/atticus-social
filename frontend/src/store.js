@@ -16,7 +16,7 @@ const initialState = { userSignin: {userInfo},
                       allUsers: { listUser: []},
                       notfollowingUsers: { notfollowings: []},
                       followingUsers: { followings: []},
-                      chattingUserInfo: null,
+                      chattingUser: { chattingUserInfo: null},
                       };
 
 const reducer = combineReducers({
