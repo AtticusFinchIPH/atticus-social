@@ -10,7 +10,8 @@ import InfoIcon from '@material-ui/icons/Info';
 import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles } from "@material-ui/styles";
-import { getNotfollowings, getFollowings, followRequest, unfollowRequest, chattingRequest } from "../../actions/userActions";
+import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
+import { chattingRequest } from "../../actions/chatActions";
 import { getCharacterColor } from "../../util";
 import { Link } from "react-router-dom";
 
@@ -126,7 +127,7 @@ const Right = props => {
               <GridListTile key={tile._id}>
                 <img src="https://source.unsplash.com/random" alt={tile._id} />
                 <GridListTileBar
-                    title={tile.firstName +" "+ tile.lastName}
+                    title={tile.nickName}
                     subtitle={<span>Description</span>}
                     actionIcon={
                       <>
@@ -164,14 +165,14 @@ const Right = props => {
                         alt={`Avatar n°${value + 1}`}
                         src={`/static/images/avatar/${value + 1}.jpg`}
                       /> */}
-                      <Avatar className={clsx(classes.avatar, classes[getCharacterColor(tile.firstName.charAt(0))])}>
+                      <Avatar className={clsx(classes.avatar, classes[getCharacterColor(tile.nickName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
-                          {tile.firstName.charAt(0).toUpperCase()}
+                          {tile.nickName.charAt(0).toUpperCase()}
                         </Typography>
                       </Avatar>
                     </ListItemAvatar>
                   </Link>
-                  <ListItemText primary={tile.firstName +" "+ tile.lastName} />
+                  <ListItemText primary={tile.nickName} />
                   <ListItemSecondaryAction>  
                     <LightTooltip title="Unfollow">
                       <IconButton onClick={(e) => unfollow(tile._id)} edge="end" aria-label="unfollow">

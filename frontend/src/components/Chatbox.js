@@ -9,7 +9,7 @@ import MaximizeIcon from '@material-ui/icons/Maximize';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch, useSelector } from "react-redux";
 import { getCharacterColor } from "../util";
-import { closeChat } from "../actions/userActions";
+import { closeChat } from "../actions/chatActions";
 
 const AVATAR_S_DIMENSION = 4;
 

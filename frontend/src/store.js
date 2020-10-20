@@ -1,8 +1,9 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
-import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer, profileCheckingReducer, chatReducer } from "./reducers/userReducer";
+import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer, profileCheckingReducer } from "./reducers/userReducer";
 import { favoritePostReducer, personalPostsReducer, newsfeedReducer } from "./reducers/postReducer";
+import { chatReducer } from "./reducers/chatReducer";
 
 const userInfo = Cookie.getJSON('userInfo') || null;
 

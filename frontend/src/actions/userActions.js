@@ -13,9 +13,7 @@ import {
   PUT_UNFOLLOW_FAIL,
   CHECK_PROFILE_FAIL,
   CHECK_PROFILE_SUCCESS,
-  CHECK_PROFILE_REQUEST,
-  CHATTING_OPEN,
-  CHATTING_CLOSE
+  CHECK_PROFILE_REQUEST
 } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -166,14 +164,4 @@ const checkProfileRequest = (followingId) => async (dispatch, getState) => {
   }
 }
 
-const chattingRequest = (chattingUserInfo) => async (dispatch, getState) => {
-  const { userSignin: { userInfo } } = getState();
-  dispatch({ type: CHATTING_OPEN, chattingUserInfo});
-}
-
-const closeChat = () => async (dispatch, getState) => {
-  const { userSignin: { userInfo } } = getState();
-  dispatch({ type: CHATTING_CLOSE});
-}
-
-export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest, checkProfileRequest, chattingRequest, closeChat };
+export { signin, register, signout, enableUpdate, updateCover, googleSignin, getAllUsers, getNotfollowings, getFollowings, followRequest, unfollowRequest, checkProfileRequest };
