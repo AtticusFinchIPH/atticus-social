@@ -94,6 +94,7 @@ const Chatbox = () => {
     const closeChatbox = () => {
         setMinimize(false);
         dispatch(closeChat());
+        setCurChattext('');
     }
     const submitMessage = (e) => {
         if(e.keyCode === 13 && e.target.value) {
