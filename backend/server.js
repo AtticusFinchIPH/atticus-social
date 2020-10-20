@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import config from "./config";
 import path from "path";
 import cors from 'cors';
+import http from 'http';
+import socketio from "socket.io";
 import User from "./models/userModel";
 import userRoute from "./routes/userRoute";
 import postRoute from "./routes/postRoute";
@@ -17,6 +19,8 @@ mongoose.connect(mongodbUrl, {
 }).catch(error => console.log(error.reason));
 
 const app = express();
+const socketServer = http.createServer(app);
+const io = socketio(socketServer);
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json());
 const corsOption = {
@@ -42,6 +46,10 @@ app.get('*', (req, res) => {
 app.listen(config.PORT, () => {
     main();
 })
+
+socketServer.listen(config.SOCKET_PORT, () => {
+    console.log(`SocketIO running on port ${config.SOCKET_PORT}`);
+});
 
 const main = () => {
     console.log(`Server started at http://localhost:${config.PORT}`);
