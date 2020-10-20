@@ -2,8 +2,15 @@ import io from 'socket.io-client';
 
 const socket = io("http://localhost:5001");
 
-const joinChat = (nickname, roomId) => {
-    socket.emit('joinChat', { nickname, roomId });
+const joinChat = (nickName, roomId) => {
+    socket.emit('joinChat', { nickName, roomId });
+    socket.on('message', message => {
+        console.log(message);
+    });
 }
 
-export {joinChat};
+const sendMessage = (msg) => {
+    socket.emit('chatMessage', msg);
+}
+
+export {joinChat, sendMessage};

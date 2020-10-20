@@ -1,8 +1,8 @@
 import moment from "moment";
 
-const formatMessage = (nickname, text) => {
+const formatMessage = (nickName, text) => {
     return {
-        nickname,
+        nickName,
         text,
         time: moment().format('h:mm a')
     }

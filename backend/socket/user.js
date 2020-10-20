@@ -1,7 +1,7 @@
 const users = [];
 
-const userJoin = (socketId, nickname, roomId) => {
-    const user = {socketId, nickname, roomId}
+const userJoin = (socketId, nickName, roomId) => {
+    const user = {socketId, nickName, roomId}
     users.push(user);
     return user;
 }
@@ -10,4 +10,13 @@ const getRoomUsers = (roomId) => {
     return users.filter(user => user.roomId === roomId);
 }
 
-export {userJoin, getRoomUsers};
+const getCurrentUser = (socketId) => {
+    return users.find(user => user.socketId === socketId);
+}
+
+const userLeave = (socketId) => {
+    const index = users.findIndex(user => user.socketId === socketId);
+    if(index !== -1) return users.splice(index, 1)[0];
+}
+
+export {userJoin, getRoomUsers, getCurrentUser, userLeave};

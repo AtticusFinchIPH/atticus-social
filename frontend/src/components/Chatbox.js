@@ -9,7 +9,7 @@ import MaximizeIcon from '@material-ui/icons/Maximize';
 import CloseIcon from '@material-ui/icons/Close';
 import { useDispatch, useSelector } from "react-redux";
 import { getCharacterColor } from "../util";
-import { closeChat } from "../actions/chatActions";
+import { closeChat, sendChat } from "../actions/chatActions";
 
 const AVATAR_S_DIMENSION = 4;
 
@@ -85,14 +85,22 @@ const LightTooltip = withStyles((theme) => ({
 const Chatbox = () => {
     const classes = useStyles();
     const [minimize, setMinimize] = useState(false);
+    const [curChattext, setCurChattext] = useState('');
     const userSignin = useSelector(state => state.userSignin);
     const {userInfo} = userSignin;
     const chattingUser = useSelector(state => state.chattingUser);
-    const {chattingUserInfo} = chattingUser;
+    const {chattingUserInfo, loading} = chattingUser;
     const dispatch = useDispatch();
     const closeChatbox = () => {
         setMinimize(false);
         dispatch(closeChat());
+    }
+    const submitMessage = (e) => {
+        if(e.keyCode === 13 && e.target.value) {
+            e.preventDefault();
+            dispatch(sendChat(e.target.value));
+            setCurChattext('');
+        }
     }
     return (
         <>
@@ -103,7 +111,7 @@ const Chatbox = () => {
                 <AppBar position="static" className={classes.appbar}>
                     <Toolbar className={classes.toolbar}>
                         <div className={classes.chatboxName}>
-                            <Typography>Chatbox</Typography>
+                            <Typography>{chattingUserInfo.nickName}</Typography>
                         </div>
                         <div className={classes.grow}/>
                         {
@@ -146,11 +154,10 @@ const Chatbox = () => {
                             </Typography>
                         </Avatar>
                         <TextField
-                            size="samll"
-                            // variant="outlined"
-                            // value={curComment}
-                            // onChange={(e) => setCurComment(e.target.value)}
-                            // onKeyDown={submitComment}
+                            size="small"
+                            value={curChattext}
+                            onChange={(e) => setCurChattext(e.target.value)}
+                            onKeyDown={submitMessage}
                             className={classes.textField}
                             margin="normal"
                         />
