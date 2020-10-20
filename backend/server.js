@@ -6,6 +6,7 @@ import path from "path";
 import cors from 'cors';
 import http from 'http';
 import socketio from "socket.io";
+import socketController from "./socket/controller";
 import User from "./models/userModel";
 import userRoute from "./routes/userRoute";
 import postRoute from "./routes/postRoute";
@@ -75,3 +76,7 @@ const main = () => {
     }
     createInitialAdmin();
 }
+
+io.on('connection', socket => {
+    socketController(socket, io);
+});
