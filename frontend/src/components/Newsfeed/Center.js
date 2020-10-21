@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Container } from "@material-ui/core";
-import { NewPost, FormerPost } from "../Posts";
+import { NewPost } from "../Posts";
 import { getNewsFeed } from "../../actions/postActions";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,9 +38,7 @@ const Center = props => {
         </Grid>
         <Grid item xs={12}>
           {
-            newsfeed.map((post, i) =>                   
-              <FormerPost key={i} post={post}/>
-            )
+            newsfeed.map((post, i) => props.render(post, i))
           }
         </Grid>
       </Grid>

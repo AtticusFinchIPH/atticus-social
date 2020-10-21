@@ -6,6 +6,7 @@ import Right from './Right';
 import Center from './Center';
 import { useDispatch } from "react-redux";
 import { getAllUsers } from "../../actions/userActions";
+import { FormerPost } from "../Posts";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -23,7 +24,9 @@ const NewsFeedMain = props => {
     <>
         <Grid container className={classes.container}>
             <Grid item xs={12} md={8} lg={12}>
-                <Center />
+                <Center render={(post,i) => (
+                  <FormerPost key={i} post={post}/>
+                )}/>
             </Grid>
             <Grid item xs={12}></Grid>
         </Grid>

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import Post from "./Post";
 import Favorites from "./Favorites";
+import { FormerPost } from "../Posts";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,7 +20,9 @@ const Content = (props) => {
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={7}>
-                    <Post />
+                    <Post render={(post, i) =>                   
+                        <FormerPost key={i} post={post}/>
+                    }/>
                 </Grid>
                 <Grid item xs={12} md={5}>
                     <Favorites/>
