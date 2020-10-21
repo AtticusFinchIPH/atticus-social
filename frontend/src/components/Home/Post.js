@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnPosts, getFavoritePosts } from "../../actions/postActions";
-import { NewPost, FormerPost } from "../Posts";
+import { NewPost } from "../Posts";
 
 const Post = (props) => {
     const userSignin = useSelector(state => state.userSignin);
@@ -24,7 +24,7 @@ const Post = (props) => {
             <NewPost userInfo={userInfo}/>
             {
                 listPost.map((post, i) =>                   
-                    <FormerPost key={i} post={post}/>
+                    props.render(post, i)
                 )
             }
         </>
