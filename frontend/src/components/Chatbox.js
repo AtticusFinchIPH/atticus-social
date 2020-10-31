@@ -1,5 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
+import io from 'socket.io-client';
+import { closeChat } from "../actions/chatActions";
+import { getCharacterColor } from "../util";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
 import { withStyles, makeStyles } from "@material-ui/styles";
 import { AppBar, Paper, Toolbar, IconButton, Tooltip, Avatar, TextField, Divider } from "@material-ui/core";
@@ -7,9 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import MinimizeIcon from '@material-ui/icons/Minimize';
 import MaximizeIcon from '@material-ui/icons/Maximize';
 import CloseIcon from '@material-ui/icons/Close';
-import { useDispatch, useSelector } from "react-redux";
-import { getCharacterColor } from "../util";
-import { closeChat, sendChat } from "../actions/chatActions";
 
 const AVATAR_S_DIMENSION = 4;
 
@@ -91,18 +92,33 @@ const Chatbox = () => {
     const chattingUser = useSelector(state => state.chattingUser);
     const {chattingUserInfo, loading} = chattingUser;
     const dispatch = useDispatch();
+    const socket = io("http://localhost:5001");
     const closeChatbox = () => {
         setMinimize(false);
-        dispatch(closeChat());
         setCurChattext('');
+        dispatch(closeChat());
     }
     const submitMessage = (e) => {
         if(e.keyCode === 13 && e.target.value) {
             e.preventDefault();
-            dispatch(sendChat(e.target.value));
+            socket.emit('chatMessage', e.target.value);
             setCurChattext('');
         }
     }
+    useEffect(() => {
+        if(chattingUserInfo){
+            socket.emit('joinChat', { 
+                joiner: userInfo._id,
+                isPrivate : true, 
+                participants: [userInfo._id, chattingUserInfo._id],
+            });
+            socket.emit('chatMessage', "Hello");
+            socket.on('message', message => {
+                console.log(message);
+            });
+            return () => socket.disconnect();
+        }
+    }, [chattingUserInfo])
     return (
         <>
         {
@@ -118,17 +134,17 @@ const Chatbox = () => {
                         {
                             minimize 
                             ?
-                            <Tooltip title="Maximize">
+                            <LightTooltip title="Maximize">
                                 <IconButton onClick={(e) => setMinimize(false)} aria-label="Maximize" className={classes.iconButton}>
                                     <MaximizeIcon />
                                 </IconButton> 
-                            </Tooltip>
+                            </LightTooltip>
                             :
-                            <Tooltip title="Minimize">
+                            <LightTooltip title="Minimize">
                                 <IconButton onClick={(e) => setMinimize(true)} aria-label="Minimize" className={classes.iconButton}>
                                     <MinimizeIcon />
                                 </IconButton> 
-                            </Tooltip>
+                            </LightTooltip>
 
                         }
                         <LightTooltip title="Close">
@@ -145,13 +161,13 @@ const Chatbox = () => {
                     :
                     <>
                     <div className={classes.chatSection}>
-    
+                        <Typography component="p" variant="body2">Let's start your conversation!</Typography>
                     </div>
                     <Divider width="100%"/>
                     <div className={classes.chatMaker}>
                         <Avatar className={clsx( classes.avatarSmall, classes[getCharacterColor(userInfo.firstName.charAt(0))])}>
-                            <Typography component="h6" variant="h6" color="inherit">H
-                                {/* {userInfo.firstName.charAt(0).toUpperCase()} */}
+                            <Typography component="h6" variant="h6" color="inherit">
+                                {userInfo.nickName.charAt(0).toUpperCase()}
                             </Typography>
                         </Avatar>
                         <TextField

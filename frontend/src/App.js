@@ -4,6 +4,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import theme from "./theme";
 import { PrivateRoute, PublicRoute } from "./components/Routes";
 import NavBar from "./components/NavBar";
+import Chatbox from "./components/Chatbox";
 import Home from "./components/Home/Main";
 import SignIn from "./components/Auth/SignIn";
 import SignUp from "./components/Auth/SignUp";
@@ -15,6 +16,7 @@ export default function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <NavBar />
+        <Chatbox />
         <Switch>
           <PrivateRoute exact path="/" component={Home} />
           <PublicRoute path="/signin" component={SignIn} restricted={true}/>

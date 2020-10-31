@@ -11,7 +11,7 @@ import StarBorderIcon  from '@material-ui/icons/StarBorder';
 import PersonAddDisabledIcon from '@material-ui/icons/PersonAddDisabled';
 import { withStyles } from "@material-ui/styles";
 import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
-import { chattingRequest } from "../../actions/chatActions";
+import { openChat } from "../../actions/chatActions";
 import { getCharacterColor } from "../../util";
 import { Link } from "react-router-dom";
 
@@ -112,7 +112,7 @@ const Right = props => {
     dispatch(getNotfollowings());
   }
   const openChatbox = (chattingUser) => {
-    dispatch(chattingRequest(chattingUser));
+    dispatch(openChat(chattingUser));
   }
   return (
     <Paper elevation={5} className={classes.paper}>
