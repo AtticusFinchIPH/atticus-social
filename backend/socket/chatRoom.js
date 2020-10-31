@@ -19,4 +19,6 @@ const userLeave = (socketId) => {
     if(index !== -1) return users.splice(index, 1)[0];
 }
 
-export {userJoin, getRoomUsers, getCurrentUser, userLeave};
+const getUsers = () => users;
+
+export {userJoin, getRoomUsers, getCurrentUser, userLeave, getUsers};

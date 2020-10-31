@@ -11,9 +11,16 @@ const userSchema = new mongoose.Schema({
 
     about: { type: String},
     photo: { type: String}, 
-    followings: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
-    followers: [{type: mongoose.Schema.ObjectId, ref: 'User'}],
+    followings: [{
+        _id: {type: mongoose.Schema.ObjectId, ref: 'User'},
+        chatId: {type: mongoose.Schema.ObjectId, ref: 'Chat'},
+    }],
+    followers: [{
+        _id: {type: mongoose.Schema.ObjectId, ref: 'User'},
+        chatId: {type: mongoose.Schema.ObjectId, ref: 'Chat'},
+    }],
     favoritePosts: [{type: mongoose.Schema.ObjectId, ref: 'Post'}],
+    chats: [{type: mongoose.Schema.ObjectId, ref: 'Chat'}],
 })
 
 const userModel = mongoose.model("User", userSchema);

@@ -2,6 +2,17 @@ import express from "express";
 import {getToken, isAuth} from "../auth/authHelper";
 import User from "../models/userModel";
 import Post from "../models/postModel";
+import { findPrivateChatByChatId_UserId, newPrivateChatWithParticipants } from "../socket/chatHandler";
+
+const assignChatId = async (user, contactPerson) => {
+    const chats = user.chats, contactPersonId = contactPerson._id;
+    for(const chatId of chats){
+        let chat = await findPrivateChatByChatId_UserId(chatId, contactPersonId);
+        if(chat && chat._id !== null) return chat._id;
+    }
+    const newChat = await newPrivateChatWithParticipants(user._id, contactPersonId);
+    return newChat._id;
+}
 
 const router = express.Router();
 
@@ -157,11 +168,22 @@ router.put("/follow", isAuth, async (req, res) => {
     const { followingId } = req.body;
     try {
         if(!followingId || !followingId.match(/^[0-9a-fA-F]{24}$/)) throw "Following ID not defined";
-        const userInfo = await User.findByIdAndUpdate(user._id, {$push: {followings: followingId}}, {new: true})
-                                    .populate('followings', '_id nickName');
-        const following = await User.findByIdAndUpdate(followingId, {$push: {followers: user._id}});
-        const { followings } = userInfo;
-        return res.status(200).send(followings);
+        const following = await User.findByIdAndUpdate(followingId, {$push: {followers: {_id: user._id}}});
+        if(following){
+            let userInfo = await User.findByIdAndUpdate(user._id, {$push: {followings: {_id: followingId}}}, {new: true})
+                        .populate('followings', '_id nickName');
+            const chatId = assignChatId(user, following);
+            userInfo = await User.findByIdAndUpdate(user._id, {
+                $set: {"chats.$[element]": { ...chatId }}
+            }, {
+                arrayFilters: [{ "element": { _id: followingId } }],
+                new: true
+            })
+            const { followings } = userInfo;
+            return res.status(200).send(followings);
+        } else {
+            throw "Following ID not found";
+        }
     } catch (error) {
         return res.status(500).json({ msg: "Error in Following action"});
     }
