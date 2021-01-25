@@ -6,7 +6,12 @@ import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => ({
     paper: {
         backgroundColor: '#ffffff',
-        marginRight: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            margin: theme.spacing(2),
+        },
+        [theme.breakpoints.up('sm')]: {
+            marginRight: theme.spacing(2),
+        },
     },
     root: {
         display: 'flex',
