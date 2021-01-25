@@ -22,7 +22,12 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(10),
     right: 0,
     height: "100%",
-    width: theme.spacing(45),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(45)
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+    },
     flexGrow: 1,
   },
   container: {
@@ -49,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   wrapGridList:{
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'left',
     overflow: 'hidden',
     margin: theme.spacing(2),
   },
@@ -119,31 +124,40 @@ const Right = props => {
           </Typography>
           <div className={classes.wrapGridList} >
           <GridList className={classes.gridList} cols={1} >
-            {notfollowings.map((tile) => (
-              <GridListTile key={tile._id}>
-                <img src="https://source.unsplash.com/random" alt={tile._id} />
-                <GridListTileBar
-                    title={tile.firstName +" "+ tile.lastName}
-                    subtitle={<span>Description</span>}
-                    actionIcon={
-                      <>
-                      <LightTooltip title="See Profile">
-                        <Link to={`/profile/${tile._id}`}>
-                          <IconButton aria-label={`See profile ${tile._id}`}>
-                            <InfoIcon className={classes.starBorderIcon} />
+            {
+              notfollowings.length > 0
+              ?
+              notfollowings.map((tile) => (
+                <GridListTile key={tile._id}>
+                  <img src="https://source.unsplash.com/random" alt={tile._id} />
+                  <GridListTileBar
+                      title={tile.nickName}
+                      subtitle={<span>Description</span>}
+                      actionIcon={
+                        <>
+                        <LightTooltip title="See Profile">
+                          <Link to={`/profile/${tile._id}`}>
+                            <IconButton aria-label={`See profile ${tile._id}`}>
+                              <InfoIcon className={classes.starBorderIcon} />
+                            </IconButton>
+                          </Link>
+                        </LightTooltip>
+                        <LightTooltip title="Follow">
+                          <IconButton onClick={(e) => follow(tile._id)} aria-label={`Follow ${tile._id}`}>
+                            <StarBorderIcon fontSize="large" className={classes.starBorderIcon} />
                           </IconButton>
-                        </Link>
-                      </LightTooltip>
-                      <LightTooltip title="Follow">
-                        <IconButton onClick={(e) => follow(tile._id)} aria-label={`Follow ${tile._id}`}>
-                          <StarBorderIcon fontSize="large" className={classes.starBorderIcon} />
-                        </IconButton>
-                      </LightTooltip>
-                      </>
-                    }
-                />
+                        </LightTooltip>
+                        </>
+                      }
+                  />
+                </GridListTile>
+              ))
+              :
+              <GridListTile>
+                <Typography component="p" variant="body1">No suggested people yet.</Typography>
               </GridListTile>
-            ))}
+            }
+            
           </GridList>
           </div>
         </Grid>
@@ -153,22 +167,25 @@ const Right = props => {
             Following
           </Typography>
           <List className={classes.list}>
-              {followings.map((tile) => (
+            {
+              followings.length > 0 
+              ?
+              followings.map((tile) => (
                 <ListItem key={`item-${tile._id}`} button >
-                  <Link to={`/profile/${tile._id}`}>
+                  <Link to={`/profile/${tile._id}`} style={{textDecoration: 'none'}}>
                     <ListItemAvatar>
                       {/* <Avatar
                         alt={`Avatar n°${value + 1}`}
                         src={`/static/images/avatar/${value + 1}.jpg`}
                       /> */}
-                      <Avatar className={clsx(classes.avatar, classes[getCharacterColor(tile.firstName.charAt(0))])}>
+                      <Avatar className={clsx(classes.avatar, classes[getCharacterColor(tile.nickName.charAt(0))])}>
                         <Typography component="h6" variant="h6" color="inherit">
-                          {tile.firstName.charAt(0).toUpperCase()}
+                          {tile.nickName.charAt(0).toUpperCase()}
                         </Typography>
                       </Avatar>
                     </ListItemAvatar>
                   </Link>
-                  <ListItemText primary={tile.firstName +" "+ tile.lastName} />
+                  <ListItemText primary={tile.nickName} />
                   <ListItemSecondaryAction>  
                     <LightTooltip title="Unfollow">
                       <IconButton onClick={(e) => unfollow(tile._id)} edge="end" aria-label="unfollow">
@@ -182,7 +199,12 @@ const Right = props => {
                     </LightTooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
-              ))}
+              ))
+              :
+              <ListItem>
+                <Typography component="p" variant="body1">You are following no one yet.</Typography>
+              </ListItem>
+            }
           </List>
         </Grid>
       </Grid>

@@ -156,7 +156,6 @@ const checkProfileRequest = (followingId) => async (dispatch, getState) => {
       `/api/users/profile/${followingId}`,
       authConfig(userInfo),
     );
-    console.log(data);
     dispatch({ type: CHECK_PROFILE_SUCCESS, profile: data.user, listPost: data.posts});
   } catch (error) {
     dispatch({ type: CHECK_PROFILE_FAIL, payload: error.response?.data?.msg || error.message });

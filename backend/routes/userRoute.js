@@ -81,7 +81,7 @@ router.get("/", isAuth, async (req, res) => {
 router.get("/following", isAuth, async (req, res) => {
     const user = req.user;
     const userInfo = await User.findById(user._id)
-                            .populate('followings', '_id firstName lastName');
+                            .populate('followings', '_id firstName lastName nickName');
     const { followings } = userInfo;
     return res.status(200).send(followings);
 })
@@ -158,7 +158,7 @@ router.put("/follow", isAuth, async (req, res) => {
     try {
         if(!followingId || !followingId.match(/^[0-9a-fA-F]{24}$/)) throw "Following ID not defined";
         const userInfo = await User.findByIdAndUpdate(user._id, {$push: {followings: followingId}}, {new: true})
-                                    .populate('followings', '_id firstName lastName');
+                                    .populate('followings', '_id firstName lastName nickName');
         const following = await User.findByIdAndUpdate(followingId, {$push: {followers: user._id}});
         const { followings } = userInfo;
         return res.status(200).send(followings);
@@ -174,7 +174,7 @@ router.put("/unfollow", isAuth, async (req, res) => {
     try {
         if(!unfollowingId || !unfollowingId.match(/^[0-9a-fA-F]{24}$/)) throw "UnFollowing ID not defined";
         const userInfo = await User.findByIdAndUpdate(user._id, {$pull: {followings: unfollowingId}}, {new: true})
-                                    .populate('followings', '_id firstName lastName');
+                                    .populate('followings', '_id firstName lastName nickName');
         const unfollowing = await User.findByIdAndUpdate(unfollowingId, {$pull: {followers: user._id}});
         const { followings } = userInfo;
         return res.status(200).send(followings);
