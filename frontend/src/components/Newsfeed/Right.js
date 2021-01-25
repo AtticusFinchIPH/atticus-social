@@ -22,7 +22,12 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(10),
     right: 0,
     height: "100%",
-    width: theme.spacing(45),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(45)
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: "100%",
+    },
     flexGrow: 1,
   },
   container: {

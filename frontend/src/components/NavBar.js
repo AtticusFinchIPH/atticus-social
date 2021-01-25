@@ -16,13 +16,14 @@ import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { signout, enableUpdate } from "../actions/userActions";
+import FollowTab from "./Newsfeed/Right";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) return { color: "#ff4081" };
   else return { color: "#ffffff" };
 };
 
-const drawerWidth = 240;
+const drawerWidth = '100%';
 
 const useStyle = makeStyles((theme) => ({
   appBar: {
@@ -236,14 +237,15 @@ const NavBar = withRouter(({history}) => {
         </IconButton>
       </div>
       <Divider />
-      <List>
+      <FollowTab />
+      {/* <List>
         {['All mail', 'Trash', 'Spam'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
-      </List>
+      </List> */}
     </Drawer>
     </>
   );
