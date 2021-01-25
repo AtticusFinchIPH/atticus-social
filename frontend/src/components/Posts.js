@@ -240,7 +240,7 @@ const FormerPost = (props) => {
                     </Avatar>
                     <div>
                         <Typography component="p" variant="h6">
-                            {`${props.post.postedBy.firstName} ${props.post.postedBy.lastName}`}
+                            {`${props.post.postedBy.nickName}`}
                         </Typography>
                         <Typography component="p" variant="body2">
                             { (new Date(props.post.created)).toDateString()}
