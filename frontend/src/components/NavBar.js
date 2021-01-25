@@ -3,7 +3,7 @@ import { Link, withRouter, useHistory } from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import clsx from "clsx";
 import { CssBaseline, AppBar, Drawer, Toolbar, Button, IconButton, Divider, Tooltip, Typography,
-        List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from "@material-ui/core";
+        List, ListItem, ListItemIcon, ListItemText, Menu, MenuItem, Hidden } from "@material-ui/core";
 import { withStyles, makeStyles, useTheme } from "@material-ui/styles";
 import HomeIcon from '@material-ui/icons/Home';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -138,14 +138,23 @@ const NavBar = withRouter(({history}) => {
       )
     }>
       <Toolbar>
+        <Hidden smUp>
           <IconButton aria-label="open drawer" style={{color: "#ffffff"}}
           onClick={handleDrawerOpen}
           className={clsx(openDrawer && classes.hide)}>
             <MenuIcon />
-          </IconButton> 
-        <Typography variant="h5" color="inherit">
-          Atticus's Social
-        </Typography>
+          </IconButton>
+        </Hidden>
+        <Hidden smUp>
+          <Typography variant="h5" color="inherit">
+            AS
+          </Typography>
+        </Hidden>
+        <Hidden xsDown>
+          <Typography variant="h5" color="inherit">
+            Atticus's Social
+          </Typography>
+        </Hidden>
         <div className={classes.grow}/>
         <Link to='/'>
           <LightTooltip title="Home">
