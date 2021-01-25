@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   wrapGridList:{
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'left',
     overflow: 'hidden',
     margin: theme.spacing(2),
   },
@@ -119,31 +119,40 @@ const Right = props => {
           </Typography>
           <div className={classes.wrapGridList} >
           <GridList className={classes.gridList} cols={1} >
-            {notfollowings.map((tile) => (
-              <GridListTile key={tile._id}>
-                <img src="https://source.unsplash.com/random" alt={tile._id} />
-                <GridListTileBar
-                    title={tile.firstName +" "+ tile.lastName}
-                    subtitle={<span>Description</span>}
-                    actionIcon={
-                      <>
-                      <LightTooltip title="See Profile">
-                        <Link to={`/profile/${tile._id}`}>
-                          <IconButton aria-label={`See profile ${tile._id}`}>
-                            <InfoIcon className={classes.starBorderIcon} />
+            {
+              notfollowings.length > 0
+              ?
+              notfollowings.map((tile) => (
+                <GridListTile key={tile._id}>
+                  <img src="https://source.unsplash.com/random" alt={tile._id} />
+                  <GridListTileBar
+                      title={tile.firstName +" "+ tile.lastName}
+                      subtitle={<span>Description</span>}
+                      actionIcon={
+                        <>
+                        <LightTooltip title="See Profile">
+                          <Link to={`/profile/${tile._id}`}>
+                            <IconButton aria-label={`See profile ${tile._id}`}>
+                              <InfoIcon className={classes.starBorderIcon} />
+                            </IconButton>
+                          </Link>
+                        </LightTooltip>
+                        <LightTooltip title="Follow">
+                          <IconButton onClick={(e) => follow(tile._id)} aria-label={`Follow ${tile._id}`}>
+                            <StarBorderIcon fontSize="large" className={classes.starBorderIcon} />
                           </IconButton>
-                        </Link>
-                      </LightTooltip>
-                      <LightTooltip title="Follow">
-                        <IconButton onClick={(e) => follow(tile._id)} aria-label={`Follow ${tile._id}`}>
-                          <StarBorderIcon fontSize="large" className={classes.starBorderIcon} />
-                        </IconButton>
-                      </LightTooltip>
-                      </>
-                    }
-                />
+                        </LightTooltip>
+                        </>
+                      }
+                  />
+                </GridListTile>
+              ))
+              :
+              <GridListTile>
+                <Typography component="p" variant="body1">No suggested people yet.</Typography>
               </GridListTile>
-            ))}
+            }
+            
           </GridList>
           </div>
         </Grid>
@@ -153,9 +162,12 @@ const Right = props => {
             Following
           </Typography>
           <List className={classes.list}>
-              {followings.map((tile) => (
+            {
+              followings.length > 0 
+              ?
+              followings.map((tile) => (
                 <ListItem key={`item-${tile._id}`} button >
-                  <Link to={`/profile/${tile._id}`}>
+                  <Link to={`/profile/${tile._id}`} style={{textDecoration: 'none'}}>
                     <ListItemAvatar>
                       {/* <Avatar
                         alt={`Avatar n°${value + 1}`}
@@ -182,7 +194,12 @@ const Right = props => {
                     </LightTooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
-              ))}
+              ))
+              :
+              <ListItem>
+                <Typography component="p" variant="body1">You are following no one yet.</Typography>
+              </ListItem>
+            }
           </List>
         </Grid>
       </Grid>
