@@ -1,9 +1,6 @@
 import express from "express";
-import formidable from 'formidable';
-import fs from 'fs';
-import path from 'path';
 import { isAuth } from "../auth/authHelper";
-import config from '../config';
+import cloudinaryConfig from '../cloudinaryConfig';
 import Post from "../models/postModel";
 import User from "../models/userModel";
 
@@ -79,44 +76,22 @@ const ERR_IMAGE_UPLOAD = "Image could not be uploaded";
 const ERR_HANDLE_IMAGE = "Error in Handling image";
 const ERR_IMAGE_TYPE = "Image type not supported";
 const ERR_IMAGE_UNKNOWN = 'Error in Creating New Post';
-router.post("/", isAuth, async (req, res) => {
+router.post("/", isAuth, cloudinaryConfig.parser.single('photo'), async (req, res) => {
     const user = req.user;
-    let form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    // Frontend can only get images directly from 'public' folder
-    form.uploadDir = path.join(__dirname + config.USER_IMAGES_PATH);
+    console.log(req.file)
+    console.log(req.body.text)
     try {
-        form.parse(req, async (err, fields, files) => {
-            if (err) throw ERR_IMAGE_UPLOAD;
-            let post = new Post(fields);
-            post.postedBy= user._id;
-            if(files.photo){
-                // let tmpPath = files.photo.path;
-                // let newPath = form.uploadDir + files.photo.name;
-                // fs.renameSync(tmpPath, newPath, (err) => {
-                //     if (err) throw ERR_HANDLE_IMAGE;
-                // });
-                switch (files.photo.type) {
-                case "image/jpeg":
-                case "image/png":
-                    fs.readFileSync(files.photo.path, (err) => {
-                        if (err) throw ERR_HANDLE_IMAGE;
-                    });
-                    // post.photo = files.photo.path;
-                    const pathArr = files.photo.path.split('\\');
-                    const fileName = pathArr[pathArr.length-1];
-                    post.photo = `/userImages/${fileName}`;
-                    break;
-                default:
-                    throw ERR_IMAGE_TYPE;
-                }
-            } else {
-                post.photo = null;
-            }       
+        if(!req.file?.path) throw ERR_IMAGE_UPLOAD
+        else {
+            let post = new Post();
+            post.text = req.body.text;
+            post.photo = req.file.path;
+            post.postedBy = user._id;
             let result = await (await post.save()).populate('postedBy', '_id firstName lastName nickName').execPopulate();
             if(result) return res.status(200).send(result);
-        });   
-    }catch (err){
+            else throw ERR_IMAGE_UNKNOWN;
+        }
+    } catch (error) {
         switch(error){
             case ERR_IMAGE_UPLOAD:
                 return res.status(400).json({ msg: ERR_IMAGE_UPLOAD});
