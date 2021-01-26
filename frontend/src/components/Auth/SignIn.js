@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  acountActions: {
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'center',
+    }
+  }
 }));
 
 const SignIn = props => {
@@ -113,7 +119,7 @@ const SignIn = props => {
             >
               Sign In
             </Button>
-            <Grid container>
+            <Grid container className={classes.acountActions}>
               <Grid item xs>
                 <Link to="/">
                   Forgot password?
@@ -121,7 +127,7 @@ const SignIn = props => {
               </Grid>
               <Grid item>
                 <Link to="/signup">
-                  {"Don't have an account? Sign Up"}
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>

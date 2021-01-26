@@ -170,7 +170,7 @@ const SignUp = props => {
             >
               Sign Up
             </Button>
-            <Grid container justify="flex-end">
+            <Grid container justify="center">
               <Grid item>
                 <Link to="/signin">
                   Already have an account? Sign in
