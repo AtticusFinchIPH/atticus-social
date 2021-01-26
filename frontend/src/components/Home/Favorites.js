@@ -34,7 +34,7 @@ const Favorites = () => {
     const classes = useStyles();
     const favoritePosts = useSelector(state => state.favoritePosts);
     const {favorites} = favoritePosts;
-    // console.log(favorites)
+    console.log(favorites)
     return (
         <Paper className={classes.paper}>
             <div className={classes.root}>
@@ -46,7 +46,7 @@ const Favorites = () => {
                 <GridList cellHeight={180} className={classes.gridList}>
                     {favorites.map((tile) => (
                         <GridListTile key={tile._id}>
-                            <img src="https://source.unsplash.com/random" alt={tile.text} />
+                            <img src={tile.photo || "https://source.unsplash.com/random"} alt={tile.text} />
                             <GridListTileBar
                                 title={tile.postedBy.nickName}
                                 subtitle={tile.text}
