@@ -18,6 +18,11 @@ import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { signout, enableUpdate } from "../actions/userActions";
 import FollowTab from "./Newsfeed/Right";
 
+const isSignin = (history, styles) => {
+  if(history.location.pathname === '/signin' || history.location.pathname === '/signup') return { display: 'none'}
+  else return styles;
+}
+
 const isActive = (history, path) => {
   if (history.location.pathname === path) return { color: "#ff4081" };
   else return { color: "#ffffff" };
@@ -140,7 +145,7 @@ const NavBar = withRouter(({history}) => {
     }>
       <Toolbar>
         <Hidden smUp>
-          <IconButton aria-label="open drawer" style={{color: "#ffffff"}}
+          <IconButton aria-label="open drawer" style={isSignin(history, {color: "#ffffff"})}
           onClick={handleDrawerOpen}
           className={clsx(openDrawer && classes.hide)}>
             <MenuIcon />
@@ -159,21 +164,21 @@ const NavBar = withRouter(({history}) => {
         <div className={classes.grow}/>
         <Link to='/'>
           <LightTooltip title="Home">
-            <IconButton aria-label="Home" style={isActive(history, '/')}>
+            <IconButton aria-label="Home" style={isSignin(history, isActive(history, '/'))}>
               <HomeIcon />
             </IconButton> 
           </LightTooltip>
         </Link>
         <Link to='/newsfeed'>
           <LightTooltip title="Newsfeed">
-            <IconButton aria-label="Newsfeed" style={isActive(history, '/newsfeed')}>
+            <IconButton aria-label="Newsfeed" style={isSignin(history, isActive(history, '/newsfeed'))}>
               <DynamicFeedIcon />
             </IconButton>
           </LightTooltip>
         </Link>
         <Link to='/blog'>
           <LightTooltip title="Blog">
-            <IconButton aria-label="Blog" style={isActive(history, '/blog')}>
+            <IconButton aria-label="Blog" style={isSignin(history, isActive(history, '/blog'))}>
               <FingerprintIcon />
             </IconButton>
           </LightTooltip>
