@@ -4,7 +4,7 @@ import {  withRouter } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
-import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider, CardHeader } from "@material-ui/core";
+import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider, CardHeader, Hidden } from "@material-ui/core";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -38,7 +38,9 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
-        paddingBottom: theme.spacing(1),
+        [theme.breakpoints.up('sm')]: {
+            paddingBottom: theme.spacing(1),
+        }
     },
     avatar: {
         width: theme.spacing(AVATAR_DIMENSION),
@@ -53,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     textField: {
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),
-        width: '90%'
+        width: '100%'
     },
     img: {
         width: '100%',
@@ -266,7 +268,32 @@ const FormerPost = (props) => {
                     </>
                 }
                 <Divider variant="middle" width="100%"/>
-                    <div className={classes.row}>                      
+                    <div className={classes.row}>   
+                    <Hidden smUp>                  
+                        <Tooltip title="Likes">
+                            <IconButton onClick={clickLike} aria-label="Likes">
+                                { values.like ? <ThumbUpIcon color="primary"/> : <ThumbUpAltOutlinedIcon color="primary"/> }
+                            </IconButton>
+                        </Tooltip>
+                        <Typography component="p" variant="subtitle1">
+                            {values.likes.length}
+                        </Typography>
+                        <Tooltip title="Comments">
+                            <IconButton aria-label="Comments">
+                                <CommentIcon color="primary" />
+                            </IconButton>
+                        </Tooltip>
+                        <Typography component="p" variant="subtitle1">
+                            {values.comments.length}
+                        </Typography>
+                        <div className={classes.grow}/>
+                        <Tooltip title="Only you can know your favorite">
+                            <IconButton onClick={clickFavorite} aria-label="Favorite">
+                                { values.favorite ? <FavoriteIcon color="secondary" /> : <FavoriteBorderOutlinedIcon color="secondary" /> }
+                            </IconButton>
+                        </Tooltip>
+                    </Hidden>  
+                    <Hidden xsDown>                  
                         <Tooltip title="Likes">
                             <IconButton onClick={clickLike} aria-label="Likes">
                                 { values.like ? <ThumbUpIcon color="primary"/> : <ThumbUpAltOutlinedIcon color="primary"/> }
@@ -289,6 +316,7 @@ const FormerPost = (props) => {
                                 { values.favorite ? <FavoriteIcon color="secondary" /> : <FavoriteBorderOutlinedIcon color="secondary" /> }
                             </IconButton>
                         </Tooltip>
+                    </Hidden> 
                     </div>
                 <Divider variant="middle" width="100%"/>
                 <div className={classes.row}>
