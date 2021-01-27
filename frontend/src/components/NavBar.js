@@ -220,7 +220,7 @@ const NavBar = withRouter(({history}) => {
           </Menu>
           </>
           :
-          <Link to="/signin">
+          <Link to="/signin" style={{textDecoration: 'none'}}>
             <Button style={isActive(history, '/signin')}>
                 Login
             </Button>
