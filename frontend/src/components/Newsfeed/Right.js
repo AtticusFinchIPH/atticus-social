@@ -13,6 +13,7 @@ import { withStyles } from "@material-ui/styles";
 import { getNotfollowings, getFollowings, followRequest, unfollowRequest } from "../../actions/userActions";
 import { getCharacterColor } from "../../util";
 import { Link } from "react-router-dom";
+import { switchDrawer } from "../../actions/screenActions";
 
 const AVATAR_DIMENSION = 5;
 
@@ -114,6 +115,9 @@ const Right = props => {
   const unfollow = async (unfollowingId) => {
     await dispatch(unfollowRequest(unfollowingId));
     dispatch(getNotfollowings());
+  }  
+  const handleDrawerClose = () => {
+    dispatch(switchDrawer(false));
   }
   return (
     <Paper elevation={5} className={classes.paper}>
@@ -132,11 +136,11 @@ const Right = props => {
                   <img src="https://source.unsplash.com/random" alt={tile._id} />
                   <GridListTileBar
                       title={tile.nickName}
-                      subtitle={<span>Description</span>}
+                      subtitle={tile.description ? <span>${tile.description}</span> : <span>Description</span>}
                       actionIcon={
                         <>
                         <LightTooltip title="See Profile">
-                          <Link to={`/profile/${tile._id}`}>
+                          <Link to={`/profile/${tile._id}`} onClick={handleDrawerClose} >
                             <IconButton aria-label={`See profile ${tile._id}`}>
                               <InfoIcon className={classes.starBorderIcon} />
                             </IconButton>
@@ -172,8 +176,8 @@ const Right = props => {
               ?
               followings.map((tile) => (
                 <ListItem key={`item-${tile._id}`} button >
-                  <Link to={`/profile/${tile._id}`} style={{textDecoration: 'none'}}>
-                    <ListItemAvatar>
+                  <Link to={`/profile/${tile._id}`} onClick={handleDrawerClose} style={{textDecoration: 'none'}}>
+                    <ListItemAvatar >
                       {/* <Avatar
                         alt={`Avatar n°${value + 1}`}
                         src={`/static/images/avatar/${value + 1}.jpg`}
