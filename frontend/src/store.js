@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 import { userSigninReducer, allUsersReducer, notfollowingReducer, followingReducer, userUpdateReducer, profileCheckingReducer } from "./reducers/userReducer";
 import { favoritePostReducer, personalPostsReducer, newsfeedReducer } from "./reducers/postReducer";
+import { isDrawerOpenReducer } from './reducers/screenReducer';
 
 const userInfo = Cookie.getJSON('userInfo') || null;
 
@@ -15,6 +16,7 @@ const initialState = { userSignin: {userInfo},
                       allUsers: { listUser: []},
                       notfollowingUsers: { notfollowings: []},
                       followingUsers: { followings: []},
+                      isDrawerOpen: false,
                       };
 
 const reducer = combineReducers({
@@ -27,6 +29,7 @@ const reducer = combineReducers({
   allUsers: allUsersReducer,
   notfollowingUsers: notfollowingReducer,
   followingUsers: followingReducer,
+  isDrawerOpen: isDrawerOpenReducer
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

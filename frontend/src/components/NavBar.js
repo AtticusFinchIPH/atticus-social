@@ -17,6 +17,7 @@ import FilterDramaIcon from '@material-ui/icons/FilterDrama';
 import FingerprintIcon from '@material-ui/icons/Fingerprint';
 import { signout, enableUpdate } from "../actions/userActions";
 import FollowTab from "./Newsfeed/Right";
+import { switchDrawer } from "../actions/screenActions";
 
 const isSignin = (history, styles) => {
   if(history.location.pathname === '/signin' || history.location.pathname === '/signup') return { display: 'none'}
@@ -96,19 +97,19 @@ const LightTooltip = withStyles((theme) => ({
 const NavBar = withRouter(({history}) => {
   const classes = useStyle();
   const theme = useTheme();
-  const [openDrawer, setOpenDrawer] = useState(false);
   const [anchorAcc, setAnchorAcc] = useState(null);
   const openAcc = Boolean(anchorAcc);
+  const isDrawerOpen = useSelector(state => state.isDrawerOpen);
   const userSignin = useSelector(state => state.userSignin);
   const { userInfo } = userSignin;
   const historyLink = useHistory();
   const dispatch = useDispatch();
 
   const handleDrawerOpen = () => {
-    setOpenDrawer(true);
+    dispatch(switchDrawer(true));
   };
   const handleDrawerClose = () => {
-    setOpenDrawer(false);
+    dispatch(switchDrawer(false));
   };
 
   const handleAccount = (e) => {
@@ -139,7 +140,7 @@ const NavBar = withRouter(({history}) => {
       clsx(
         classes.appBar,
         {
-          [classes.appBarShift]: openDrawer,
+          [classes.appBarShift]: isDrawerOpen,
         }
       )
     }>
@@ -147,7 +148,7 @@ const NavBar = withRouter(({history}) => {
         <Hidden smUp>
           <IconButton aria-label="open drawer" style={isSignin(history, {color: "#ffffff"})}
           onClick={handleDrawerOpen}
-          className={clsx(openDrawer && classes.hide)}>
+          className={clsx(isDrawerOpen && classes.hide)}>
             <MenuIcon />
           </IconButton>
         </Hidden>
@@ -231,7 +232,7 @@ const NavBar = withRouter(({history}) => {
       className={classes.drawer}
       variant="persistent"
       anchor="left"
-      open={openDrawer}
+      open={isDrawerOpen}
       classes={{
         paper: classes.drawerPaper,
       }}
