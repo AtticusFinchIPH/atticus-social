@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {  withRouter } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { deepOrange, lightBlue, deepPurple } from '@material-ui/core/colors'
-import { Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider, CardHeader, Hidden } from "@material-ui/core";
+import { 
+    Paper, Typography, TextField, Avatar, Button, IconButton, Tooltip, Divider, CardHeader, Hidden, Menu, MenuItem,
+    Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions,
+} from "@material-ui/core";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
@@ -12,7 +14,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import { newPost, reactPost, favoritePost } from "../actions/postActions";
+import { newPost, reactPost, favoritePost, deletePost } from "../actions/postActions";
 import { REACT_TYPE_LIKE, REACT_TYPE_COMMENT } from "../constants/postConstants";
 import { getCharacterColor } from "../util";
 import { Link } from "react-router-dom";
@@ -170,11 +172,15 @@ const NewPost = (props) => {
     )
 }
 
+const SETTING_MENU_ID = 'setting-menu'
 const FormerPost = (props) => {
     const classes = useStyles();
     const userSignin = useSelector(state => state.userSignin);
     const {userInfo} = userSignin;
     const dispatch = useDispatch();
+    const isOwner = () => {
+        return props.post.postedBy._id === userInfo._id;
+    }
     const checkLike = (likes, id) => {
         // console.log(likes, id);
         return likes.indexOf(id) !== -1;
@@ -231,7 +237,70 @@ const FormerPost = (props) => {
             comments: props.post.comments,
         })
     }, [props])
+
+    const [anchorSetting, setAnchorSetting] = useState(null);
+    const [isDeleteOpen, setDeleteOpen] = useState(false);
+    const handleOpenSetting = (e) => {
+        setAnchorSetting(e.currentTarget);
+    }
+    const handleCloseSetting = () => {
+        setAnchorSetting(null);
+    }
+    const handleOpenDelete = () => {
+        handleCloseSetting();
+        setDeleteOpen(true);
+    }
+    const handleCloseDelete = () => {
+        setDeleteOpen(false);
+    }
+    const handleDeletePost = () => {
+        handleCloseDelete();
+        dispatch(deletePost(props.post._id));
+    }
+    const SettingMenu = (props) => (
+        <Menu
+            id={SETTING_MENU_ID}
+            anchorEl={anchorSetting}
+            open={Boolean(anchorSetting)}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            onClose={handleCloseSetting}
+        >
+            <MenuItem onClick={handleOpenDelete}>Delete Post</MenuItem>
+        </Menu>
+    )
+    const DeleteAlert = () => (
+        <Dialog
+            open={isDeleteOpen}
+            onClose={handleCloseDelete}
+            aria-labelledby="alert-delete-title"
+            aria-describedby="alert-delete-description"
+        >
+            <DialogTitle id="alert-delete-title">Delete this post?</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-delete-description">
+                    This action will cause this post being deleted permannently. Do you still want to continue?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={handleCloseDelete} color="primary" autoFocus>
+                No
+            </Button>
+            <Button onClick={handleDeletePost} color="secondary">
+                Yes, delete it!
+            </Button>
+            </DialogActions>
+        </Dialog>
+    )
     return (
+        <>
         <Paper className={classes.paper}>
             <div className={classes.container}>
                 <div className={classes.row}>
@@ -249,9 +318,13 @@ const FormerPost = (props) => {
                         </Typography>
                     </div>
                     <div className={classes.grow}/>
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
+                    {
+                        isOwner()
+                        &&
+                        <IconButton onClick={handleOpenSetting} aria-controls={SETTING_MENU_ID} aria-label="settings" >
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
                 </div>
                 <div className={classes.row}>
                     <Typography component="p" variant="body1">
@@ -356,6 +429,15 @@ const FormerPost = (props) => {
                 }
             </div>
         </Paper>
+        {
+            isOwner() && (
+                <>
+                <SettingMenu />
+                <DeleteAlert />
+                </>
+            )
+        }
+        </>
     )
 }
 
