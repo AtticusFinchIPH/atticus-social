@@ -99,6 +99,8 @@ const RowRender = ({ index, style }) => {
 
 const Right = props => {
   const classes = useStyles();
+  const userSignin = useSelector(state => state.userSignin);
+  const { userInfo } = userSignin;
   const notfollowingUsers = useSelector(state => state.notfollowingUsers);
   const { notfollowings } = notfollowingUsers;
   const followingUsers = useSelector(state => state.followingUsers);
@@ -107,7 +109,7 @@ const Right = props => {
   useEffect(() => {
     dispatch(getNotfollowings());
     dispatch(getFollowings());
-  }, [])
+  }, [userInfo])
   const follow = async (followingId) => {
     await dispatch(followRequest(followingId));
     dispatch(getNotfollowings());
