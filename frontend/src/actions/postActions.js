@@ -14,7 +14,11 @@ import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL,
     REACT_TYPE_COMMENT,
     GET_FAVORITE_POSTS_REQUEST,
     GET_FAVORITE_POSTS_FAIL,
-    GET_FAVORITE_POSTS_SUCCESS,} from "../constants/postConstants";
+    GET_FAVORITE_POSTS_SUCCESS,
+    DELETE_POST_REQUEST,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_FAIL,
+} from "../constants/postConstants";
 import { USER_SIGNOUT } from "../constants/userConstants";
 
 const authConfig = (userInfo) => {
@@ -136,4 +140,19 @@ const reactPost = (actionType, actionValue, postId) => async(dispatch, getState)
     }
 }
 
-export { newPost, getFavoritePosts, getOwnPosts, getNewsFeed, favoritePost, reactPost }
+const deletePost = (postId) => async(dispatch, getState) => {
+    try {
+        const { userSignin: { userInfo } } = getState();
+        dispatch({ type: DELETE_POST_REQUEST, payload: postId });
+        const response = await axios.delete(
+            `/api/posts/${postId}`,
+            authConfig(userInfo)
+        );
+        dispatch({ type: DELETE_POST_SUCCESS, payload: postId });
+    } catch (error) {
+        dispatch({ type: DELETE_POST_FAIL, payload:  error.response?.data?.msg || error.message });
+        if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
+    }
+}
+
+export { newPost, getFavoritePosts, getOwnPosts, getNewsFeed, favoritePost, reactPost, deletePost }

@@ -177,13 +177,13 @@ const NavBar = withRouter(({history}) => {
             </IconButton>
           </LightTooltip>
         </Link>
-        <Link to='/blog'>
+        {/* <Link to='/blog'>
           <LightTooltip title="Blog">
             <IconButton aria-label="Blog" style={isSignin(history, isActive(history, '/blog'))}>
               <FingerprintIcon />
             </IconButton>
           </LightTooltip>
-        </Link>
+        </Link> */}
         {
           userInfo 
           ? 

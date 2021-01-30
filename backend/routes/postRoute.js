@@ -34,18 +34,6 @@ router.get("/favorites", isAuth, async(req, res) => {
 router.get("/own", isAuth, async (req, res) => {
     const user = req.user;
     const posts = await Post.find({postedBy: user._id})
-                            .populate([
-                                {
-                                    path: 'favoritePosts',
-                                    model: 'Post',
-                                    select: 'text photo likes created',
-                                    populate: {
-                                        path: 'postedBy',
-                                        model: 'User',
-                                        select: 'nickName photo',
-                                    }
-                                }
-                            ])
                             .populate('comments.postedBy', '_id firstName lastName nickName')
                             .populate('postedBy', '_id firstName lastName nickName')
                             .sort('-created')
@@ -177,6 +165,17 @@ router.put("/favorite", isAuth, async(req, res) => {
         return res.status(200).json(favoritePosts);
     } catch (error) {
         return res.status(500).json({ msg: "Error in making favorite post"});
+    }
+});
+
+router.delete("/:postId", isAuth, async(req, res) => {
+    const postId = req.params.postId;
+    console.log(`Post ID: ${postId} is being deleted.`)
+    try {
+        const deletedPost = await Post.findByIdAndDelete(postId, (err, docs) => { if (err) throw err; });
+        return res.status(200).json(deletedPost);
+    } catch (error) {
+        return res.status(500).json({ msg: error});
     }
 });
 

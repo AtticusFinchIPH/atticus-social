@@ -1,5 +1,6 @@
 import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL, 
         NEW_POST_REQUEST, NEW_POST_SUCCESS, NEW_POST_FAIL,
+        DELETE_POST_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAIL,
         GET_OWN_POSTS_REQUEST, 
         GET_OWN_POSTS_SUCCESS,
         GET_OWN_POSTS_FAIL, 
@@ -48,6 +49,16 @@ function personalPostsReducer(state = { listPost: []}, action) {
     case NEW_POST_FAIL:
       state.listPost.shift();
       return {...state, loading: false, error: action.payload };
+
+    case DELETE_POST_REQUEST:
+      return {...state, loading: true};
+    case DELETE_POST_SUCCESS:
+      const removeIndex = state.listPost.findIndex(post => post._id === action.payload);
+      state.listPost.splice(removeIndex, 1);
+      return {...state, loading: false};
+    case DELETE_POST_FAIL:
+      console.log('fail')
+      return {...state, loading: false};
 
     case REACT_POST_REQUEST:
       return {...state, loading: true};
