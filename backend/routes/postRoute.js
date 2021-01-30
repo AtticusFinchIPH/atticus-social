@@ -34,18 +34,6 @@ router.get("/favorites", isAuth, async(req, res) => {
 router.get("/own", isAuth, async (req, res) => {
     const user = req.user;
     const posts = await Post.find({postedBy: user._id})
-                            .populate([
-                                {
-                                    path: 'favoritePosts',
-                                    model: 'Post',
-                                    select: 'text photo likes created',
-                                    populate: {
-                                        path: 'postedBy',
-                                        model: 'User',
-                                        select: 'nickName photo',
-                                    }
-                                }
-                            ])
                             .populate('comments.postedBy', '_id firstName lastName nickName')
                             .populate('postedBy', '_id firstName lastName nickName')
                             .sort('-created')

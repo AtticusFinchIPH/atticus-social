@@ -177,6 +177,8 @@ const FormerPost = (props) => {
     const classes = useStyles();
     const userSignin = useSelector(state => state.userSignin);
     const {userInfo} = userSignin;
+    const favoritePosts = useSelector(state => state.favoritePosts);
+    const {favorites} = favoritePosts;
     const dispatch = useDispatch();
     const isOwner = () => {
         return props.post.postedBy._id === userInfo._id;
@@ -187,14 +189,15 @@ const FormerPost = (props) => {
     };
     const [values, setValues] = useState({
         like: checkLike(props.post.likes, userInfo._id),
-        favorite: checkLike(userInfo.favoritePosts.map(post => post._id), props.post._id),
+        favorite: checkLike(favorites.map(post => post._id), props.post._id),
         likes: props.post.likes,
         comments: props.post.comments,
     });
     const [curComment, setCurComment] = useState('');
     const clickLike = (e) => {
-        dispatch(reactPost(REACT_TYPE_LIKE, !values.like, props.post._id));
-        setValues({...values, like: !values.like, likes: !values.like ? [...values.likes, userInfo._id] : values.likes.filter((id) => {return id !== userInfo._id})});
+        const isLikeNow= !values.like;
+        dispatch(reactPost(REACT_TYPE_LIKE, isLikeNow, props.post._id));
+        setValues({...values, like: isLikeNow, likes: isLikeNow ? [...values.likes, userInfo._id] : values.likes.filter((id) => {return id !== userInfo._id})});
     };
     const clickFavorite = (e) => {
         dispatch(favoritePost(!values.favorite, props.post._id));
@@ -229,14 +232,6 @@ const FormerPost = (props) => {
           </Paper>
         )
     }
-    useEffect(() => {
-        setValues({
-            like: checkLike(props.post.likes, userInfo._id),
-            favorite: checkLike(userInfo.favoritePosts.map(post => post._id), props.post._id),
-            likes: props.post.likes,
-            comments: props.post.comments,
-        })
-    }, [props])
 
     const [anchorSetting, setAnchorSetting] = useState(null);
     const [isDeleteOpen, setDeleteOpen] = useState(false);

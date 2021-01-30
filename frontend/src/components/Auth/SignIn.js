@@ -6,6 +6,7 @@ import { Grid, Paper, Avatar, Typography, TextField, FormControlLabel, Checkbox,
 import ToysIcon from '@material-ui/icons/Toys';
 import Copyright from "../Copyright";
 import { signin } from "../../actions/userActions";
+import { getFavoritePosts } from "../../actions/postActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +66,7 @@ const SignIn = props => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(signin(email, password));
+    dispatch(getFavoritePosts());
   }
 
   return (
