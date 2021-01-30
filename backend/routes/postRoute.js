@@ -79,13 +79,13 @@ const ERR_IMAGE_UNKNOWN = 'Error in Creating New Post';
 router.post("/", isAuth, cloudinaryConfig.parser.single('photo'), async (req, res) => {
     const user = req.user;
     console.log(req.file)
-    console.log(req.body.text)
+    console.log(req.body)
     try {
-        if(!req.file?.path) throw ERR_IMAGE_UPLOAD
+        if(req.body.photo !== 'null' && !req.file?.path) throw ERR_IMAGE_UPLOAD
         else {
             let post = new Post();
             post.text = req.body.text;
-            post.photo = req.file.path;
+            post.photo = req.file?.path || null;
             post.postedBy = user._id;
             let result = await (await post.save()).populate('postedBy', '_id firstName lastName nickName').execPopulate();
             if(result) return res.status(200).send(result);
