@@ -32,12 +32,19 @@ app.get("/api", (req, res) => {
     res.send("Test api successful");
 });
 
-/*  Serve static files from the React frontend app
-    Anything that doesn't match the above, send back index.html */
-app.use(express.static(path.join(__dirname, '/../frontend/build')))
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../frontend/build/index.html'))
-})
+switch (config.ENVIRONMENT) {
+    case 'PROD':
+        /*  Serve static files from the React frontend app
+        Anything that doesn't match the above, send back index.html */
+        app.use(express.static(path.join(__dirname, '/../frontend/build')))
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname + '/../frontend/build/index.html'))
+        })
+        break;
+    default:
+        break;
+}
+
 
 app.listen(config.PORT, () => {
     main();
