@@ -33,6 +33,7 @@ router.post("/signin", async (req, res) => {
             email: signinUser.email,
             isAdmin: signinUser.isAdmin,
             token: getToken(signinUser),
+            favoritePosts: signinUser.favoritePosts,
         })
     } else {
         res.status(401).send({msg: 'Invalid Email or Password'});
@@ -64,7 +65,6 @@ router.post("/register", async (req, res) => {
                 email: newUser.email,
                 isAdmin: newUser.isAdmin,
                 token: getToken(newUser),
-                favoritePosts: newUser.favoritePosts,
             });
         } else {
             res.status(401).send({ message: 'Invalid User Data' });
@@ -116,11 +116,11 @@ router.get("/profile/:userId", isAuth, async (req, res) => {
     return res.status(200).send(profile);
 })
 
-router.put("", isAuth, async (req, res) => {
-    const user = req.user;
+router.put("/:userId", isAuth, async (req, res) => {
+    const userId = req.params.userId;
     const { nickName, description } = req.body;
     try {
-        const userInfo = await User.findByIdAndUpdate(user._id, {nickName, description}, {new: true})
+        const userInfo = await User.findByIdAndUpdate(userId, {nickName, description}, {new: true})
                                     .populate([
                                         {
                                             path: 'favoritePosts',
@@ -143,7 +143,6 @@ router.put("", isAuth, async (req, res) => {
                 email: userInfo.email,
                 isAdmin: userInfo.isAdmin,
                 token: getToken(userInfo),
-                favoritePosts: userInfo.favoritePosts,
             })
         }
     } catch (error) {
@@ -167,7 +166,6 @@ router.put("/follow", isAuth, async (req, res) => {
 })
 
 router.put("/unfollow", isAuth, async (req, res) => {
-    console.log(true)
     const user = req.user;
     const { unfollowingId } = req.body;
     try {

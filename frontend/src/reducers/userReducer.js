@@ -55,7 +55,7 @@ function userUpdateReducer(state = {}, action) {
     case USER_UPDATE_REQUEST:
       return { loading: true, editable: false };
     case USER_UPDATE_SUCCESS:
-      return { loading: false, userInfo: action.payload, editable: false };
+      return { loading: false, editable: false };
     case USER_UPDATE_FAIL:
       return { loading: false, error: action.payload, editable: false };
     default:
