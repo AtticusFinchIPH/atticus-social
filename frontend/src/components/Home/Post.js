@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOwnPosts, getFavoritePosts } from "../../actions/postActions";
-import { NewPost } from "../Posts";
+import { NewPost, FormerPost } from "../Posts";
+import { ALTER_PERSONAL_POSTS } from '../../constants/postConstants';
 
 const Post = (props) => {
     const userSignin = useSelector(state => state.userSignin);
@@ -19,12 +20,17 @@ const Post = (props) => {
             personalPosts.error = null;
         }
     }, [personalPosts]);
+    const alterList = (futurePost) => {
+        const index = listPost.findIndex(post => post._id === futurePost._id);
+        listPost.splice(index, 1, futurePost);
+        dispatch({type: ALTER_PERSONAL_POSTS, payload: listPost});
+    }
     return (
         <>
             <NewPost userInfo={userInfo}/>
             {
                 listPost.map((post, i) =>                   
-                    props.render(post, i)
+                    <FormerPost key={i} post={post} alterList={alterList}/>
                 )
             }
         </>

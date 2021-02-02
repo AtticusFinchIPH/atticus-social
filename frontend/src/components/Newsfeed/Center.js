@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Container } from "@material-ui/core";
-import { NewPost } from "../Posts";
+import { NewPost, FormerPost } from "../Posts";
 import { getNewsFeed } from "../../actions/postActions";
+import { ALTER_NEWSFEED_POSTS } from "../../constants/postConstants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,6 +31,11 @@ const Center = props => {
         newsfeedPosts.error = null;
     }
   }, [newsfeedPosts]);
+  const alterList = (futurePost) => {
+    const index = newsfeed.findIndex(post => post._id === futurePost._id);
+    newsfeed.splice(index, 1, futurePost);
+    dispatch({type: ALTER_NEWSFEED_POSTS, payload: newsfeed});  
+  }
   return (
     <Container maxWidth='sm'>
       <Grid container spacing={3} className={classes.root}>
@@ -38,7 +44,7 @@ const Center = props => {
         </Grid>
         <Grid item xs={12}>
           {
-            newsfeed.map((post, i) => props.render(post, i))
+            newsfeed.map((post, i) => <FormerPost key={i} post={post} alterList={alterList}/>)
           }
         </Grid>
       </Grid>

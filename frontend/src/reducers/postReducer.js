@@ -12,7 +12,9 @@ import { FAVORITE_POST_REQUEST, FAVORITE_POST_SUCCESS, FAVORITE_POST_FAIL,
         GET_FAVORITE_POSTS_FAIL,
         GET_NEWSFEED_REQUEST,
         GET_NEWSFEED_SUCCESS,
-        GET_NEWSFEED_FAIL} from "../constants/postConstants";
+        GET_NEWSFEED_FAIL,
+        ALTER_PERSONAL_POSTS,
+        ALTER_NEWSFEED_POSTS} from "../constants/postConstants";
 
 function favoritePostReducer(state = { favorites: []}, action) {
   switch (action.type) {
@@ -66,13 +68,16 @@ function personalPostsReducer(state = { listPost: []}, action) {
       return {...state, loading: false};
     case REACT_POST_FAIL:
       return {...state, loading: false, error: action.payload};
+    
+    case ALTER_PERSONAL_POSTS:
+      return {...state, listPost: action.payload};
 
     default:
       return state;
   }
 }
 
-function newsfeedReducer(state = { favorites: []}, action) {
+function newsfeedReducer(state = { newsfeed: []}, action) {
   switch (action.type) {
     case GET_NEWSFEED_REQUEST:
       return {...state, loading: true };
@@ -80,6 +85,10 @@ function newsfeedReducer(state = { favorites: []}, action) {
       return { loading: false, newsfeed: action.payload };
     case GET_NEWSFEED_FAIL:
       return {...state, loading: false, error: action.payload };
+
+    case ALTER_NEWSFEED_POSTS:
+      return {...state, newsfeed: action.payload};
+
     default:
       return state;
   }

@@ -2,7 +2,6 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
 import Post from "./Post";
-import { FormerPost } from "../Posts";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,9 +18,7 @@ const Content = (props) => {
         <div className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
-                    <Post render={(post, i) => (
-                        <FormerPost key={i} post={post}/>
-                    )}/>
+                    <Post />
                 </Grid>
             </Grid>
         </div>

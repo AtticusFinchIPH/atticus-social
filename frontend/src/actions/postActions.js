@@ -110,6 +110,7 @@ const favoritePost = (favoriteValue, postId) => async (dispatch, getState) => {
             authConfig(userInfo)
         );
         dispatch({ type: FAVORITE_POST_SUCCESS, payload: data });
+        return data;
     } catch (error) {
         dispatch({ type: FAVORITE_POST_FAIL, payload:  error.response?.data?.msg || error.message });
         if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });
@@ -134,6 +135,7 @@ const reactPost = (actionType, actionValue, postId) => async(dispatch, getState)
             authConfig(userInfo)
         );
         dispatch({ type: REACT_POST_SUCCESS, payload: data });
+        return data;
     } catch (error) {
         dispatch({ type: REACT_POST_FAIL, payload:  error.response?.data?.msg || error.message });
         if(error.response?.status === 401) dispatch({ type: USER_SIGNOUT });

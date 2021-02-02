@@ -194,31 +194,21 @@ const FormerPost = (props) => {
         comments: props.post.comments,
     });
     const [curComment, setCurComment] = useState('');
-    const clickLike = (e) => {
+    const clickLike = async (e) => {
         const isLikeNow= !values.like;
-        dispatch(reactPost(REACT_TYPE_LIKE, isLikeNow, props.post._id));
-        setValues({...values, like: isLikeNow, likes: isLikeNow ? [...values.likes, userInfo._id] : values.likes.filter((id) => {return id !== userInfo._id})});
+        const futurePost = await dispatch(reactPost(REACT_TYPE_LIKE, isLikeNow, props.post._id));
+        if(futurePost) sendPropsToParent(futurePost);
     };
-    const clickFavorite = (e) => {
-        dispatch(favoritePost(!values.favorite, props.post._id));
-        setValues({...values, favorite: !values.favorite});
+    const clickFavorite = async (e) => {
+        const isFavoriteNow = !values.favorite;
+        const futurePost = await dispatch(favoritePost(isFavoriteNow, props.post._id));
+        if(futurePost) sendPropsToParent(futurePost);
     };
-    const submitComment = (e) => {
+    const submitComment = async (e) => {
         if(e.keyCode === 13 && e.target.value) {
             e.preventDefault()
-            dispatch(reactPost(REACT_TYPE_COMMENT, curComment, props.post._id));
-            setValues({...values, comments: [...values.comments, 
-                {
-                    text: curComment,
-                    created: "Just Now",
-                    postedBy: {
-                        _id: userInfo._id,
-                        firstName: userInfo.firstName,
-                        lastName: userInfo.lastName,
-                        nickName: userInfo.nickName,
-                    }
-                }]
-            });
+            const futurePost = await dispatch(reactPost(REACT_TYPE_COMMENT, curComment, props.post._id));
+            if(futurePost) sendPropsToParent(futurePost);
             setCurComment("");
         }
     }
@@ -231,6 +221,18 @@ const FormerPost = (props) => {
             </Typography>
           </Paper>
         )
+    }
+    // Activate whenever we have a new post or a post is being deleted
+    useEffect(() => {	
+        setValues({	
+            like: checkLike(props.post.likes, userInfo._id),	
+            favorite: checkLike(favorites.map(post => post._id), props.post._id),	
+            likes: props.post.likes,	
+            comments: props.post.comments,	
+        })	
+    }, [props])
+    const sendPropsToParent = (futurePost) => {
+        props.alterList(futurePost);
     }
 
     const [anchorSetting, setAnchorSetting] = useState(null);
