@@ -199,9 +199,10 @@ const FormerPost = (props) => {
         const futurePost = await dispatch(reactPost(REACT_TYPE_LIKE, isLikeNow, props.post._id));
         if(futurePost) sendPropsToParent(futurePost);
     };
-    const clickFavorite = (e) => {
+    const clickFavorite = async (e) => {
         const isFavoriteNow = !values.favorite;
-        dispatch(favoritePost(isFavoriteNow, props.post._id));
+        const data = await dispatch(favoritePost(isFavoriteNow, props.post._id));
+        if(data) setValues({...values, favorite: isFavoriteNow})	
     };
     const submitComment = async (e) => {
         if(e.keyCode === 13 && e.target.value) {

@@ -10,9 +10,12 @@ const Post = (props) => {
     const personalPosts = useSelector(state => state.personalPosts);
     let { listPost } = personalPosts;
     const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getOwnPosts());
-        dispatch(getFavoritePosts());
+    useEffect(() => { 
+        async function fetchPosts() {
+            await dispatch(getFavoritePosts());
+            dispatch(getOwnPosts());
+        }
+        fetchPosts();
     }, []);
     useEffect(() => {
         if(personalPosts.error) {
