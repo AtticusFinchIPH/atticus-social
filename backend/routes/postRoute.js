@@ -105,7 +105,13 @@ router.put("/react", isAuth, async (req, res) => {
             case REACT_TYPE_LIKE:
                 actionValue 
                 ? post = await Post.findByIdAndUpdate(postId, {$push: {likes: user._id}}, {new: true}) 
-                : post = await Post.findByIdAndUpdate(postId, {$pull: {likes: user._id}}, {new: true});
+                                    .populate('comments.postedBy', '_id firstName lastName nickName')
+                                    .populate('postedBy', '_id firstName lastName nickName')
+                                    .exec()
+                : post = await Post.findByIdAndUpdate(postId, {$pull: {likes: user._id}}, {new: true})
+                                    .populate('comments.postedBy', '_id firstName lastName nickName')
+                                    .populate('postedBy', '_id firstName lastName nickName')
+                                    .exec();
                 break;
             case REACT_TYPE_COMMENT:
                 const newComment = {
