@@ -66,7 +66,6 @@ const SignIn = props => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(signin(email, password));
-    dispatch(getFavoritePosts());
   }
 
   return (

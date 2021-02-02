@@ -25,7 +25,8 @@ import {
   USER_UPDATE_DISABLE,
   CHECK_PROFILE_REQUEST,
   CHECK_PROFILE_FAIL,
-  CHECK_PROFILE_SUCCESS
+  CHECK_PROFILE_SUCCESS,
+  ALTER_PROFILE_POSTS
 } from "../constants/userConstants";
 
 function userSigninReducer(state = {}, action) {
@@ -55,7 +56,7 @@ function userUpdateReducer(state = {}, action) {
     case USER_UPDATE_REQUEST:
       return { loading: true, editable: false };
     case USER_UPDATE_SUCCESS:
-      return { loading: false, userInfo: action.payload, editable: false };
+      return { loading: false, editable: false };
     case USER_UPDATE_FAIL:
       return { loading: false, error: action.payload, editable: false };
     default:
@@ -115,6 +116,10 @@ function profileCheckingReducer(state = {userInfo: {}, listPost: []}, action) {
       return { loading: false, userInfo: action.profile, listPost: action.listPost };
     case CHECK_PROFILE_FAIL:
       return {...state, loading: false, error: action.payload };
+
+    case ALTER_PROFILE_POSTS:
+      return {...state, listPost: action.payload};
+
     default:
       return state;
   }  

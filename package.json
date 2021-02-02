@@ -4,7 +4,9 @@
   "description": "A social web application",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon --watch backend --exec babel-node backend/server.js",
+    "server": "nodemon --watch backend --exec babel-node backend/server.js",
+    "client": "cd frontend && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "build": "rm -rf dist && babel backend -d dist",
     "heroku-postbuild": "npm run build && cd frontend && npm install && npm run build"
   },
@@ -24,7 +26,6 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "formidable": "^1.2.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.25",
     "multer": "^1.4.2",

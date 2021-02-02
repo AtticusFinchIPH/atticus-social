@@ -15,6 +15,9 @@ import {
   CHECK_PROFILE_SUCCESS,
   CHECK_PROFILE_REQUEST,
 } from "../constants/userConstants";
+import {
+  FAVORITE_POST_SUCCESS,
+} from "../constants/postConstants";
 
 const authConfig = (userInfo) => {
   return {
@@ -31,9 +34,10 @@ const enableUpdate = (isEnable) => (dispatch) => {
 
 const updateCover = (nickName, description) => async (dispatch, getState) => {
   const { userSignin: { userInfo } } = getState();
+  const userId = userInfo._id;
   dispatch({ type: USER_UPDATE_REQUEST, payload: { nickName, description } });
   try {
-    const { data } = await axios.put("/api/users/",
+    const { data } = await axios.put(`/api/users/${userId}`,
       { nickName, description },
       authConfig(userInfo),
     );
@@ -49,8 +53,11 @@ const signin = (email, password) => async (dispatch) => {
   dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
   try {
     const { data } = await axios.post("/api/users/signin", { email, password });
-    dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-    Cookie.set('userInfo', JSON.stringify(data));
+    const {_id, firstName, lastName, nickName, isAdmin, email: userEmail, token, description, favoritePosts} = data;
+    const userInfo = {_id, firstName, lastName, nickName, isAdmin, userEmail, token, description};
+    dispatch({ type: USER_SIGNIN_SUCCESS, payload: userInfo });
+    Cookie.set('userInfo', JSON.stringify(userInfo));
+    dispatch({type: FAVORITE_POST_SUCCESS, payload: favoritePosts});
   } catch (error) {
     dispatch({ type: USER_SIGNIN_FAIL, payload: error.response?.data?.msg || error.message });
   }
