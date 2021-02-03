@@ -116,11 +116,11 @@ router.get("/profile/:userId", isAuth, async (req, res) => {
     return res.status(200).send(profile);
 })
 
-router.put("/:userId", isAuth, async (req, res) => {
-    const userId = req.params.userId;
+router.put("", isAuth, async (req, res) => {
+    const user = req.user;
     const { nickName, description } = req.body;
     try {
-        const userInfo = await User.findByIdAndUpdate(userId, {nickName, description}, {new: true})
+        const userInfo = await User.findByIdAndUpdate(user._id, {nickName, description}, {new: true})
                                     .populate([
                                         {
                                             path: 'favoritePosts',

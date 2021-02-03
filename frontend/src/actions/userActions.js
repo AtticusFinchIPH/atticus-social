@@ -37,7 +37,7 @@ const updateCover = (nickName, description) => async (dispatch, getState) => {
   const userId = userInfo._id;
   dispatch({ type: USER_UPDATE_REQUEST, payload: { nickName, description } });
   try {
-    const { data } = await axios.put(`/api/users/${userId}`,
+    const { data } = await axios.put(`/api/users/`,
       { nickName, description },
       authConfig(userInfo),
     );
