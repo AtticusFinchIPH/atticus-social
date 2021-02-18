@@ -1,4 +1,5 @@
 import express from "express";
+import { body, validationResult } from "express-validator";
 import {getToken, isAuth} from "../auth/authHelper";
 import User from "../models/userModel";
 import Post from "../models/postModel";
@@ -40,37 +41,52 @@ router.post("/signin", async (req, res) => {
     }
 })
 
-router.post("/register", async (req, res) => {
-    const registerUser = await User.findOne({
-        email: req.body.email,
-    });
-    if(registerUser) res.status(401).send({ msg: 'Email has been used by another user'});
-    else {
-        const user = new User({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            nickName: `${req.body.firstName} ${req.body.lastName}`,
+router.post("/register", 
+    [
+        body('firstName').not().isEmpty().withMessage('First name must not be empty'),
+        body('lastName').not().isEmpty().withMessage('Last name must not be empty'),
+        body('email').isEmail().withMessage('Invalid email address'),
+        body('password').matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i")
+        .withMessage("Password should be combination of one uppercase, one lower case, one special char, one digit and min 8, max 20 char long"),
+    ],
+    async (req, res) => {
+        const validatorErrors = validationResult(req);
+        if (!validatorErrors.isEmpty()) {
+            console.log(validatorErrors.array())
+            return res.status(400).send({ msg: validatorErrors.array()[0].msg });
+        }
+
+        const registerUser = await User.findOne({
             email: req.body.email,
-            password: req.body.password,
-            isAdmin: false,
         });
-        const newUser = await user.save();
-        if (newUser) {
-            res.send({
-                _id: newUser.id,
-                firstName: newUser.firstName,
-                lastName: newUser.lastName,
-                nickName: newUser.nickName,
-                description: newUser.description,
-                email: newUser.email,
-                isAdmin: newUser.isAdmin,
-                token: getToken(newUser),
+        if(registerUser) res.status(401).send({ msg: 'Email has been used by another user'});
+        else {
+            const user = new User({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                nickName: `${req.body.firstName} ${req.body.lastName}`,
+                email: req.body.email,
+                password: req.body.password,
+                isAdmin: false,
             });
-        } else {
-            res.status(401).send({ message: 'Invalid User Data' });
+            const newUser = await user.save();
+            if (newUser) {
+                res.send({
+                    _id: newUser.id,
+                    firstName: newUser.firstName,
+                    lastName: newUser.lastName,
+                    nickName: newUser.nickName,
+                    description: newUser.description,
+                    email: newUser.email,
+                    isAdmin: newUser.isAdmin,
+                    token: getToken(newUser),
+                });
+            } else {
+                res.status(401).send({ message: 'Invalid User Data' });
+            }
         }
     }
-})
+)
 
 router.get("/", isAuth, async (req, res) => {
     const users = await User.find({}).populate('favoritePosts');
